@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Credenciales · Factor Humano 2026</title>
+<link rel="icon" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Inter+Tight:wght@800;900&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* =====================================================================
+   FACTOR HUMANO 2026 · Credenciales para imprimir
+   - 4 roles sin nombre: Invitado especial, Institución, Autoridad, Prensa.
+   - Cada una lleva un QR a su página: /rol/<rol>
+   - Tamaño de cada credencial: 6,8 × 10,8 cm (porta de 7 × 11 cm). Cuatro por hoja A4.
+   - Imprimir: Ctrl+P › Tamaño A4 › Márgenes: Ninguno › Escala 100 %
+               › activar "Gráficos de fondo".
+   ===================================================================== */
+:root{--paper:#f3eee8;--ink:#141010;--red:#d62b1f;--red2:#ff4a36;
+  --fd:"Inter Tight","Inter",system-ui,sans-serif;--fb:"Inter",system-ui,sans-serif;--fm:"JetBrains Mono",ui-monospace,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#8a8380;font-family:var(--fb);color:var(--ink)}
+.mono{font-family:var(--fm);letter-spacing:.14em;text-transform:uppercase}
+
+/* ---------- Panel (no se imprime) ---------- */
+.panel{position:sticky;top:0;z-index:10;background:var(--ink);color:var(--paper);padding:16px 20px;display:flex;flex-wrap:wrap;gap:14px 26px;align-items:center}
+.panel h1{font-family:var(--fd);font-weight:900;font-size:20px;letter-spacing:-.02em;margin-right:auto}
+.panel label{display:flex;align-items:center;gap:8px;font-size:13px}
+.panel input{width:56px;padding:6px 8px;border:0;font:inherit;font-weight:600;background:var(--paper);color:var(--ink)}
+.panel button{background:var(--red2);color:var(--ink);border:0;padding:10px 18px;font-family:var(--fd);font-weight:800;font-size:15px;cursor:pointer}
+.panel small{flex-basis:100%;font-size:12px;color:#cfc5be}
+.panel small b{color:var(--red2);font-weight:600}
+.aviso{background:var(--red2);color:var(--ink);padding:12px 20px;font-size:14px;font-weight:600;display:none}
+.aviso.on{display:block}
+
+/* ---------- Hoja A4 ---------- */
+.sheet{width:210mm;height:297mm;margin:12mm auto;background:#fff;position:relative;
+  display:grid;grid-template-columns:68mm 68mm;grid-template-rows:108mm 108mm;gap:14mm 16mm;
+  justify-content:center;align-content:center;box-shadow:0 6px 30px rgba(0,0,0,.25)}
+.sheet .pie{position:absolute;left:0;right:0;bottom:6mm;text-align:center;font-size:7pt;color:#8a8380}
+
+/* Marcas de corte */
+.slot{position:relative}
+.slot::before,.slot::after{content:"";position:absolute;inset:-4mm;pointer-events:none;
+  background:
+   linear-gradient(#999,#999) 0 4mm/3mm .2mm no-repeat, linear-gradient(#999,#999) 4mm 0/.2mm 3mm no-repeat,
+   linear-gradient(#999,#999) 100% 4mm/3mm .2mm no-repeat, linear-gradient(#999,#999) calc(100% - 4mm) 0/.2mm 3mm no-repeat,
+   linear-gradient(#999,#999) 0 calc(100% - 4mm)/3mm .2mm no-repeat, linear-gradient(#999,#999) 4mm 100%/.2mm 3mm no-repeat,
+   linear-gradient(#999,#999) 100% calc(100% - 4mm)/3mm .2mm no-repeat, linear-gradient(#999,#999) calc(100% - 4mm) 100%/.2mm 3mm no-repeat}
+.slot::after{display:none}
+
+/* ---------- Credencial 90 × 130 mm ---------- */
+.cred{width:90mm;height:130mm;position:relative;overflow:hidden;display:flex;flex-direction:column;padding:9mm 6mm 0 10.5mm;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.cred .stripe{position:absolute;left:0;top:0;bottom:0;width:4.5mm}
+.cred .hole{position:absolute;top:3.2mm;left:50%;transform:translateX(-50%);width:15mm;height:3.4mm;border-radius:2mm;border:.35mm solid currentColor;opacity:.45}
+.cred .top{display:flex;justify-content:space-between;font-size:5.6pt;padding-bottom:1.6mm;border-bottom:.5mm solid currentColor}
+.cred .logo{font-family:var(--fd);font-weight:900;font-size:33pt;line-height:.84;letter-spacing:-.055em;margin-top:5.5mm}
+.cred .wave{display:flex;align-items:center;gap:.45mm;height:7mm;margin-top:4mm}
+.cred .wave i{flex:1;display:block}
+.cred .rolebox{margin-top:auto;padding:4mm 0 3.6mm}
+.cred .eyebrow{font-size:6pt}
+.cred .role{font-family:var(--fd);font-weight:900;letter-spacing:-.045em;line-height:.9;font-size:34pt;margin-top:1.6mm}
+.cred .base{display:grid;grid-template-columns:1fr 25mm;gap:3.5mm;align-items:end;padding-top:3mm;border-top:.5mm solid currentColor}
+.cred .info{font-size:6.6pt;line-height:1.35;padding-bottom:.5mm}
+.cred .info strong{display:block;font-family:var(--fd);font-weight:800;font-size:8.6pt;letter-spacing:-.01em;line-height:1.15;margin-bottom:1.4mm}
+.cred .scan{font-size:5.4pt;margin-top:2mm;display:flex;align-items:center;gap:1.4mm}
+.cred .scan::before{content:"";width:3.2mm;height:.5mm;background:currentColor}
+.cred .qr{width:25mm;height:25mm;background:#fff;padding:1.4mm;display:block}
+.cred .qr svg{width:100%;height:100%;display:block}
+.cred .band{margin:4mm -6mm 0 -10.5mm;padding:2.6mm 6mm 2.8mm 10.5mm;display:flex;justify-content:space-between;font-size:5.4pt}
+
+/* Temas */
+.cred.ink{background:var(--ink);color:var(--paper)} .cred.ink .stripe{background:var(--red2)} .cred.ink .acc{color:var(--red2)} .cred.ink .band{background:var(--red2);color:var(--ink)}
+.cred.red{background:var(--red);color:#fff} .cred.red .stripe{background:var(--ink)} .cred.red .acc{color:var(--ink)} .cred.red .band{background:var(--ink);color:#fff}
+.cred.paper{background:var(--paper);color:var(--ink);outline:.2mm solid #d8d0c8;outline-offset:-.2mm} .cred.paper .stripe{background:var(--red)} .cred.paper .acc{color:var(--red)} .cred.paper .band{background:var(--ink);color:var(--paper)}
+.cred.esp{background:var(--ink);color:var(--paper)} .cred.esp .stripe{background:var(--red2)} .cred.esp .acc{color:var(--red2)} .cred.esp .band{background:var(--paper);color:var(--ink)}
+.cred.esp .rolebox{background:var(--red2);color:var(--ink);margin-left:-10.5mm;margin-right:-6mm;padding-left:10.5mm;padding-right:6mm;margin-bottom:4mm}
+.cred.esp .rolebox .acc{color:#fff}
+.cred.esp .base{border-top:0;padding-top:0}
+
+
+/* ---------- Credencial mínima 6,8 × 10,8 cm (porta de 7 × 11 cm) ---------- */
+.cred{width:68mm;height:108mm;padding:0;display:flex;flex-direction:column;align-items:stretch}
+.cred .stripe{width:4mm}
+.cred .rolebox2{flex:1;display:flex;align-items:flex-end;padding:0 5mm 5mm 9mm}
+.cred .role{font-size:30pt;line-height:.86;margin:0}
+.cred .qrbox{background:#fff;margin:0 5mm 6mm 9mm;padding:2.6mm;aspect-ratio:1}
+.cred .qrbox svg{width:100%;height:100%;display:block}
+.cred.esp .rolebox2{background:var(--red2);color:var(--ink);margin-bottom:5mm;padding-top:24mm}
+.cred.esp .rolebox2 .acc{color:#fff}
+.cred.esp .rolebox{all:unset}
+/* Logo FH arriba a la izquierda */
+.cred .logo-fh{position:absolute;top:6mm;left:9mm;width:17mm;height:auto;z-index:2}
+.cred .rolebox2{padding-top:24mm}
+/* Staff: negro con el rol en rojo y franja crema */
+.cred.staff{background:var(--ink);color:var(--red2)} .cred.staff .stripe{background:var(--paper)} .cred.staff .acc{color:var(--paper)}
+.cred.staff .qrbox{outline:1.6mm solid var(--red2);outline-offset:0}
+/* Orador: negro con banda crema */
+.cred.orador{background:var(--ink);color:var(--ink)} .cred.orador .stripe{background:var(--red2)} .cred.orador .acc{color:var(--red)}
+.cred.orador .rolebox2{background:var(--paper);margin-bottom:5mm;padding-top:24mm}
+/* Invitada súper especial: rojo con banda crema y estrellas */
+.cred.super{background:var(--red);color:var(--ink)} .cred.super .stripe{background:var(--ink)} .cred.super .acc{color:var(--red)}
+.cred.super .rolebox2{background:var(--paper);margin-bottom:5mm;padding-top:24mm;position:relative}
+.cred.super .rolebox2::after{content:"★ ★ ★";position:absolute;right:5mm;top:7mm;font-size:11pt;color:var(--red);letter-spacing:1mm}
+@page{size:A4;margin:0}
+@media print{
+  body{background:#fff}
+  .panel,.aviso{display:none!important}
+  .sheet{margin:0;box-shadow:none;break-after:page}
+  .sheet:last-child{break-after:auto}
+}
+</style>
+</head>
+<body>
+<div class="panel">
+  <h1>Credenciales · Factor Humano 2026</h1>
+  <label>Autoridad <input type="number" min="0" max="200" value="40" data-rol="autoridades"></label>
+  <label>Invitado especial <input type="number" min="0" max="200" value="30" data-rol="invitados-especiales"></label>
+  <label>Institución <input type="number" min="0" max="200" value="20" data-rol="instituciones"></label>
+  <label>Prensa <input type="number" min="0" max="200" value="20" data-rol="prensa"></label>
+  <label>Staff <input type="number" min="0" max="200" value="5" data-rol="staff"></label>
+  <label>Orador <input type="number" min="0" max="10" value="1" data-rol="orador"></label>
+  <label>Invitada súper especial <input type="number" min="0" max="10" value="1" data-rol="invitada-super-especial"></label>
+  <button type="button" onclick="window.print()">Imprimir</button>
+  <small>Cantidad de credenciales por rol (4 por hoja A4; los roles se van llenando seguidos para no desperdiciar hojas). Al imprimir: <b>A4 · Márgenes: ninguno · Escala 100 % · Gráficos de fondo activado</b>. Recortá por las marcas: 6,8 × 10,8 cm.</small>
+</div>
+<div class="aviso" id="aviso"></div>
+<div id="hojas"></div>
+
+<script src="/assets/js/qrcode.js"></script>
+<script>
+(function(){
+  var ROLES = {
+    'invitados-especiales': {tema:'esp',   eyebrow:'Credencial',           role:'Invitado<br><span class="acc">especial.</span>'},
+    'instituciones':        {tema:'paper', eyebrow:'Credencial',           role:'Institución<span class="acc">.</span>'},
+    'autoridades':          {tema:'ink',   eyebrow:'Credencial',           role:'Autoridad<span class="acc">.</span>'},
+    'prensa':               {tema:'red',   eyebrow:'Credencial',           role:'Prensa<span class="acc">.</span>'},
+    'staff':                {tema:'staff', eyebrow:'Credencial',           role:'Staff<span class="acc">.</span>'},
+    'orador':               {tema:'orador',eyebrow:'Credencial',           role:'Orador<span class="acc">.</span>'},
+    'invitada-super-especial': {tema:'super', eyebrow:'Credencial',        role:'Invitada súper<br><span class="acc">especial.</span>'}
+  };
+  // Nombre del rol en la banda inferior
+  var NOMBRE = {'invitados-especiales':'Invitado especial','instituciones':'Institución','autoridades':'Autoridad','prensa':'Prensa','staff':'Staff','orador':'Orador','invitada-super-especial':'Invitada súper especial'};
+
+  // Dirección base del sitio: la del sitio publicado. Se puede forzar con ?base=https://...
+  var q = new URLSearchParams(location.search);
+  var base = (q.get('base') || (location.protocol.indexOf('http') === 0 ? location.origin : '')).replace(/\/+$/,'');
+  var aviso = document.getElementById('aviso');
+  if (!base) {
+    aviso.textContent = 'Abrí esta página desde el sitio publicado (por ejemplo https://tu-sitio.vercel.app/credenciales) para que los QR apunten a la dirección correcta.';
+    aviso.classList.add('on');
+  } else if (/localhost|127\.0\.0\.1/.test(base) && !q.get('base')) {
+    aviso.textContent = 'Estás en una copia local: los QR apuntan a ' + base + '. Imprimí desde el sitio publicado.';
+    aviso.classList.add('on');
+  }
+
+  function qrSvg(texto, color){
+    var qr = qrcode(0, 'M'); qr.addData(texto); qr.make();
+    var n = qr.getModuleCount(), d = '';
+    for (var r = 0; r < n; r++) for (var c = 0; c < n; c++) if (qr.isDark(r, c)) d += 'M' + c + ' ' + r + 'h1v1h-1z';
+    return '<svg viewBox="0 0 ' + n + ' ' + n + '" shape-rendering="crispEdges" role="img" aria-label="Código QR"><path fill="' + color + '" d="' + d + '"/></svg>';
+  }
+
+  function ondas(seed, c1, c2){
+    var s = seed, h = '';
+    function r(){ s = (s * 16807) % 2147483647; return s / 2147483647; }
+    for (var i = 0, n = 48; i < n; i++){
+      var u = i / n, env = Math.sin(Math.PI * u) * 0.8 + 0.2, hh = Math.max(8, Math.round((0.25 + 0.75 * r()) * env * 100));
+      h += '<i style="height:' + hh + '%;background:' + (u < .55 ? c1 : c2) + ';opacity:' + (u < .55 ? (.3 + .55 * u).toFixed(2) : 1) + '"></i>';
+    }
+    return h;
+  }
+  var COLORES = {esp:['#f3eee8','#ff4a36'], ink:['#f3eee8','#ff4a36'], red:['#ffffff','#141010'], paper:['#141010','#d62b1f']};
+
+  // Logo FH en un solo color: negro sobre fondos claros o rojos, rojo sobre negro
+  var LOGO_COLOR = {esp:'#141010', paper:'#141010', red:'#141010', ink:'#ff4a36', staff:'#ff4a36', orador:'#141010', super:'#141010'};
+  function logo(color){
+    var bars='', s=7;
+    function r(){ s=(s*16807)%2147483647; return s/2147483647; }
+    for (var i=0;i<34;i++){ var u=i/34, e=Math.sin(Math.PI*u)*.8+.2, h=Math.max(8,Math.round((.25+.75*r())*e*56)); bars+='<rect x="'+(203+i*11.6)+'" y="'+(522-h/2)+'" width="6" height="'+h+'" rx="3"/>'; }
+    return '<svg class="logo-fh" viewBox="200 180 410 380" role="img" aria-label="Factor Humano"><g fill="'+color+'">'+
+      '<rect x="215" y="190" width="67" height="240"/><rect x="215" y="190" width="178" height="55"/><rect x="215" y="290" width="173" height="53"/>'+
+      '<rect x="393" y="190" width="67" height="240"/><rect x="540" y="190" width="67" height="240"/><rect x="393" y="280" width="214" height="56"/>'+
+      bars+'</g></svg>';
+  }
+
+  function credencial(slug){
+    var R = ROLES[slug], url = base + '/rol/' + slug;
+    return '<div class="slot"><article class="cred ' + R.tema + '">' +
+      '<div class="stripe"></div>' + logo(LOGO_COLOR[R.tema]) +
+      '<div class="rolebox2"><div class="role">' + R.role + '</div></div>' +
+      '<div class="qrbox">' + (base ? qrSvg(url, '#141010') : '') + '</div>' +
+    '</article></div>';
+  }
+
+  function render(){
+    var html = '';
+    // Todas las credenciales seguidas, 4 por hoja, sin dejar huecos entre roles
+    var todas = [];
+    document.querySelectorAll('.panel input').forEach(function(inp){
+      var n = Math.max(0, Math.min(200, parseInt(inp.value, 10) || 0));
+      for (var k = 0; k < n; k++) todas.push(inp.dataset.rol);
+    });
+    for (var i = 0; i < todas.length; i += 4){
+      var grupo = todas.slice(i, i + 4), nombres = [];
+      grupo.forEach(function(sl){ if (nombres.indexOf(NOMBRE[sl]) < 0) nombres.push(NOMBRE[sl]); });
+      html += '<section class="sheet">' + grupo.map(credencial).join('') + '<div class="pie mono">Hoja ' + (i/4 + 1) + ' de ' + Math.ceil(todas.length/4) + ' · ' + nombres.join(' + ') + ' · Recortar por las marcas · 6,8 × 10,8 cm</div></section>';
+    }
+    document.getElementById('hojas').innerHTML = html;
+    // Ajusta el tamaño del rol para que entre en el ancho de la credencial
+    document.querySelectorAll('.cred .role').forEach(function(el){
+      var box = el.parentNode, fs = el.closest('.esp') ? 25 : el.closest('.super') ? 24 : 30;
+      el.style.fontSize = fs + 'pt';
+      var cs = getComputedStyle(box), libre = function(){ return box.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom); };
+      while (fs > 14 && (el.scrollWidth > box.clientWidth - 14 || el.offsetHeight > libre())) { fs -= 1; el.style.fontSize = fs + 'pt'; }
+    });
+  }
+  document.querySelectorAll('.panel input').forEach(function(i){ i.addEventListener('input', render); });
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Cartel QR de la guía · Factor Humano 2026</title>
+<link rel="icon" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Inter+Tight:wght@800;900&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Cartel A4 con el QR a /guia. Se genera con el dominio del sitio publicado.
+   Imprimir: Ctrl+P › A4 (o A3 con "Ajustar a la página") › Márgenes: Ninguno › Gráficos de fondo. */
+:root{--paper:#f3eee8;--ink:#141010;--red:#d62b1f;--red2:#ff4a36;--fd:"Inter Tight","Inter",system-ui,sans-serif;--fm:"JetBrains Mono",ui-monospace,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#8a8380;font-family:"Inter",system-ui,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.mono{font-family:var(--fm);letter-spacing:.14em;text-transform:uppercase}
+.bar{background:var(--ink);color:var(--paper);padding:14px 20px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;font-size:13px}
+.bar button{background:var(--red2);border:0;padding:10px 18px;font-family:var(--fd);font-weight:800;font-size:15px;cursor:pointer}
+.aviso{background:var(--red2);padding:10px 20px;font-weight:600;font-size:14px;display:none}.aviso.on{display:block}
+.a4{width:210mm;height:297mm;margin:12mm auto;background:var(--red);color:#fff;position:relative;overflow:hidden;padding:16mm 15mm 13mm 24mm;display:flex;flex-direction:column;box-shadow:0 6px 30px rgba(0,0,0,.25)}
+.a4::before{content:"";position:absolute;left:0;top:0;bottom:0;width:9mm;background:var(--ink)}
+.top{display:flex;justify-content:space-between;font-size:9pt;padding-bottom:3mm;border-bottom:1mm solid #fff}
+.top i{display:inline-block;width:3.4mm;height:3.4mm;background:var(--ink);margin-right:3mm;vertical-align:-.3mm}
+.eb{font-size:10pt;margin-top:12mm}
+h1{font-family:var(--fd);font-weight:900;letter-spacing:-.055em;line-height:.86;font-size:62pt;margin-top:4mm}
+h1 em{font-style:normal;color:var(--ink)}
+.main{display:grid;grid-template-columns:112mm 1fr;gap:10mm;margin-top:12mm;align-items:start}
+.qr{background:#fff;padding:6mm;width:112mm;height:112mm}
+.qr svg{width:100%;height:100%;display:block}
+.steps{list-style:none;border-top:1mm solid #fff}
+.steps li{padding:4mm 0;border-bottom:.4mm solid rgba(255,255,255,.5);font-family:var(--fd);font-weight:800;font-size:15pt;line-height:1.1;letter-spacing:-.02em}
+.steps li span{display:block;font-family:var(--fm);font-size:8pt;letter-spacing:.14em;color:var(--ink);margin-bottom:1.6mm}
+.url{margin-top:6mm;font-size:9pt;word-break:break-all}
+.lead{font-family:var(--fd);font-weight:800;font-size:17pt;line-height:1.15;letter-spacing:-.02em;margin-top:10mm;max-width:150mm}
+.lema{margin-top:auto;font-family:var(--fd);font-weight:900;font-size:26pt;letter-spacing:-.04em}
+.lema em{font-style:normal;color:var(--ink)}
+.foot{display:flex;justify-content:space-between;font-size:7.4pt;padding-top:3mm;margin-top:5mm;border-top:.6mm solid #fff}
+@page{size:A4;margin:0}
+@media print{body{background:#fff}.bar,.aviso{display:none!important}.a4{margin:0;box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="bar"><strong>Cartel QR · Guía de prevención</strong><span>A4 o A3 · Márgenes: ninguno · Gráficos de fondo activado</span><button type="button" onclick="print()">Imprimir</button></div>
+<div class="aviso" id="aviso"></div>
+<div class="a4">
+  <div class="top mono"><span><i></i>Factor Humano 2026</span><span>Guía para llevar</span></div>
+  <div class="eb mono">Guía de prevención · gratis</div>
+  <h1>Llevate la guía <em>en tu celular.</em></h1>
+  <div class="main">
+    <div class="qr" id="qr"></div>
+    <ol class="steps">
+      <li><span>Paso 1</span>Abrí la cámara</li>
+      <li><span>Paso 2</span>Apuntá al código</li>
+      <li><span>Paso 3</span>Tocá el enlace y descargala</li>
+    </ol>
+  </div>
+  <p class="url mono" id="url"></p>
+  <p class="lead">La regla FRENÁ, cómo reconocer un engaño, tu escudo en 10 minutos y qué hacer si ya te pasó. Y compartila con quien la necesite.</p>
+  <div class="lema">Lezama no se deja <em>engañar.</em></div>
+  <div class="foot mono"><span>Jueves 26.11.2026 · Centro Cultural de Lezama</span><span>Factor Humano</span></div>
+</div>
+<script src="/assets/js/qrcode.js"></script>
+<script>
+(function(){
+  var q=new URLSearchParams(location.search);
+  var base=(q.get('base')||(location.protocol.indexOf('http')===0?location.origin:'')).replace(/\/+$/,'');
+  var av=document.getElementById('aviso');
+  if(!base||(/localhost|127\.0\.0\.1/.test(base)&&!q.get('base'))){av.textContent='Abrí esta página desde el sitio publicado (tu-sitio/cartel-guia) para que el QR apunte a tu dominio.';av.classList.add('on');if(!base)return;}
+  var url=base+'/guia', qr=qrcode(0,'M'); qr.addData(url); qr.make();
+  var n=qr.getModuleCount(), d='';
+  for(var r=0;r<n;r++)for(var c=0;c<n;c++)if(qr.isDark(r,c))d+='M'+c+' '+r+'h1v1h-1z';
+  document.getElementById('qr').innerHTML='<svg viewBox="0 0 '+n+' '+n+'" shape-rendering="crispEdges" role="img" aria-label="Código QR a la guía"><path fill="#141010" d="'+d+'"/></svg>';
+  document.getElementById('url').textContent=url.replace(/^https?:\/\//,'');
+})();
+</script>
+</body>
+</html>

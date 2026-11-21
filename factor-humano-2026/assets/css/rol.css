@@ -1,0 +1,117 @@
+/* =====================================================================
+   FACTOR HUMANO 2026 · Páginas de credencial (una por rol)
+   Se abren al escanear el QR de cada credencial. Pensadas para celular.
+   Temas: .t-ink (Autoridades) · .t-red (Prensa) · .t-paper (Instituciones)
+          .t-especial (Invitados especiales)
+   ===================================================================== */
+:root{
+  --paper:#f3eee8; --ink:#141010; --red:#d62b1f; --red2:#ff4a36;
+  --f-display:"Inter Tight","Inter",system-ui,sans-serif;
+  --f-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+.t-ink     { --bg:var(--ink);   --fg:var(--paper); --acc:var(--red2); --soft:#cfc5be; --line:rgba(243,238,232,.22); --card:rgba(243,238,232,.06); --stripe:var(--red2); --btn-bg:var(--red2); --btn-fg:var(--ink); }
+.t-especial{ --bg:var(--ink);   --fg:var(--paper); --acc:var(--red2); --soft:#cfc5be; --line:rgba(243,238,232,.22); --card:rgba(243,238,232,.06); --stripe:var(--red2); --btn-bg:var(--red2); --btn-fg:var(--ink); }
+.t-red     { --bg:var(--red);   --fg:#ffffff;      --acc:var(--ink);  --soft:#fde3df; --line:rgba(255,255,255,.35); --card:rgba(0,0,0,.10);      --stripe:var(--ink);  --btn-bg:var(--ink);  --btn-fg:#ffffff; }
+.t-paper   { --bg:var(--paper); --fg:var(--ink);   --acc:var(--red);  --soft:#4a403c; --line:rgba(20,16,16,.2);    --card:rgba(20,16,16,.05);   --stripe:var(--red);  --btn-bg:var(--ink);  --btn-fg:var(--paper); }
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:inherit}
+em{font-style:normal;color:var(--acc)}
+.mono{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase}
+:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
+
+/* Franja lateral, firma visual de todas las piezas */
+.stripe{position:fixed;left:0;top:0;bottom:0;width:10px;background:var(--stripe);z-index:5}
+.wrap{max-width:640px;margin:0 auto;padding:0 max(20px,env(safe-area-inset-right)) 0 max(30px,env(safe-area-inset-left))}
+
+/* Barra superior */
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:calc(18px + env(safe-area-inset-top)) 0 14px;border-bottom:3px solid var(--fg)}
+.top i{display:inline-block;width:10px;height:10px;background:var(--acc);margin-right:10px;vertical-align:0}
+.top a{text-decoration:none}
+
+/* Portada */
+.hero{padding:44px 0 34px}
+.chip{display:inline-flex;align-items:center;gap:10px;background:var(--fg);color:var(--bg);padding:8px 14px}
+.chip b{width:8px;height:8px;border-radius:50%;background:var(--acc);display:inline-block;animation:pulse 1.8s ease-in-out infinite}
+.t-red .chip b{background:var(--red2)}
+@keyframes pulse{50%{opacity:.25}}
+.logo{font-family:var(--f-display);font-weight:900;letter-spacing:-.055em;line-height:.84;font-size:clamp(3.4rem,17vw,5.6rem);margin-top:30px}
+.logo span{color:var(--acc)}
+.role{font-family:var(--f-display);font-weight:900;letter-spacing:-.04em;line-height:.95;font-size:clamp(2.2rem,10vw,3.4rem);margin-top:34px;text-wrap:balance}
+.lead{font-family:var(--f-display);font-weight:800;letter-spacing:-.02em;font-size:clamp(1.3rem,5.4vw,1.65rem);line-height:1.18;margin-top:22px;text-wrap:balance}
+
+/* Banda roja de invitados especiales */
+.t-especial .band{margin-top:34px !important;background:var(--red2);color:var(--ink);margin:0 calc(-1 * max(20px,env(safe-area-inset-right))) 0 calc(-1 * max(30px,env(safe-area-inset-left)));padding:34px max(20px,env(safe-area-inset-right)) 34px max(30px,env(safe-area-inset-left))}
+.t-especial .band em{color:#fff}
+.t-especial .band .role{margin-top:0}
+
+/* Ondas (motivo de marca) */
+.wave{display:flex;align-items:center;gap:3px;height:64px;margin:30px 0 4px}
+.wave span{flex:1;display:block;background:var(--fg);transform-origin:center;animation:breathe 2.6s ease-in-out infinite}
+.wave span.a{background:var(--acc)}
+@keyframes breathe{50%{transform:scaleY(.55)}}
+@media (prefers-reduced-motion:reduce){.wave span,.chip b{animation:none}}
+
+/* Agradecimiento con firma */
+.thanks{border:3px solid var(--fg);padding:26px 24px;margin-top:30px;position:relative}
+.thanks::before{content:"";position:absolute;left:-3px;top:-3px;width:46px;height:8px;background:var(--acc)}
+.thanks p{font-family:var(--f-display);font-weight:800;letter-spacing:-.02em;font-size:1.32rem;line-height:1.22;text-wrap:pretty}
+.sign{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px;padding-top:18px;border-top:2px solid var(--line)}
+.sign strong{display:block;font-family:var(--f-display);font-weight:800;font-size:1.02rem;letter-spacing:-.01em;line-height:1.2}
+.sign span{display:block;font-size:.84rem;color:var(--soft);margin-top:4px;line-height:1.35}
+
+/* Secciones */
+section{padding:40px 0 0}
+.eb{color:var(--acc);margin-bottom:14px}
+.t-red .eb{color:var(--ink)}
+h2{font-family:var(--f-display);font-weight:900;letter-spacing:-.035em;line-height:1;font-size:clamp(1.8rem,7.5vw,2.3rem);text-wrap:balance}
+.p{color:var(--soft);margin-top:14px;text-wrap:pretty}
+.t-paper .p{color:#3d3532}
+
+/* Datos del evento */
+.facts{display:grid;grid-template-columns:1fr 1fr;border:3px solid var(--fg);margin-top:20px}
+.facts div{padding:16px 16px 18px}
+.facts div+div{border-left:3px solid var(--fg)}
+.facts .mono{color:var(--acc);display:block}
+.t-red .facts .mono{color:var(--ink)}
+.facts b{display:block;font-family:var(--f-display);font-weight:900;font-size:1.35rem;letter-spacing:-.02em;line-height:1.05;margin-top:8px}
+.facts small{display:block;font-size:.85rem;color:var(--soft);margin-top:6px;line-height:1.35}
+
+/* Programa con "ahora" en vivo */
+.prog{list-style:none;margin-top:20px;border-top:3px solid var(--fg)}
+.prog li{display:grid;grid-template-columns:74px 1fr;gap:12px;padding:16px 0;border-bottom:2px solid var(--line);position:relative}
+.prog time{font-family:var(--f-display);font-weight:900;font-size:1.25rem;letter-spacing:-.02em;color:var(--acc)}
+.t-red .prog time{color:var(--ink)}
+.prog strong{display:block;font-family:var(--f-display);font-weight:800;font-size:1.12rem;letter-spacing:-.01em;line-height:1.2}
+.prog span{display:block;font-size:.9rem;color:var(--soft);margin-top:3px}
+.prog li.now{background:var(--card);margin:0 -12px;padding-left:12px;padding-right:12px}
+.prog li.now::after{content:"Ahora";position:absolute;right:12px;top:16px;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;background:var(--acc);color:var(--bg);padding:4px 8px}
+.t-red .prog li.now::after{color:#fff}
+.prog li.past{opacity:.5}
+.status{margin-top:14px;display:none}
+.status.on{display:block}
+
+/* Lista numerada */
+.rows{margin-top:20px;border-top:3px solid var(--fg)}
+.rows div{display:grid;grid-template-columns:48px 1fr;padding:15px 0;border-bottom:2px solid var(--line);font-family:var(--f-display);font-weight:800;font-size:1.1rem;letter-spacing:-.01em;line-height:1.25}
+.rows div span{color:var(--acc)}
+.t-red .rows div span{color:var(--ink)}
+.rows small{display:block;font-family:var(--f-body);font-weight:400;font-size:.9rem;letter-spacing:0;color:var(--soft);margin-top:4px}
+
+/* Tarjeta y botones */
+.card{background:var(--card);padding:22px 20px;margin-top:20px;border-left:6px solid var(--acc)}
+.t-red .card{border-left-color:var(--ink)}
+.card p{color:var(--fg)}
+.btns{display:grid;gap:10px;margin-top:20px}
+.btn{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:56px;padding:14px 18px;text-decoration:none;font-family:var(--f-display);font-weight:800;font-size:1.05rem;letter-spacing:-.01em;background:var(--btn-bg);color:var(--btn-fg);border:3px solid var(--btn-bg)}
+.btn.ghost{background:transparent;color:var(--fg);border-color:var(--fg)}
+.btn .mono{font-size:.62rem;opacity:.85}
+.btn:active{transform:translateY(1px)}
+
+/* Pie */
+footer{margin-top:52px;padding:18px 0 calc(28px + env(safe-area-inset-bottom));border-top:3px solid var(--fg)}
+footer p{font-size:.84rem;color:var(--soft);line-height:1.45}
+footer .mono{display:block;margin-bottom:8px;color:var(--fg)}

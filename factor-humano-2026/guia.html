@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#d62b1f">
+<title>Guía de prevención · Factor Humano 2026</title>
+<meta name="description" content="La guía de Factor Humano 2026: la regla FRENÁ, cómo reconocer un engaño, tu escudo en 10 minutos y qué hacer si ya te pasó.">
+<meta property="og:title" content="Guía de prevención · Factor Humano 2026">
+<meta property="og:description" content="La mejor defensa sos vos. Todo para que no te engañen, en 10 minutos.">
+<meta property="og:image" content="/og.png">
+<link rel="icon" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Inter+Tight:wght@800;900&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="/assets/css/rol.css">
+<style>
+.frena .rows div span{font-size:1.6rem;line-height:1}
+.share-ok{margin-top:10px;display:none}
+.share-ok.on{display:block}
+</style>
+</head>
+<body class="t-red">
+<div class="stripe" aria-hidden="true"></div>
+<div class="wrap">
+  <header class="top mono">
+    <a href="/"><i></i>Factor Humano 2026</a>
+    <span>Guía para llevar</span>
+  </header>
+  <main>
+  <div class="hero">
+    <span class="chip mono"><b></b>Guía de prevención · 1ª edición</span>
+    <h1 class="role" style="margin-top:28px">La mejor defensa <em>sos vos.</em></h1>
+    <p class="lead">Todo lo que necesitás para que no te engañen y para cuidar a los tuyos. Se aprende en 10 minutos y te sirve para siempre.</p>
+    <div class="wave" data-seed="9" aria-hidden="true"></div>
+    <div class="btns">
+      <a class="btn" href="/assets/docs/Guia_de_Prevencion.pdf" download="Guia_Factor_Humano_2026.pdf">Descargar la guía <span class="mono">PDF</span></a>
+      <a class="btn ghost" href="/assets/docs/Guia_de_Prevencion.pdf" target="_blank" rel="noopener">Verla ahora <span class="mono">Abrir</span></a>
+      <button class="btn ghost" type="button" id="share" style="cursor:pointer;font:inherit;font-family:var(--f-display);font-weight:800;font-size:1.05rem;text-align:left">Compartila con alguien <span class="mono">Enviar</span></button>
+    </div>
+    <p class="mono share-ok" id="share-ok" role="status">Enlace copiado. Pegalo en WhatsApp.</p>
+  </div>
+
+  <section class="frena" aria-labelledby="h-frena">
+    <div class="eb mono">La regla en una palabra</div>
+    <h2 id="h-frena">Si te apura, <em>FRENÁ.</em></h2>
+    <div class="rows">
+      <div><span>F</span><p>Frená<small>Si un mensaje te apura, esa es la señal para parar.</small></p></div>
+      <div><span>R</span><p>Revisá<small>¿Quién te escribe? ¿Adónde te lleva ese enlace?</small></p></div>
+      <div><span>E</span><p>Elegí otro canal<small>Cortá y llamá vos al número de siempre.</small></p></div>
+      <div><span>N</span><p>Nunca compartas códigos<small>Ni con el banco, ni con un organismo, ni con un amigo.</small></p></div>
+      <div><span>Á</span><p>Avisá<small>Contale a alguien. Y si ya pasó, denunciá.</small></p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-adentro">
+    <div class="eb mono">8 páginas</div>
+    <h2 id="h-adentro">Qué hay <em>adentro.</em></h2>
+    <div class="rows">
+      <div><span>01</span><p>La regla FRENÁ<small>Cinco pasos antes de hacer clic o transferir.</small></p></div>
+      <div><span>02</span><p>Las cinco señales de un engaño<small>Apuro, miedo, autoridad, premio y secreto.</small></p></div>
+      <div><span>03</span><p>Así se ve un engaño<small>Mensajes de ejemplo con cada señal marcada.</small></p></div>
+      <div><span>04</span><p>Tu escudo en 10 minutos<small>Cinco cosas para hacer esta noche con el celular.</small></p></div>
+      <div><span>05</span><p>Chicos y abuelos<small>Cómo cuidar a los que más queremos.</small></p></div>
+      <div><span>06</span><p>Si ya te pasó<small>Qué hacer y a quién llamar: 911, 144, 137 y 102.</small></p></div>
+    </div>
+    <div class="card"><p><strong>Lezama no se deja engañar.</strong> Cuando termines, pasásela a alguien que la necesite.</p></div>
+  </section>
+  </main>
+  <footer>
+    <span class="mono">Factor Humano 2026 · Lezama</span>
+    <p>Con el acompañamiento de la Subsecretaría de Seguridad y Defensa Civil, Municipalidad de Lezama.</p>
+    <p style="margin-top:8px">Consultas: <a href="tel:+5492241499954">2241 49-9954</a> · <a href="mailto:confirmaciones.factorhumano2026@gmail.com">confirmaciones.factorhumano2026@gmail.com</a></p>
+  </footer>
+</div>
+<script src="/assets/js/rol.js" defer></script>
+<script>
+document.getElementById('share').addEventListener('click', function () {
+  var url = location.origin + '/guia';
+  var texto = 'La guía de Factor Humano para que no te engañen. Se lee en 10 minutos:';
+  if (navigator.share) { navigator.share({ title: 'Guía Factor Humano 2026', text: texto, url: url }).catch(function () {}); return; }
+  var wa = 'https://wa.me/?text=' + encodeURIComponent(texto + ' ' + url);
+  if (/Android|iPhone|iPad/i.test(navigator.userAgent)) { location.href = wa; return; }
+  (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(function () {
+    document.getElementById('share-ok').classList.add('on');
+  }).catch(function () { window.open(wa, '_blank', 'noopener'); });
+});
+</script>
+</body>
+</html>
