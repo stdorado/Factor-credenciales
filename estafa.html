@@ -1,0 +1,1391 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d0909">
+<title>¿Quién cae? · Factor Humano 2026</title>
+<meta name="description" content="Simulación educativa: jugá de estafador o de víctima y entendé lo fácil que es caer, para reconocerlo en la vida real.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Inter+Tight:wght@800;900&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{
+  --paper:#f3eee8; --ink:#141010; --red:#d62b1f; --red2:#ff4a36;
+  --night:#0d0909; --panel:#171010; --line:#33201d; --fg:#efe7dc; --dim:#9a8c82; --dim2:#6b6058;
+  --sans:Inter,system-ui,"Segoe UI",Roboto,Arial,sans-serif;
+  --disp:"Inter Tight",Inter,system-ui,"Segoe UI",Arial,sans-serif;
+  --mono:"JetBrains Mono",Consolas,"Cascadia Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{font-family:var(--sans);-webkit-font-smoothing:antialiased;transition:background .5s,color .5s;overflow-x:hidden}
+body.dark{background:var(--night);color:var(--fg)}
+body.light{background:var(--paper);color:var(--ink)}
+body:before{content:"";position:fixed;left:0;top:0;bottom:0;width:6px;background:var(--red);z-index:60}
+button{font:inherit;color:inherit;cursor:pointer}
+.mono{font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;font-size:.72rem}
+.disp{font-family:var(--disp);font-weight:900;letter-spacing:-.03em}
+.scr{display:none;min-height:100vh;min-height:100dvh}
+.scr.on{display:flex;flex-direction:column}
+
+/* ---------- cabecera ---------- */
+.hd{flex:none;display:flex;align-items:center;gap:16px;padding:12px 70px 12px 26px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+body.light .hd{border-color:#ddd3c8}
+.back{background:none;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:.85rem;color:inherit}
+body.light .back{border-color:#cfc4b8}
+.back:hover{border-color:var(--red2)}
+.hd .ti{font-family:var(--disp);font-weight:900;font-size:1.15rem;letter-spacing:-.02em}
+.hd .ti span{color:var(--red2)}
+body.light .hd .ti span{color:var(--red)}
+.hd .sp{flex:1}
+#snd{position:fixed;top:12px;right:14px;z-index:70;width:40px;height:40px;border-radius:50%;border:1px solid rgba(128,110,100,.45);background:rgba(20,16,16,.55);color:#fff;font-size:1.05rem;backdrop-filter:blur(4px)}
+body.light #snd{background:rgba(255,255,255,.7);color:var(--ink)}
+
+/* ---------- inicio ---------- */
+#home{justify-content:center;align-items:center;padding:40px 22px;position:relative;overflow:hidden}
+#home .wrap{width:min(1080px,100%);position:relative;z-index:1}
+#home .eye{color:var(--dim)}
+#home h1{font-family:var(--disp);font-weight:900;font-size:clamp(3rem,9vw,6.4rem);line-height:.9;letter-spacing:-.045em;margin:.15em 0 .1em}
+#home h1 span{color:var(--red2)}
+#home .lead{color:var(--dim);font-size:1.1rem;max-width:40em;margin:0 0 30px}
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.role{border:0;text-align:left;padding:30px 28px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.role:hover{transform:translateY(-4px)}
+.role .em{font-size:3rem;line-height:1}
+.role .rt{font-family:var(--disp);font-weight:900;font-size:clamp(1.7rem,3.4vw,2.5rem);letter-spacing:-.03em;line-height:1;margin-top:18px}
+.role .rd{margin-top:10px;font-size:1rem;line-height:1.4;opacity:.8}
+.role .go{margin-top:20px;font-family:var(--mono);font-size:.78rem;letter-spacing:.16em;text-transform:uppercase}
+.role.r-scam{background:#1d1110;color:var(--fg);box-shadow:inset 0 0 0 2px var(--red)}
+.role.r-scam:hover{box-shadow:inset 0 0 0 2px var(--red2),0 20px 60px rgba(214,43,31,.35)}
+.role.r-scam .rt b{color:var(--red2);font-weight:900}
+.role.r-vict{background:var(--paper);color:var(--ink)}
+.role.r-vict:hover{box-shadow:0 20px 60px rgba(243,238,232,.18)}
+.role.r-vict .rt b{color:var(--red);font-weight:900}
+#home .note{margin-top:26px;color:var(--dim);display:flex;align-items:center;gap:10px}
+#home .note:before{content:"";width:10px;height:10px;border-radius:50%;background:var(--red2);box-shadow:0 0 10px var(--red2)}
+.waves{position:absolute;right:-10px;bottom:0;display:flex;align-items:flex-end;gap:5px;height:140px;opacity:.5;z-index:0}
+.waves i{display:block;width:7px;background:#3a2522;border-radius:2px 2px 0 0}
+.waves i.a{background:var(--red)}
+
+/* ---------- elegir víctima ---------- */
+#pick .body{flex:1;padding:34px 26px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#pick h2{font-family:var(--disp);font-weight:900;font-size:clamp(2rem,5vw,3.4rem);letter-spacing:-.035em;margin:.1em 0 .2em;text-align:center}
+#pick .sub{color:var(--dim);text-align:center;margin:0 0 28px}
+.vics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;width:min(1000px,100%)}
+.vic{background:var(--panel);border:1px solid var(--line);padding:24px 22px;text-align:left;transition:all .2s;display:flex;flex-direction:column;gap:8px}
+.vic:hover{border-color:var(--red2);transform:translateY(-3px);box-shadow:0 16px 40px rgba(214,43,31,.25)}
+.vic .av{font-size:2.6rem}
+.vic .nm{font-family:var(--disp);font-weight:900;font-size:1.6rem;letter-spacing:-.02em}
+.vic .ag{color:var(--dim)}
+.vic .wk{margin-top:6px;font-size:.92rem;line-height:1.35}
+.vic .wk b{color:var(--red2);font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;display:block;margin-bottom:3px}
+
+/* ---------- modo estafador ---------- */
+#scam{height:100vh;height:100dvh;overflow:hidden}
+#scam .hd{gap:18px}
+.clock{font-family:var(--disp);font-weight:900;font-size:2.5rem;line-height:1;letter-spacing:-.03em;min-width:3.2ch;text-align:center;font-variant-numeric:tabular-nums}
+.clock.warn{color:var(--red2);animation:pulse 1s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.08);text-shadow:0 0 20px rgba(255,74,54,.7)}}
+.conf{flex:1;min-width:210px;max-width:440px}
+.conf .lb{display:flex;justify-content:space-between;color:var(--dim)}
+.conf .lb b{white-space:nowrap;color:var(--fg);font-family:var(--disp);font-size:1.1rem;letter-spacing:0}
+.conf .tr{height:12px;background:#2a1a18;border-radius:6px;overflow:hidden;margin-top:6px}
+.conf .fl{height:100%;width:0;background:linear-gradient(90deg,#7a1d16,var(--red),var(--red2));border-radius:6px;transition:width .6s cubic-bezier(.3,1.3,.5,1);box-shadow:0 0 14px rgba(255,74,54,.6)}
+.sgrid{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:18px;padding:16px 70px 18px 26px}
+.chat{display:flex;flex-direction:column;min-height:0;background:var(--panel);border:1px solid var(--line)}
+.chat .ch{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.chat .ch .av{font-size:1.8rem}
+.chat .ch .nm{font-weight:700}
+.chat .ch .st{font-size:.8rem;color:var(--dim)}
+.chat .ch .st.typ{color:var(--red2)}
+.msgs{flex:1;min-height:0;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px;scrollbar-width:thin}
+.b{max-width:84%;padding:9px 13px;border-radius:14px;line-height:1.38;font-size:.95rem;animation:bin .25s ease-out;white-space:pre-wrap}
+@keyframes bin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.b.in{align-self:flex-start;border-bottom-left-radius:4px}
+.b.out{align-self:flex-end;border-bottom-right-radius:4px}
+.b .tg{display:block;font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;margin-bottom:3px;opacity:.85}
+.chat .b.in{background:#2a1f1d;color:var(--fg)}
+.chat .b.out{background:var(--red);color:#fff}
+.chat .b.code{background:var(--fg);color:var(--ink);font-weight:700}
+.pill{align-self:center;text-align:center;font-size:.8rem;color:var(--dim);background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:999px;padding:5px 12px;max-width:92%}
+.dots{align-self:flex-start;background:#2a1f1d;border-radius:14px;padding:11px 14px;display:none;gap:4px}
+.dots.on{display:flex}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--dim);animation:dt 1s infinite}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes dt{0%,60%,100%{opacity:.3;transform:none}30%{opacity:1;transform:translateY(-3px)}}
+.deckw{display:flex;flex-direction:column;min-height:0}
+.deckw .dh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px}
+.deckw .dh .disp{font-size:1.3rem}
+#deckst{color:var(--dim)}
+#deck{flex:1;min-height:0;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;align-content:start;padding-right:4px;scrollbar-width:thin}
+.grp{display:flex;flex-direction:column;gap:7px}
+.tag{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-family:var(--mono);font-size:.64rem;letter-spacing:.13em;text-transform:uppercase;padding:4px 8px;border:1px solid var(--red);color:var(--red2)}
+.tag.weak{background:var(--red);color:#fff}
+.card{background:#1f1514;border:1px solid var(--line);border-left:3px solid var(--red);text-align:left;padding:10px 12px;font-size:.88rem;line-height:1.35;transition:all .15s;color:var(--fg);position:relative}
+.card:hover:not([disabled]){background:#2b1b19;border-color:var(--red2);transform:translateX(3px)}
+.card[disabled]{cursor:default}
+.card.locked{opacity:.38;border-left-color:var(--line)}
+.card.locked .tx{filter:blur(2.5px)}
+.card.used{opacity:.32;border-left-color:var(--dim2)}
+.card.wait:not(.used):not(.locked){opacity:.65}
+.card .ft{display:block;margin-top:6px;font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.card .ft.kill{color:var(--red2)}
+#got{position:fixed;inset:0;z-index:40;display:none;align-items:center;justify-content:center;background:rgba(13,9,9,.8);text-align:center;padding:20px}
+#got.on{display:flex}
+#got .k{font-family:var(--disp);font-weight:900;font-size:clamp(2.4rem,7vw,5rem);letter-spacing:-.04em;color:#fff;animation:pop .6s cubic-bezier(.2,1.5,.4,1)}
+#got .c{font-family:var(--mono);font-size:clamp(1.6rem,4vw,2.6rem);color:var(--red2);margin-top:10px;letter-spacing:.1em}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+
+/* ---------- resultados (común) ---------- */
+.res{flex:1;padding:36px 70px 40px 34px;display:flex;justify-content:center}
+.res .in{width:min(1040px,100%)}
+.res h2{font-family:var(--disp);font-weight:900;font-size:clamp(2.4rem,6vw,4.4rem);letter-spacing:-.04em;line-height:.95;margin:.1em 0 .25em}
+.res .lead{font-size:1.15rem;line-height:1.45;max-width:44em;margin:0 0 26px}
+.res .cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:22px;align-items:start}
+.res h3{font-family:var(--mono);font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;margin:0 0 12px}
+.res ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.tac li{display:grid;gap:4px;justify-items:start}
+.tac .ex{font-size:.95rem;line-height:1.4}
+.fre li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;font-size:.95rem;line-height:1.4}
+.fre li b{display:inline-block;width:1.7em;height:1.7em;line-height:1.7em;text-align:center;background:var(--red);color:#fff;font-family:var(--disp);font-weight:900}
+.qrb{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:16px;min-width:200px}
+.qrb .qr{background:#fff;padding:10px;line-height:0}
+.qrb .qr svg{width:150px;height:150px;display:block}
+.qrb .t{font-family:var(--disp);font-weight:900;font-size:1.05rem}
+.qrb .s{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.btn{border:0;padding:15px 26px;font-weight:700;font-size:1rem;border-radius:999px}
+.btn.pri{background:var(--red);color:#fff}
+.btn.pri:hover{background:var(--red2)}
+.btn.sec{background:none;box-shadow:inset 0 0 0 2px currentColor}
+#scamwin .box{background:var(--panel);border:1px solid var(--line);padding:20px}
+#scamwin .qrb{background:var(--panel);border:1px solid var(--line)}
+#scamwin .lead{color:var(--dim)}
+#scamwin .lead b{color:var(--fg)}
+
+/* ---------- modo víctima ---------- */
+#vict .vgrid{flex:1;display:grid;grid-template-columns:minmax(250px,330px) auto;gap:34px;justify-content:center;align-items:start;padding:18px 70px 18px 26px}
+.side{display:flex;flex-direction:column;gap:14px;padding-top:6px}
+.warn{background:var(--ink);color:var(--paper);padding:12px 14px;font-weight:700;font-size:.92rem;line-height:1.35;display:flex;gap:10px;align-items:flex-start}
+.warn:before{content:"⚠";color:var(--red2);font-size:1.1rem;line-height:1.1}
+.datos{background:#fff;border:1px solid #ddd3c8;padding:16px 18px;position:relative}
+.datos:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--red)}
+.datos h3{margin:0 0 10px;font-family:var(--disp);font-weight:900;font-size:1.15rem;letter-spacing:-.02em}
+.datos h3 span{color:var(--dim2);font-weight:800}
+.datos dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:.9rem}
+.datos dt{color:var(--dim2);font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;padding-top:3px}
+.datos dd{margin:0;font-weight:600}
+.ctx{font-size:.95rem;line-height:1.45;color:#3d3431}
+.vclock{font-family:var(--mono);font-size:.9rem;letter-spacing:.1em}
+.phone{width:370px;height:min(660px,calc(100dvh - 110px));min-height:480px;border-radius:38px;background:var(--ink);padding:10px;box-shadow:0 30px 70px rgba(20,16,16,.28),0 0 0 1px #000;position:relative}
+.scrn{width:100%;height:100%;border-radius:29px;background:#f8f4ef;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.sbar{flex:none;display:flex;justify-content:space-between;padding:9px 22px 5px;font-size:.75rem;font-weight:700;color:var(--ink)}
+.app{flex:none;display:flex;align-items:center;gap:10px;padding:9px 14px;background:#2a2322;color:#fff}
+.app .lg{font-family:var(--disp);font-weight:900;font-size:.8rem;background:var(--paper);color:var(--ink);border-radius:7px;padding:3px 6px;letter-spacing:-.02em}
+.app .av{width:34px;height:34px;border-radius:50%;background:#5a4e4a;display:flex;align-items:center;justify-content:center;font-weight:700}
+.app .nm{font-weight:700;font-size:.92rem;line-height:1.1}
+.app .su{font-size:.72rem;opacity:.7}
+.vmsgs{flex:1;min-height:0;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:7px;scrollbar-width:none}
+.vmsgs .b{font-size:.9rem}
+.vmsgs .b.in{background:#fff;color:var(--ink);box-shadow:0 1px 0 #e3dad0}
+.vmsgs .b.out{background:#ffe1dc;color:var(--ink)}
+.vmsgs .b.out.code{font-family:var(--mono);font-weight:700;font-size:1.05rem;letter-spacing:.06em}
+.vmsgs .dots{background:#fff}
+.vmsgs .pill{color:var(--dim2);background:#efe8df;border-color:#e3dad0}
+.vopts{flex:none;background:#fff;border-top:1px solid #e6ddd2;padding:10px;display:flex;flex-direction:column;gap:7px;min-height:56px}
+.opt{background:#fff;border:1.5px solid var(--ink);border-radius:18px;padding:10px 14px;text-align:left;font-size:.9rem;line-height:1.3;transition:all .15s;color:var(--ink)}
+.opt:hover{background:var(--ink);color:#fff}
+.vhint{font-size:.72rem;color:var(--dim2);text-align:center;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.copy{background:var(--red);color:#fff;border:0;border-radius:18px;padding:12px;font-weight:700;font-size:.95rem}
+.copy:hover{background:var(--red2)}
+.crow{display:flex;gap:6px}
+.crow input{flex:1;min-width:0;border:1.5px solid #cfc4b8;border-radius:18px;padding:10px 14px;font:inherit;font-size:16px;background:#faf7f3;color:var(--ink)}
+.crow button{border:0;border-radius:18px;background:var(--ink);color:#fff;padding:0 16px;font-weight:700}
+.mini{font-size:.72rem;color:var(--red);font-weight:700;text-align:center}
+.nots{position:absolute;left:8px;right:8px;top:30px;z-index:5;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.nt{background:rgba(255,255,255,.97);border-radius:14px;padding:9px 12px;box-shadow:0 8px 24px rgba(0,0,0,.18);animation:nin .35s cubic-bezier(.2,1.3,.4,1);font-size:.82rem;line-height:1.3;color:var(--ink)}
+.nt .ap{font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim2);display:flex;justify-content:space-between;margin-bottom:2px}
+.nt.sms{border:2px solid var(--red)}
+.nt.alert .ap{color:var(--red)}
+.nt.out{animation:nout .3s ease-in forwards}
+@keyframes nin{from{transform:translateY(-30px);opacity:0}to{transform:none;opacity:1}}
+@keyframes nout{to{transform:translateY(-30px);opacity:0}}
+.scrn.dead .vmsgs,.scrn.dead .vopts{filter:grayscale(1) blur(1px);opacity:.5}
+
+/* ---------- rebobinar ---------- */
+#victend .lead{color:#3d3431}
+.rew{margin-top:34px}
+.rew .rh{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.rew .rh .disp{font-size:clamp(1.8rem,4vw,2.6rem)}
+.tl{list-style:none;margin:0;padding:0 0 0 22px;border-left:2px solid #d8cdc1;display:grid;gap:14px}
+.tl>li{position:relative}
+.tl>li:before{content:"";position:absolute;left:-29px;top:6px;width:12px;height:12px;border-radius:50%;background:#cfc4b8;border:2px solid var(--paper)}
+.tl>li.al:before{background:var(--red);box-shadow:0 0 0 4px rgba(214,43,31,.18)}
+.tl .wh{font-family:var(--mono);font-size:.64rem;letter-spacing:.13em;text-transform:uppercase;color:var(--dim2)}
+.tl .tx{background:#fff;border:1px solid #e3dad0;padding:9px 12px;margin-top:4px;font-size:.95rem;line-height:1.4;max-width:42em}
+.tl li.me .tx{background:#ffe9e5}
+.tl li.al .tx{border-color:#f1b5ad}
+.tl .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.tl .tags span{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;background:var(--red);color:#fff;padding:3px 7px}
+.tl .why{margin:6px 0 0;padding:0;list-style:none;font-size:.86rem;color:#a3231a;display:grid;gap:2px}
+.tl .save{margin-top:8px;background:var(--ink);color:var(--paper);padding:10px 12px;font-size:.92rem;line-height:1.4;max-width:42em;border-left:4px solid var(--red2)}
+.tl .save b{color:var(--red2);font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;display:block;margin-bottom:2px}
+#victend .box{background:#fff;border:1px solid #e3dad0;padding:20px}
+#victend .qrb{background:var(--ink);color:var(--paper)}
+
+/* ---------- inactividad ---------- */
+#idle{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;background:rgba(13,9,9,.9);color:var(--fg);text-align:center;padding:20px}
+#idle.on{display:flex}
+#idle .c{font-family:var(--disp);font-weight:900;font-size:6rem;color:var(--red2);line-height:1}
+
+
+/* =====================================================================
+   v2 · estética FH-OS (misma computadora que /hacker)
+   ===================================================================== */
+#crtov{position:fixed;inset:0;pointer-events:none;z-index:30;display:none;background:repeating-linear-gradient(to bottom,rgba(0,0,0,.14) 0 1px,transparent 1px 3px),radial-gradient(ellipse at center,transparent 62%,rgba(0,0,0,.5) 100%)}
+body.dark #crtov{display:block}
+body.noscan #crtov{display:none}
+body.dark{background:#0a0707}
+.osgrid{background:radial-gradient(ellipse at 75% 0%,rgba(214,43,31,.2),transparent 55%),radial-gradient(ellipse at 0% 100%,rgba(77,255,136,.05),transparent 50%),#0a0707;position:relative}
+.osgrid:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:38px 38px;pointer-events:none}
+.osgrid>*{position:relative}
+body.dark .hd{background:rgba(16,11,10,.96);border-color:#2c1d1b;font-family:var(--mono)}
+body.dark .hd .ti{font-family:var(--mono);font-weight:700;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+body.dark .hd .ti b{color:var(--red2)}
+body.dark .back{font-family:var(--mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;border-color:#3a2724;border-radius:6px}
+.wnd{background:#151010;border:1px solid #33221f;border-radius:12px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,74,54,.05);display:flex;flex-direction:column;min-height:0;animation:wnin .45s cubic-bezier(.2,1.3,.4,1) both}
+.wnd:nth-child(2){animation-delay:.08s}
+@keyframes wnin{from{transform:translateY(18px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+.wbar{flex:none;display:flex;align-items:center;gap:10px;padding:8px 12px;background:#1f1716;border-bottom:1px solid #2c1f1d;font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);white-space:nowrap}
+.wbar .wdots{display:flex;gap:6px}
+.wbar .wdots i{width:10px;height:10px;border-radius:50%;background:#4b3330}
+.wbar .wdots i:first-child{background:var(--red2)}
+.wbar .wt{flex:1;overflow:hidden;text-overflow:ellipsis}
+.wbar .wt b{color:var(--fg);font-weight:700}
+
+/* ---- inicio ---- */
+#home{background:radial-gradient(ellipse at 15% 0%,#2b1210 0%,transparent 55%),radial-gradient(ellipse at 100% 100%,#1e0d0b 0%,transparent 55%),#0a0707}
+#home:after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;mask-image:radial-gradient(ellipse at center,#000 30%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 80%)}
+#home .eye{color:var(--red2)}
+.osline{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:#4dff88;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.osline:before{content:"";width:8px;height:8px;border-radius:50%;background:#4dff88;box-shadow:0 0 10px #4dff88;animation:blinkd 1.4s steps(1) infinite}
+@keyframes blinkd{50%{opacity:.2}}
+.floaters{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.fl{position:absolute;bottom:-80px;padding:9px 14px;border-radius:16px 16px 16px 4px;background:rgba(255,255,255,.03);border:1px solid rgba(255,74,54,.2);color:rgba(239,231,220,.26);font-size:.86rem;white-space:nowrap;animation:flup linear infinite;filter:blur(.6px)}
+.fl b{color:rgba(255,74,54,.8)}
+@keyframes flup{0%{transform:translateY(0) rotate(var(--r));opacity:0}10%,85%{opacity:1}100%{transform:translateY(-125vh) rotate(var(--r));opacity:0}}
+#home h1 .gl{position:relative;display:inline-block}
+#home h1 .gl:before,#home h1 .gl:after{content:attr(data-t);position:absolute;left:0;top:0;width:100%}
+#home h1 .gl:before{color:#4dff88;animation:g1 3.4s infinite steps(1);clip-path:inset(0 0 100% 0)}
+#home h1 .gl:after{color:#fff;animation:g2 3.4s infinite steps(1);clip-path:inset(0 0 100% 0)}
+@keyframes g1{0%,84%,100%{clip-path:inset(0 0 100% 0);transform:none}86%{clip-path:inset(18% 0 55% 0);transform:translate(-6px,0)}90%{clip-path:inset(62% 0 8% 0);transform:translate(5px,0)}}
+@keyframes g2{0%,85%,100%{clip-path:inset(0 0 100% 0);transform:none}87%{clip-path:inset(42% 0 34% 0);transform:translate(6px,0)}91%{clip-path:inset(6% 0 78% 0);transform:translate(-4px,0)}}
+.role{transition:transform .25s,box-shadow .25s;transform-style:preserve-3d}
+.role:hover{transform:translateY(-4px)}
+.role:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.14),transparent 45%);opacity:0;transition:opacity .3s;pointer-events:none}
+.role:hover:after{opacity:1}
+.role.r-scam,.role.r-vict{padding-right:210px;min-height:280px}
+.role.r-scam{background:linear-gradient(160deg,#1f1110,#120b0a);border-radius:14px}
+.role.r-vict{border-radius:14px}
+.ill{position:absolute;right:22px;top:50%;transform:translateY(-50%);width:170px;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.ib{font-style:normal;font-size:.7rem;line-height:1.25;padding:6px 10px;border-radius:12px;opacity:0;animation:ibin 7s infinite;max-width:92%}
+.ib.o{align-self:flex-end;background:var(--red);color:#fff;border-bottom-right-radius:3px}
+.ib.i{align-self:flex-start;background:#3a2826;color:var(--fg);border-bottom-left-radius:3px}
+.ib.k{align-self:flex-start;background:#4dff88;color:var(--ink);font-weight:700;font-family:var(--mono)}
+.ib:nth-child(2){animation-delay:.9s}.ib:nth-child(3){animation-delay:1.8s}.ib:nth-child(4){animation-delay:2.7s}
+@keyframes ibin{0%{opacity:0;transform:translateY(8px)}5%,72%{opacity:1;transform:none}80%,100%{opacity:0}}
+.mph{width:96px;height:170px;border-radius:20px;border:5px solid var(--ink);background:linear-gradient(165deg,#ffd6cb,#f3eee8 60%);margin-left:auto;margin-right:30px;position:relative;overflow:hidden;animation:mshake 4.5s infinite;box-shadow:0 18px 40px rgba(20,16,16,.25)}
+.mph:before{content:"";position:absolute;top:5px;left:50%;width:30px;height:7px;margin-left:-15px;border-radius:5px;background:var(--ink)}
+.mnt{position:absolute;left:5px;right:5px;top:22px;background:#fff;border-radius:8px;font-size:.52rem;padding:5px;line-height:1.25;color:var(--ink);box-shadow:0 4px 10px rgba(0,0,0,.18);animation:mnt 4.5s infinite}
+.mnt b{color:var(--red)}
+.mph .mt{position:absolute;left:0;right:0;bottom:30px;text-align:center;font-family:var(--disp);font-weight:900;font-size:1.4rem;color:var(--ink);opacity:.8}
+@keyframes mnt{0%,12%{transform:translateY(-70px)}22%,82%{transform:none}92%,100%{transform:translateY(-70px)}}
+@keyframes mshake{22%,24%,26%,28%{transform:rotate(-5deg)}23%,25%,27%{transform:rotate(5deg)}0%,21%,29%,100%{transform:none}}
+
+/* ---- elegir víctima ---- */
+#pick .body{background:transparent}
+.vic{position:relative;overflow:hidden;border-radius:12px;background:linear-gradient(170deg,#1b1211,#120c0b);gap:6px}
+.vic:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.018) 3px 4px);pointer-events:none}
+.vic .obj{font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;color:var(--red2);text-transform:uppercase;display:flex;justify-content:space-between;width:100%}
+.vic .obj span{color:#4dff88}
+.vic .avc{width:96px;height:96px;border-radius:50%;margin:10px 0 6px;background:radial-gradient(circle at 35% 30%,#3a2523,#170e0d);display:flex;align-items:center;justify-content:center;font-size:3.1rem;box-shadow:0 0 0 2px #33221f;position:relative;transition:box-shadow .3s}
+.vic .avc:after{content:"";position:absolute;inset:-8px;border-radius:50%;border:1px dashed rgba(255,74,54,.35);animation:spin 12s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.vic:hover .avc{box-shadow:0 0 0 2px var(--red2),0 0 34px rgba(255,74,54,.5)}
+.vic .scan{position:absolute;left:0;right:0;height:60px;top:-60px;background:linear-gradient(transparent,rgba(255,74,54,.16),transparent);pointer-events:none}
+.vic:hover .scan{animation:scan 1.6s linear infinite}
+@keyframes scan{to{top:100%}}
+.vic .cta{margin-top:auto;padding-top:12px;color:var(--red2);font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;opacity:.5;transition:all .25s}
+.vic:hover .cta{opacity:1;letter-spacing:.22em}
+
+/* ---- juego estafador ---- */
+#scam .sgrid{padding-top:14px}
+.clockw{position:relative;width:84px;height:84px;flex:none;display:flex;align-items:center;justify-content:center}
+.clockw svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.clockw .rb{fill:none;stroke:#2a1a18;stroke-width:6}
+.clockw .rf{fill:none;stroke:var(--red2);stroke-width:6;stroke-linecap:round;stroke-dasharray:219.9;stroke-dashoffset:0;filter:drop-shadow(0 0 6px rgba(255,74,54,.7))}
+.clockw .clock{font-size:1.65rem;min-width:0;font-family:var(--mono);font-weight:700;letter-spacing:0}
+.conf .lb{align-items:baseline;gap:10px}
+.mood{margin-left:auto;font-size:.82rem;color:var(--fg);white-space:nowrap;font-family:var(--sans)}
+.conf .tr{position:relative;height:14px}
+.conf .tr:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 calc(10% - 3px),#100a09 calc(10% - 3px) 10%)}
+#vig{position:fixed;inset:0;pointer-events:none;z-index:29;opacity:0;transition:opacity .5s;box-shadow:inset 0 0 160px rgba(214,43,31,.55)}
+body.tense #vig{opacity:1;animation:vig 1s ease-in-out infinite}
+@keyframes vig{50%{box-shadow:inset 0 0 240px rgba(214,43,31,.85)}}
+.chat{background:#151010;border-color:#33221f}
+.chat .ch{background:#181211}
+.chat .ch .avw{position:relative}
+.chat .ch .mb{position:absolute;right:-6px;bottom:-4px;font-size:.95rem;background:#0f0a09;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #181211;transition:transform .3s}
+.chat .ch .mb.pop{animation:mbpop .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes mbpop{40%{transform:scale(1.6)}}
+.msgs{background:radial-gradient(circle at 1px 1px,rgba(255,255,255,.035) 1px,transparent 0) 0 0/18px 18px}
+.b .rc{display:block;text-align:right;font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;opacity:.65;margin-top:3px}
+.b .rc.rd{opacity:1;color:#ffd0c9}
+#deck{padding:12px}
+.deckw .wbar #deckst{color:#4dff88;letter-spacing:.12em}
+.tag .ti2{font-size:.85rem;letter-spacing:0}
+.card{border-radius:8px;background:linear-gradient(170deg,#211615,#1a1110);overflow:hidden}
+.card:before{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.07),transparent);transform:skewX(-20deg);transition:left .5s}
+.card:hover:not([disabled]):before{left:120%}
+.card.fresh{animation:fresh 1.2s ease-out 2;border-color:#4dff88}
+@keyframes fresh{0%{box-shadow:0 0 0 0 rgba(77,255,136,.6)}100%{box-shadow:0 0 0 12px rgba(77,255,136,0)}}
+.card .nw{position:absolute;top:6px;right:8px;font-family:var(--mono);font-size:.56rem;letter-spacing:.14em;background:#4dff88;color:var(--ink);padding:2px 6px;border-radius:3px}
+.card.ghost{transition:none}
+#stoast{position:fixed;left:50%;top:96px;transform:translate(-50%,-20px);z-index:36;background:#4dff88;color:var(--ink);font-family:var(--mono);font-weight:700;font-size:.8rem;letter-spacing:.08em;padding:9px 16px;border-radius:999px;opacity:0;pointer-events:none;transition:all .35s cubic-bezier(.2,1.4,.4,1);box-shadow:0 10px 30px rgba(77,255,136,.3)}
+#stoast.on{opacity:1;transform:translate(-50%,0)}
+#got{background:rgba(10,6,6,.86)}
+#got.on{animation:flash .6s ease-out}
+@keyframes flash{0%{background:rgba(255,74,54,.75)}100%{background:rgba(10,6,6,.86)}}
+#got .gw{display:flex;flex-direction:column;align-items:center;gap:6px}
+#got .lk{font-size:4.5rem;animation:lk .8s cubic-bezier(.2,1.6,.4,1)}
+@keyframes lk{0%{transform:scale(.2) rotate(-30deg);opacity:0}100%{transform:none;opacity:1}}
+#got .c span{display:inline-block;animation:dig .45s cubic-bezier(.2,1.5,.4,1) both;text-shadow:0 0 18px rgba(255,74,54,.7)}
+@keyframes dig{from{transform:translateY(-40px) scale(1.8);opacity:0;color:#fff}to{transform:none;opacity:1}}
+#got .s{font-family:var(--mono);font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-top:8px}
+
+/* ---- resultado estafador ---- */
+#scamwin .res{position:relative}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 22px}
+.stat{background:#151010;border:1px solid #33221f;border-radius:10px;padding:14px 16px}
+.stat b{display:block;font-family:var(--mono);font-size:1.8rem;color:var(--fg)}
+.stat span{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+#scamwin .box,#scamwin .qrb{border-radius:10px}
+.tac .tag{font-size:.7rem}
+
+/* ---- modo víctima ---- */
+.phone{border-radius:44px;padding:11px;background:linear-gradient(145deg,#2a2322,#0e0b0b);box-shadow:0 40px 80px rgba(20,16,16,.3),inset 0 0 0 2px #3a302e}
+.phone.vib{animation:vib .5s}
+@keyframes vib{10%,50%,90%{transform:translateX(-4px) rotate(-.6deg)}30%,70%{transform:translateX(4px) rotate(.6deg)}}
+.scrn{border-radius:34px}
+.island{position:absolute;top:8px;left:50%;width:96px;height:26px;margin-left:-48px;border-radius:14px;background:#0b0808;z-index:12}
+.hbar{position:absolute;bottom:6px;left:50%;width:120px;height:5px;margin-left:-60px;border-radius:3px;background:rgba(20,16,16,.35);z-index:12;pointer-events:none}
+.sbar{padding-top:12px}
+.vmsgs{background:linear-gradient(180deg,#f8f4ef,#f2ebe3);background-image:radial-gradient(circle at 1px 1px,rgba(20,16,16,.05) 1px,transparent 0);background-size:16px 16px}
+.opt{animation:oin .35s both}
+@keyframes oin{from{opacity:0;transform:translateY(10px)}}
+.lock{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;padding:64px 16px 30px;color:var(--ink);background:radial-gradient(circle at 20% 15%,#ffc9bb 0,transparent 45%),radial-gradient(circle at 85% 70%,#e7c6a8 0,transparent 50%),linear-gradient(170deg,#f6dcd2,#efe5da);transition:transform .5s cubic-bezier(.6,0,.3,1),opacity .5s;cursor:pointer}
+.lock.open{transform:translateY(-105%);opacity:.6;pointer-events:none}
+.lock .lk-d{font-size:.95rem;font-weight:600;opacity:.75;text-transform:capitalize}
+.lock .lk-t{font-family:var(--disp);font-weight:800;font-size:4.6rem;letter-spacing:-.04em;line-height:1}
+.lock .lk-n{width:100%;margin-top:34px;background:rgba(255,255,255,.88);backdrop-filter:blur(8px);border-radius:18px;padding:11px 13px;box-shadow:0 12px 30px rgba(20,16,16,.18);text-align:left;font-size:.86rem;line-height:1.35;animation:nin .45s cubic-bezier(.2,1.3,.4,1)}
+.lock .lk-n .ap{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim2);margin-bottom:3px}
+.lock .lk-n b{display:block}
+.lock .lk-h{margin-top:auto;font-size:.8rem;font-weight:600;opacity:.7;animation:pulseo 1.6s ease-in-out infinite;text-align:center}
+@keyframes pulseo{50%{opacity:.3}}
+.pwn{position:absolute;inset:0;z-index:11;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:20px;background:rgba(214,43,31,.95);color:#fff;opacity:0;pointer-events:none;transition:opacity .3s}
+.pwn.on{opacity:1;animation:pwn .5s steps(3) 2}
+@keyframes pwn{50%{transform:translateX(3px);filter:hue-rotate(-20deg)}}
+.pwn .pi{font-size:3.4rem;line-height:1}
+.pwn .pt{font-family:var(--mono);font-size:.8rem;letter-spacing:.18em;text-transform:uppercase}
+.pwn .pl{font-family:var(--disp);font-weight:900;font-size:2.6rem;letter-spacing:-.03em;animation:fall .8s cubic-bezier(.3,1.5,.5,1) .2s both}
+@keyframes fall{from{transform:translateY(-60px);opacity:0}}
+.pwn .ps{font-size:.85rem;opacity:.9;max-width:16em}
+.nt.sms{animation:nin .35s cubic-bezier(.2,1.3,.4,1),smsg 1.4s ease-in-out .4s infinite}
+@keyframes smsg{50%{box-shadow:0 0 0 4px rgba(214,43,31,.25),0 8px 24px rgba(0,0,0,.18)}}
+
+/* ---- rebobinar ---- */
+.tl>li{animation:tlin .5s both;animation-delay:calc(var(--i,0) * 80ms + .3s)}
+@keyframes tlin{from{opacity:0;transform:translateX(-16px)}}
+.vhs{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;background:var(--ink);color:var(--paper);padding:5px 10px;border-radius:4px;display:inline-flex;gap:8px;align-items:center}
+.vhs i{font-style:normal;color:var(--red2);animation:blinkd .8s steps(1) infinite}
+.vhs.play i{animation:none;color:#4dff88}
+#victend h2{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#victend h2 .em{display:inline-block;animation:wob 2.4s ease-in-out infinite}
+@keyframes wob{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+.anyone{display:inline-block;font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;background:var(--red);color:#fff;padding:6px 12px;border-radius:999px;margin-bottom:14px}
+
+
+/* ===================== cinemática del atacante ===================== */
+#cine{position:fixed;inset:0;z-index:46;display:none;align-items:center;justify-content:center;gap:56px;padding:30px;background:radial-gradient(ellipse at 70% 40%,rgba(214,43,31,.18),transparent 55%),#050303;overflow:hidden}
+#cine.on{display:flex}
+#cine:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:38px 38px;pointer-events:none}
+#cine.out{animation:cnout .6s cubic-bezier(.7,0,.3,1) forwards}
+@keyframes cnout{to{opacity:0;transform:scale(1.15);filter:blur(4px)}}
+.cn-term{position:relative;width:min(520px,46vw);background:#0b0807;border:1px solid #2f4a37;border-radius:12px;box-shadow:0 0 0 4px rgba(77,255,136,.05),0 30px 80px rgba(0,0,0,.6);overflow:hidden;animation:wnin .5s cubic-bezier(.2,1.3,.4,1)}
+.cn-term .wbar{background:#121a14;border-color:#20352a;color:#7fae8c}
+.cn-body{padding:16px 18px;min-height:250px;font-family:var(--mono);font-size:.86rem;line-height:1.75;color:#a9c9b1}
+.cn-body .c{color:#fff}.cn-body .p{color:#4dff88}.cn-body .w{color:var(--amb,#ffc56b)}.cn-body .r{color:var(--red2)}
+.cn-body .cur{display:inline-block;width:.55em;height:1em;background:#4dff88;vertical-align:-.15em;animation:blinkd 1s steps(1) infinite}
+.burner{position:relative;width:230px;height:440px;border-radius:34px;background:linear-gradient(150deg,#2a2524,#0d0b0b);padding:10px;box-shadow:0 40px 90px rgba(0,0,0,.75),inset 0 0 0 2px #3b3331;transform:rotate(4deg);animation:bin2 .6s cubic-bezier(.2,1.3,.4,1) .2s both;flex:none}
+@keyframes bin2{from{transform:translateY(60px) rotate(12deg);opacity:0}to{transform:rotate(4deg);opacity:1}}
+.burner:after{content:"DESCARTABLE";position:absolute;right:-18px;top:70px;transform:rotate(18deg);background:#e9d27a;color:#3a2a00;font-family:var(--mono);font-weight:700;font-size:.62rem;letter-spacing:.14em;padding:5px 10px;box-shadow:0 4px 10px rgba(0,0,0,.4)}
+.burner.ring{animation:bshake .5s ease-in-out infinite}
+@keyframes bshake{0%,100%{transform:rotate(4deg)}25%{transform:rotate(2deg) translateX(-2px)}75%{transform:rotate(6deg) translateX(2px)}}
+.bscr{width:100%;height:100%;border-radius:25px;background:#0b0808;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#efe7dc;position:relative}
+.bscr .isl{position:absolute;top:8px;left:50%;width:70px;height:20px;margin-left:-35px;border-radius:10px;background:#000}
+.bscr .hid{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;color:#8d8177;text-transform:uppercase}
+.bscr .bav{width:90px;height:90px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.8rem;background:#241b1a;margin:14px 0 10px;position:relative}
+.bscr .bav:before,.bscr .bav:after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid rgba(77,255,136,.6);animation:rings 1.6s ease-out infinite}
+.bscr .bav:after{animation-delay:.8s}
+.bscr.noans .bav:before,.bscr.noans .bav:after{display:none}
+@keyframes rings{0%{transform:scale(1);opacity:1}100%{transform:scale(1.8);opacity:0}}
+.bscr .bnm{font-family:var(--disp);font-weight:900;font-size:1.3rem;letter-spacing:-.02em}
+.bscr .bst{font-size:.85rem;color:#8d8177;margin-top:4px}
+.bscr.noans .bst{color:var(--red2)}
+.bscr .bcall{display:flex;gap:28px;margin-top:40px}
+.bscr .bcall i{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:1.2rem;background:#2a201e}
+.bscr .bcall i.end{background:var(--red)}
+.bscr.chat{justify-content:flex-start;padding-top:40px;background:#151010}
+.bscr .capp{width:100%;padding:0 12px;display:flex;flex-direction:column;gap:8px}
+.bscr .capp .hd2{display:flex;align-items:center;gap:8px;padding:6px 4px 10px;border-bottom:1px solid #2c1f1d;font-weight:700;font-size:.9rem}
+.bscr .capp .hd2 span{font-family:var(--disp);font-weight:900;font-size:.72rem;background:var(--paper,#f3eee8);color:var(--ink,#141010);border-radius:6px;padding:2px 6px}
+.bscr .capp .typ{align-self:flex-end;background:var(--red);color:#fff;border-radius:12px;padding:8px 12px;font-size:.8rem;animation:bin .3s ease-out}
+.cn-skip{position:absolute;right:22px;bottom:20px;border:1px solid #3a2724;background:rgba(20,14,13,.8);color:#efe7dc;border-radius:999px;padding:9px 16px;font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;z-index:2}
+.cn-skip:hover{border-color:var(--red2)}
+.cn-cap{position:absolute;left:0;right:0;top:26px;text-align:center;font-family:var(--mono);font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--red2)}
+
+/* ===================== cinemática de la víctima ===================== */
+#vcine{position:fixed;inset:0;z-index:46;display:none;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:30px;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 45%,rgba(255,230,190,.55),transparent 60%),repeating-linear-gradient(92deg,#b98a5e 0 18px,#b0825a 18px 34px,#c39367 34px 52px),#b98a5e}
+#vcine.on{display:flex}
+#vcine:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 45%,rgba(40,22,10,.45) 100%);pointer-events:none}
+#vcine .vcap{position:relative;z-index:1;background:rgba(20,16,16,.82);color:#f3eee8;padding:12px 20px;border-radius:999px;font-weight:600;font-size:1rem;max-width:min(560px,92vw);text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+#vcine .vcap b{color:#ff8a7a}
+.cphone{position:relative;z-index:1;width:250px;height:480px;border-radius:38px;background:linear-gradient(145deg,#2a2322,#0e0b0b);padding:10px;box-shadow:18px 30px 50px rgba(40,20,8,.55),inset 0 0 0 2px #3a302e;transform:rotate(-9deg);transition:transform .7s cubic-bezier(.6,0,.3,1),opacity .7s;cursor:pointer;border:0}
+.cphone.buzz{animation:buzz .9s ease-in-out 3}
+@keyframes buzz{0%,100%{transform:rotate(-9deg)}10%,30%,50%{transform:rotate(-11deg) translateX(-3px)}20%,40%,60%{transform:rotate(-7deg) translateX(3px)}70%{transform:rotate(-9deg)}}
+.cphone.zoom{transform:rotate(0) scale(2.6);opacity:0}
+.cphone .cs{width:100%;height:100%;border-radius:29px;background:#050404;overflow:hidden;position:relative;transition:background .4s}
+.cphone .cs .isl{position:absolute;top:8px;left:50%;width:80px;height:22px;margin-left:-40px;border-radius:12px;background:#000;z-index:2}
+.cphone.lit .cs{background:radial-gradient(circle at 20% 15%,#ffc9bb 0,transparent 45%),radial-gradient(circle at 85% 70%,#e7c6a8 0,transparent 50%),linear-gradient(170deg,#f6dcd2,#efe5da)}
+.cphone .ct{position:absolute;top:56px;left:0;right:0;text-align:center;font-family:var(--disp);font-weight:800;font-size:3.6rem;letter-spacing:-.04em;color:#141010;opacity:0;transition:opacity .4s}
+.cphone.lit .ct{opacity:1}
+.cphone .cn{position:absolute;left:10px;right:10px;top:150px;background:rgba(255,255,255,.92);border-radius:16px;padding:10px 12px;text-align:left;font-size:.8rem;line-height:1.3;color:#141010;box-shadow:0 10px 24px rgba(20,16,16,.2);opacity:0;transform:translateY(-20px);transition:all .45s cubic-bezier(.2,1.3,.4,1)}
+.cphone .cn .ap{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:#6b6058;margin-bottom:3px}
+.cphone .cn b{display:block}
+.cphone.notif .cn{opacity:1;transform:none}
+.hand{position:absolute;z-index:3;left:62%;top:205px;font-size:2.6rem;opacity:0;filter:drop-shadow(0 6px 8px rgba(0,0,0,.35));pointer-events:none;transition:opacity .4s}
+.cphone.notif .hand{opacity:1;animation:tapme 1.3s ease-in-out infinite}
+@keyframes tapme{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-14px,-16px) scale(.9)}}
+#vcine .vskip{position:absolute;right:22px;bottom:20px;z-index:2;border:0;background:rgba(20,16,16,.75);color:#f3eee8;border-radius:999px;padding:9px 16px;font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+@media (max-width:820px){
+  #cine{flex-direction:column;gap:18px;justify-content:flex-start;padding:70px 16px 70px}
+  .cn-term{width:100%}
+  .cn-body{min-height:0;font-size:.76rem;padding:12px 14px}
+  .burner{width:170px;height:320px;border-radius:28px}
+  .bscr .bav{width:64px;height:64px;font-size:2rem}
+  .bscr .bcall{margin-top:20px;gap:12px}
+  .bscr .bcall i{width:38px;height:38px;font-size:1rem}
+  .cphone{width:220px;height:430px}
+}
+
+/* ---------- celular ---------- */
+@media (max-width:820px){
+  .hd{padding:10px 62px 10px 18px;gap:10px}
+  .roles,.vics{grid-template-columns:1fr}
+  .role{min-height:0;padding:24px 22px}
+  .role .em{font-size:2.4rem}
+  #home{padding:60px 16px 30px;justify-content:flex-start}
+  .waves{height:80px}
+  #pick .body{padding:22px 16px;justify-content:flex-start}
+  #scam .hd .ti,#vict .hd .ti,.hs{display:none}
+  #vict .hd .back{padding:6px 12px}
+  .warn{padding:8px 12px;font-size:.82rem}
+  .clock{font-size:2rem}
+  .conf{min-width:0}
+  .sgrid{grid-template-columns:1fr;grid-template-rows:42% 1fr;gap:10px;padding:10px 12px 12px 16px}
+  #deck{grid-template-columns:1fr}
+  .deckw .dh{margin-bottom:6px}
+  .res{padding:26px 16px 30px 20px}
+  .res .cols{grid-template-columns:1fr}
+  .qrb{min-width:0}
+  #vict .vgrid{grid-template-columns:1fr;gap:12px;padding:12px 12px 20px 18px;justify-items:center}
+  .side{width:100%;max-width:420px;padding-top:0;gap:10px}
+  .ctx{display:none}
+  .datos{padding:9px 12px 9px 16px}
+  .datos h3{font-size:.95rem;margin-bottom:6px}
+  .datos dl{grid-template-columns:auto 1fr auto 1fr;font-size:.78rem;gap:3px 8px}
+  .datos dt{font-size:.55rem}
+  .phone{width:100%;max-width:420px;height:calc(100dvh - 228px);min-height:440px;border-radius:30px;padding:7px}
+  .scrn{border-radius:24px}
+}
+
+@media (max-width:820px){
+  .role.r-scam,.role.r-vict{padding-right:22px;min-height:0}
+  .ill{display:none}
+  .clockw{width:66px;height:66px}
+  .clockw .clock{font-size:1.25rem}
+  .mood em{display:none}
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .stat b{font-size:1.3rem}
+  #stoast{top:84px}
+  .wnd{border-radius:10px}
+  .phone{border-radius:34px;padding:8px}
+  .scrn{border-radius:27px}
+  .lock .lk-t{font-size:3.6rem}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body class="dark">
+<button id="snd" type="button" aria-label="Apagar o prender el sonido">🔊</button>
+<div id="crtov"></div><div id="vig"></div><div id="stoast"></div>
+
+<!-- ============ INICIO ============ -->
+<section class="scr" id="home">
+  <div class="floaters" id="floaters" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="osline">FH-OS · simulación activa</div>
+    <div class="eye mono">Factor Humano 2026 · Stand 3</div>
+    <h1>¿Quién<br><span class="gl" data-t="cae?">cae?</span></h1>
+    <p class="lead">Elegí un lado. Vas a ver lo fácil que es caer, para que en la vida real lo reconozcas a tiempo.</p>
+    <div class="roles">
+      <button class="role r-scam" type="button" data-go="pick">
+        <div><div class="em">🎭</div><div class="rt">Jugá de <b>ESTAFADOR</b></div>
+        <div class="rd">Tenés 30 segundos para sacarle un código a tu víctima, solo con mensajes armados.</div></div>
+        <div class="go">Entrar →</div>
+        <div class="ill" aria-hidden="true"><i class="ib o">Banco Pampa: es urgente</i><i class="ib i">¿Qué pasó? 😟</i><i class="ib o">Pasame el código</i><i class="ib k">593 204 🔓</i></div>
+      </button>
+      <button class="role r-vict" type="button" data-go="vict">
+        <div><div class="em">📱</div><div class="rt">Jugá de <b>VÍCTIMA</b></div>
+        <div class="rd">Te llega un mensaje al celular. Respondé como lo harías vos. ¿Te das cuenta a tiempo?</div></div>
+        <div class="go">Entrar →</div>
+        <div class="ill" aria-hidden="true"><div class="mph"><div class="mnt">🔔 Banco Pampa<br><b>Tu cuenta será suspendida</b></div><div class="mt">18:42</div></div></div>
+      </button>
+    </div>
+    <div class="note">Todo es una simulación. Ningún dato es real.</div>
+  </div>
+  <div class="waves" id="waves" aria-hidden="true"></div>
+</section>
+
+<!-- ============ ELEGIR VÍCTIMA ============ -->
+<section class="scr osgrid" id="pick">
+  <div class="hd"><button class="back" type="button" data-home>← Inicio</button><div class="ti"><b>FH-OS</b> · modo estafador · seleccionar objetivo</div></div>
+  <div class="body">
+    <div class="mono" style="color:var(--dim)">Paso 1 de 2</div>
+    <h2>Elegí a tu víctima</h2>
+    <p class="sub">Cada una tiene un punto débil. El reloj de 30 segundos arranca cuando elegís.</p>
+    <div class="vics" id="vics"></div>
+  </div>
+</section>
+
+<!-- ============ JUEGO ESTAFADOR ============ -->
+<section class="scr osgrid" id="scam">
+  <div class="hd">
+    <button class="back" type="button" data-home>←</button>
+    <div class="ti"><b>FH-OS</b> · modo estafador</div>
+    <div class="clockw"><svg viewBox="0 0 80 80" aria-hidden="true"><circle class="rb" cx="40" cy="40" r="35"/><circle class="rf" id="ring" cx="40" cy="40" r="35"/></svg><div class="clock" id="clock" aria-live="off">0:30</div></div>
+    <div class="conf"><div class="lb"><span class="mono">Confianza<span class="hs"> de la víctima</span></span><span class="mood" id="mood">🤨 <em>Desconfía</em></span><b id="confv">0&nbsp;%</b></div><div class="tr"><div class="fl" id="conff"></div></div></div>
+  </div>
+  <div class="sgrid">
+    <div class="chat wnd">
+      <div class="wbar"><span class="wdots"><i></i><i></i><i></i></span><span class="wt"><b>charlá web</b> · chat</span></div>
+      <div class="ch"><div class="avw"><div class="av" id="sav">👵</div><span class="mb" id="smood">🤨</span></div><div><div class="nm" id="snm">—</div><div class="st" id="sst">en línea</div></div></div>
+      <div class="msgs" id="smsgs"></div>
+    </div>
+    <div class="deckw wnd">
+      <div class="wbar"><span class="wdots"><i></i><i></i><i></i></span><span class="wt"><b>mazo-de-tacticas</b> · elegí qué mandar</span><span id="deckst"></span></div>
+      <div id="deck"></div>
+    </div>
+  </div>
+</section>
+<div id="got"><div class="gw"><div class="lk">🔓</div><div class="k">¡CAYÓ!</div><div class="c" id="gotc"></div><div class="s">La víctima te pasó el código</div></div></div>
+
+<!-- ============ RESULTADO ESTAFADOR ============ -->
+<section class="scr osgrid" id="scamwin">
+  <div class="res"><div class="in">
+    <div class="mono" style="color:var(--red2)">Modo estafador · Misión cumplida</div>
+    <h2 id="sw-t">Lo lograste en 18 segundos.</h2>
+    <p class="lead" id="sw-l"></p>
+    <div class="stats" id="sw-st"></div>
+    <div class="cols">
+      <div class="box"><h3 style="color:var(--red2)">Las tácticas que usaste:</h3><ul class="tac" id="sw-tac"></ul></div>
+      <div class="box"><h3 style="color:var(--red2)" id="sw-fh">Así se hubiera salvado:</h3><ul class="fre" id="sw-fre"></ul></div>
+      <div class="qrb"><div class="qr" id="sw-qr"></div><div class="t">Llevate la guía</div><div class="s">Escaneá con tu celular</div></div>
+    </div>
+    <div class="btns"><button class="btn pri" type="button" data-go="vict">📱 Jugar de víctima</button><button class="btn sec" type="button" data-home>Terminar</button></div>
+  </div></div>
+</section>
+
+<!-- ============ JUEGO VÍCTIMA ============ -->
+<section class="scr" id="vict">
+  <div class="hd">
+    <button class="back" type="button" data-home>← Inicio</button>
+    <div class="ti">¿Quién cae? · <span>Modo víctima</span></div>
+    <div class="sp"></div>
+    <div class="vclock mono" id="vclock">00:00</div>
+  </div>
+  <div class="vgrid">
+    <aside class="side">
+      <div class="warn">No pongas tus datos reales: todo es de mentira.</div>
+      <div class="datos"><h3>Mis datos <span>(de mentira)</span></h3><dl id="datos"></dl></div>
+      <p class="ctx" id="ctx"></p>
+    </aside>
+    <div class="phone" id="phone"><div class="scrn" id="scrn">
+      <div class="island"></div><div class="hbar"></div>
+      <div class="lock" id="lock"><div class="lk-d" id="lkd">—</div><div class="lk-t" id="lkt">18:42</div><div class="lk-n" id="lockn" hidden><div class="ap"><span>💬 Charlá</span><span>ahora</span></div><b id="lknf">—</b><div id="lknt">—</div></div><div class="lk-h" id="lkh">🔒 Celular bloqueado</div></div>
+      <div class="pwn" id="pwn"><div class="pi">⚠</div><div class="pt">Cuenta comprometida</div><div class="pl" id="pwnl">—</div><div class="ps">Le pasa a cualquiera. Ahora vemos cómo evitarlo.</div></div>
+      <div class="sbar"><span id="ptime">18:42</span><span>▂▄▆ 82 %</span></div>
+      <div class="app"><span class="lg">Charlá</span><div class="av" id="vav">?</div><div><div class="nm" id="vnm">—</div><div class="su" id="vsu">—</div></div></div>
+      <div class="nots" id="nots"></div>
+      <div class="vmsgs" id="vmsgs"></div>
+      <div class="vopts" id="vopts"></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ RESULTADO VÍCTIMA ============ -->
+<section class="scr" id="victend">
+  <div class="res"><div class="in">
+    <div class="anyone">Le pasa a cualquiera</div>
+    <h2>Te estafaron <span class="em">😬</span></h2>
+    <p class="lead" id="ve-l">No te sientas mal: estaba armado para que cayeras. Le pasa a cualquiera.</p>
+    <div class="rew">
+      <div class="rh"><span class="disp">⏪ REBOBINAR</span><span class="vhs" id="vhs"><i>◀◀</i> rebobinando</span></div>
+      <ul class="tl" id="tl"></ul>
+    </div>
+    <div class="cols" style="margin-top:34px">
+      <div class="box" style="grid-column:span 2"><h3 style="color:var(--red)">Con FRENÁ te salvabas:</h3><ul class="fre" id="ve-fre"></ul></div>
+      <div class="qrb"><div class="qr" id="ve-qr"></div><div class="t">Llevate la guía</div><div class="s">Escaneá con tu celular</div></div>
+    </div>
+    <div class="btns"><button class="btn pri" type="button" data-go="pick">🎭 Jugar de estafador</button><button class="btn sec" type="button" data-home>Terminar</button></div>
+  </div></div>
+</section>
+
+<div id="cine" aria-live="polite">
+  <div class="cn-cap">Modo estafador · simulación</div>
+  <div class="cn-term"><div class="wbar"><span class="wdots"><i></i><i></i><i></i></span><span class="wt"><b>terminal</b> · operador</span></div><div class="cn-body" id="cnbody"></div></div>
+  <div class="burner" id="burner"><div class="bscr" id="bscr"></div></div>
+  <button class="cn-skip" type="button" id="cnskip">Saltar ⏭</button>
+</div>
+<div id="vcine">
+  <div class="vcap" id="vccap">…</div>
+  <button class="cphone" type="button" id="cphone" aria-label="Abrir el mensaje"><div class="cs"><div class="isl"></div><div class="ct" id="cpt">18:42</div><div class="cn"><div class="ap"><span>💬 Charlá</span><span>ahora</span></div><b id="cpf">—</b><div id="cpm">—</div></div></div><div class="hand">👆</div></button>
+  <button class="vskip" type="button" id="vskip">Saltar ⏭</button>
+</div>
+<div id="idle"><div><div style="color:var(--dim)">¿Seguís ahí?</div><div class="c" id="idlec">10</div><div style="color:var(--dim)">Tocá la pantalla para seguir jugando</div></div></div>
+
+<script src="assets/js/qrcode.js"></script>
+<script>
+/* =====================================================================
+   ¿QUIÉN CAE? · Factor Humano 2026 · stand 3
+   Simulación educativa. Todo es ficticio: personas, bancos, empresas,
+   números y códigos. No se guarda nada de lo que se hace o se escribe.
+
+   ── CONTENIDO EDITABLE ──────────────────────────────────────────────
+   CFG        tiempos y reglas del juego
+   TACTICS    etiquetas de las tarjetas y su explicación
+   VICTIMS    modo estafador: las 3 víctimas, cada una con 2 guiones
+              (tarjetas por nivel 1-2-3; el nivel 3 pide el código)
+   ALERTS     modo víctima: señales de alerta que se marcan al rebobinar
+   VSCRIPTS   modo víctima: guiones con ramas (todas terminan en el SMS)
+   ===================================================================== */
+
+var CFG = {
+  SCAM_S: 30,        // reloj del estafador
+  MIN_WIN_S: 12,     // la víctima nunca entrega antes de esto
+  FORCE_S: 22,       // desde acá la víctima cae sola por la presión del tiempo
+  HARD_S: 25,        // tope absoluto: entrega sí o sí
+  NUDGE_S: 6,        // segundos sin mandar nada → la víctima escribe sola
+  UNLOCK: {1: 0, 2: 25, 3: 60},   // % de confianza para habilitar cada nivel
+  GAIN: {1: 25, 2: 30},           // cuánto sube la confianza por tarjeta
+  WEAK_BONUS: 12,    // extra si la táctica toca el punto débil
+  NUDGE_GAIN: 10,
+  IDLE_S: 90, IDLE_COUNT: 10
+};
+
+var TACTICS = {
+  URG: {ic: '⏰', label: 'Urgencia',                       ex: 'Apurar para que no tengas tiempo de pensar.'},
+  AUT: {ic: '🏛️', label: 'Autoridad falsa',                ex: 'Hacerse pasar por un banco, una empresa o un soporte para que confíes.'},
+  PRE: {ic: '🎁', label: 'Premio',                         ex: 'Prometer algo lindo para que bajes la guardia.'},
+  MIE: {ic: '😱', label: 'Miedo',                          ex: 'Asustar con perder la plata, la cuenta o algo importante.'},
+  COD: {ic: '🔑', label: '“Te mandé un código por error”', ex: 'Inventar una excusa para que reenvíes el código que te llegó.'},
+  FAM: {ic: '👪', label: 'Familiar en apuros',             ex: 'Hacerse pasar por alguien querido que necesita ayuda ya.'},
+  TIEMPO: {ic: '⌛', label: 'Presión del tiempo',          ex: 'Ni hizo falta insistir: el apuro y los nervios hicieron el resto.'}
+};
+
+/* ---------------- MODO ESTAFADOR ---------------- */
+var VICTIMS = [
+ {id:'elsa', name:'Doña Elsa', av:'👵', age:'72 años · jubilada', weak:'MIE',
+  weakTx:'El miedo: que le toquen la jubilación.',
+  guiones:[
+   {title:'Falso Banco Pampa', code:'593 204',
+    ctx:'Elsa está mirando la novela con el celular al lado. Mandale el primer mensaje.',
+    cards:[
+     {tier:1, t:'AUT', text:'Buenas tardes, Sra. Elsa. Le escribimos de Banco Pampa: detectamos un movimiento sospechoso en su cuenta.', reply:'¿Del banco? Qué raro… yo no hice nada. ¿Qué movimiento?'},
+     {tier:1, t:'URG', text:'Sra. Elsa, es urgente: tiene que responder en los próximos minutos para proteger su cuenta.', reply:'Ay, me asusta. ¿Quién habla?'},
+     {tier:1, t:'MIE', text:'Alguien intentó sacar $ 180.000 de su caja de ahorro. Si no lo frenamos, se pierde.', reply:'¡¿Ciento ochenta mil?! Es la jubilación del mes… ¿qué hago?'},
+     {tier:2, t:'AUT', text:'Soy Javier, del área de Seguridad de Banco Pampa. Su número de cliente termina en 47, ¿correcto?', reply:'Sí… termina en 47. Entonces es del banco de verdad.'},
+     {tier:2, t:'MIE', text:'Si no validamos su identidad ahora, la cuenta queda bloqueada y no va a poder cobrar este mes.', reply:'No, no, no puedo quedarme sin cobrar. Dígame qué tengo que hacer.'},
+     {tier:2, t:'URG', text:'El sistema me da 5 minutos para frenar la operación. Después ya no puedo hacer nada.', reply:'Bueno, bueno, apurémonos. Estoy acá.'},
+     {tier:3, t:'COD', text:'Disculpe, por error le llegó un código nuestro a su celular. Léamelo así lo anulamos.'},
+     {tier:3, t:'URG', text:'Rápido, Sra. Elsa: léame el código de 6 números que le acaba de llegar, antes de que se venza.'}
+    ],
+    stall:'Espere que busco los anteojos… sin anteojos no veo nada.',
+    give:'Sí, acá me llegó. Ahí va el código: 593 204. ¿Ya está protegida mi plata?',
+    nudges:['¿Hola? ¿Sigue ahí? Me estoy poniendo nerviosa…','Me acaba de llegar un mensaje con unos números, ¿será eso?'],
+    forced:'Bueno, no quiero perder la plata. Me llegó esto, ahí va el código: 593 204.',
+    frena:{F:'Ante el apuro y el susto, parar un minuto: el banco no te apura por chat.',
+           R:'Revisar: el mensaje venía de un número desconocido, no del banco.',
+           E:'Elegir otro canal: cortar y llamar al número que está atrás de su tarjeta.',
+           N:'Nunca compartir el código: el banco jamás te lo pide.',
+           A:'Avisar a la familia y al banco, por su canal oficial.'}},
+   {title:'“Hola abu, soy tu nieto”', code:'418 736',
+    ctx:'Elsa está tomando mate en la cocina. Mandale el primer mensaje.',
+    cards:[
+     {tier:1, t:'FAM', text:'Hola abu, soy Tomi. Se me rompió el celu y este es mi número nuevo. ¡Agendalo! 😘', reply:'¿Tomi? Ay, querido, ¿estás bien? ¿Qué te pasó?'},
+     {tier:1, t:'URG', text:'Abu, ¿estás? Necesito que me ayudes con algo rápido, porfa.', reply:'Sí, mi amor, acá estoy. ¿Qué necesitás?'},
+     {tier:1, t:'MIE', text:'Abu, no le digas nada a mamá que se va a preocupar… tuve un problemita.', reply:'¿Qué problemita? Me estás asustando, Tomi.'},
+     {tier:2, t:'FAM', text:'Estoy pasando todo a la app nueva y me bloquearon la cuenta. Sos la única que me puede ayudar.', reply:'Bueno, yo de esto no entiendo mucho, pero decime.'},
+     {tier:2, t:'MIE', text:'Si no la recupero hoy, pierdo todas las fotos y los contactos del laburo 😢', reply:'Ay, no, pobrecito. ¿Cómo te ayudo?'},
+     {tier:2, t:'URG', text:'Tengo que hacerlo ya, porque en un rato entro a trabajar y no voy a poder.', reply:'Dale, dale, decime qué hago.'},
+     {tier:3, t:'COD', text:'Abu, te mandé un código por error a tu celu. ¿Me lo pasás? Son 6 números.'},
+     {tier:3, t:'FAM', text:'Te va a llegar un SMS con un código, pasámelo así recupero la cuenta. Te quiero mucho ❤️'}
+    ],
+    stall:'Esperá que no encuentro el mensaje… ¿dónde se ven los SMS, nene?',
+    give:'Sí, me llegó algo. Ahí va el código: 418 736. ¿Así está bien, Tomi?',
+    nudges:['¿Tomi? ¿Estás ahí? Me dejaste preocupada.','Me llegó un mensaje con números, ¿te sirve eso?'],
+    forced:'No quiero que te quedes sin nada, nene. Ahí va el código que me llegó: 418 736.',
+    frena:{F:'Ante un “número nuevo” que pide ayuda urgente, frenar.',
+           R:'Revisar: no era el número de siempre de Tomi ni tenía su foto.',
+           E:'Elegir otro canal: llamar a Tomi a su número viejo o a su mamá.',
+           N:'Nunca compartir códigos, ni con la familia: ese código es la llave de la cuenta.',
+           A:'Avisar a la familia: si a ella le escribieron, a otros también.'}}
+  ]},
+ {id:'martin', name:'Martín', av:'🧔', age:'45 años · comerciante', weak:'URG',
+  weakTx:'El apuro: atiende el negocio solo y no tiene un minuto.',
+  guiones:[
+   {title:'Falso Correo Express Sur', code:'725 019',
+    ctx:'Martín está atendiendo el negocio, con gente en el mostrador. Mandale el primer mensaje.',
+    cards:[
+     {tier:1, t:'AUT', text:'Correo Express Sur: su paquete N° CES-48213 está retenido en la sucursal por datos incompletos.', reply:'Sí, espero mercadería para el negocio. ¿Qué datos faltan?'},
+     {tier:1, t:'URG', text:'Hoy es el último día para retirar el envío. Mañana vuelve al remitente.', reply:'¿Hoy? Estoy atendiendo, no puedo ir ahora.'},
+     {tier:1, t:'PRE', text:'Por la demora, le bonificamos el costo del envío. Solo falta confirmar su identidad.', reply:'Bueno, menos mal. ¿Cómo lo confirmo?'},
+     {tier:2, t:'AUT', text:'Soy Lucía, de atención al cliente. Veo el envío a su nombre, Martín, a la dirección de su local.', reply:'Sí, esa es la dirección. Dale, avancemos.'},
+     {tier:2, t:'URG', text:'Para que salga hoy en el reparto de la tarde, tengo que cerrarlo en 3 minutos.', reply:'Perfecto, rápido que tengo gente en el mostrador.'},
+     {tier:2, t:'MIE', text:'Si vuelve al remitente, va a tener que pagar otra vez el envío y la mercadería se demora un mes.', reply:'No, ni loco. La necesito para el fin de semana.'},
+     {tier:3, t:'COD', text:'Le mandamos un código por error al validar el envío. ¿Me lo pasa así lo cancelo?'},
+     {tier:3, t:'URG', text:'Último paso, Martín: el código de 6 números que le llegó. Rápido, que se cierra el sistema.'}
+    ],
+    stall:'Pará que le cobro a un cliente y te lo paso…',
+    give:'Ahí va el código: 725 019. Que salga hoy, por favor.',
+    nudges:['¿Hola? Decime rápido que tengo gente.','Me llegó un SMS con un código, ¿es eso?'],
+    forced:'Bueno, no tengo tiempo para esto. Ahí va el código que me llegó: 725 019.',
+    frena:{F:'Con gente en el mostrador, el apuro le ganó: frenar un minuto lo cambiaba todo.',
+           R:'Revisar el número de seguimiento en la página oficial del correo, no en el chat.',
+           E:'Elegir otro canal: llamar al correo o pasar por la sucursal.',
+           N:'Nunca compartir el código: el correo no lo necesita para entregar un paquete.',
+           A:'Avisar al proveedor y a otros comerciantes del barrio.'}},
+   {title:'Falso soporte de Billetera Mía', code:'306 552',
+    ctx:'Martín está cerrando la caja del día. Mandale el primer mensaje.',
+    cards:[
+     {tier:1, t:'AUT', text:'Hola, Martín. Te escribe Soporte de Billetera Mía: detectamos un ingreso a tu cuenta desde otro celular.', reply:'¿Otro celular? Yo uso uno solo. ¿Qué pasó?'},
+     {tier:1, t:'MIE', text:'Alguien está intentando pagar con tu billetera desde otra provincia.', reply:'¡Pero ahí tengo la recaudación de la semana!'},
+     {tier:1, t:'URG', text:'Tenemos que actuar ya: el intento de pago sigue activo.', reply:'Uh, ¿y qué hago? Estoy en el local.'},
+     {tier:2, t:'AUT', text:'Soy Diego, técnico de seguridad. Te voy a guiar paso a paso, quedate tranquilo.', reply:'Bueno, dale. Decime qué hago.'},
+     {tier:2, t:'URG', text:'En 2 minutos se confirma el pago y no lo podemos revertir.', reply:'No, no. Apurémonos.'},
+     {tier:2, t:'PRE', text:'Si lo resolvemos ahora, te devolvemos el 10 % de tus compras del mes como compensación.', reply:'Ah, bueno, eso me viene bien. Avancemos.'},
+     {tier:3, t:'COD', text:'Uy, te mandé por error a vos el código de desbloqueo. Pasámelo y bloqueo el otro celular.'},
+     {tier:3, t:'URG', text:'Rápido, Martín: el código que te acaba de llegar. Es lo único que falta.'}
+    ],
+    stall:'Esperá que tengo que buscar el celular, lo dejé al lado de la caja…',
+    give:'Ahí va: 306 552. ¿Ya está bloqueado?',
+    nudges:['¿Hola? ¿Sigue activo ese pago?','Me llegó un código por SMS, ¿lo necesitan?'],
+    forced:'No puedo perder la recaudación. Ahí va el código: 306 552.',
+    frena:{F:'El “pago activo” era puro apuro: frenar y respirar.',
+           R:'Revisar la actividad entrando a la app oficial, no desde el chat.',
+           E:'Elegir otro canal: usar la ayuda que está dentro de la app oficial.',
+           N:'Nunca compartir el código: con él, el estafador se queda con la cuenta.',
+           A:'Avisar a Billetera Mía desde la app y hacer la denuncia.'}}
+  ]},
+ {id:'sofi', name:'Sofi', av:'👩', age:'29 años · empleada', weak:'PRE',
+  weakTx:'La ilusión: le encantan los sorteos y las promos.',
+  guiones:[
+   {title:'Premio falso', code:'880 147',
+    ctx:'Sofi está en el colectivo, volviendo del trabajo. Mandale el primer mensaje.',
+    cards:[
+     {tier:1, t:'PRE', text:'¡Felicitaciones, Sofi! Ganaste un celular nuevo en el sorteo aniversario de Bazar del Sol 🎉', reply:'¿En serio? ¿Yo? No me acuerdo de haber participado jaja'},
+     {tier:1, t:'AUT', text:'Te escribimos de Bazar del Sol. Participaste con tu compra del mes pasado.', reply:'Ah, puede ser, compré unas cosas ahí. ¡Qué buena!'},
+     {tier:1, t:'URG', text:'Tenés 10 minutos para reclamar el premio. Si no, pasa al siguiente ganador.', reply:'¡No! Esperá, ¿qué tengo que hacer?'},
+     {tier:2, t:'PRE', text:'Además del celular, te llevás una orden de compra de $ 50.000 🛍️', reply:'¡Nooo, me salvaste el mes! Decime qué necesitás.'},
+     {tier:2, t:'AUT', text:'Ya cargamos tus datos para el envío. Solo falta verificar que sos vos.', reply:'Dale, todo bien.'},
+     {tier:2, t:'URG', text:'Quedan 4 minutos. Ya hay otra persona esperando el premio.', reply:'¡Ya va, ya va! Estoy acá.'},
+     {tier:3, t:'COD', text:'Perdón, el sistema te mandó un código por error. Pasámelo así confirmo tu premio.'},
+     {tier:3, t:'PRE', text:'Último paso para tu premio: decime el código que te acaba de llegar 🎁'}
+    ],
+    stall:'Pará que se me cortó la señal en el colectivo… ahí va, ahí va.',
+    give:'¡Listo! Ahí va el código: 880 147. ¿Cuándo me llega el celu?',
+    nudges:['¿Hola? ¿Sigo siendo la ganadora?','Me llegó un código, ¿te lo paso?'],
+    forced:'No quiero perder el premio. Ahí va el código: 880 147.',
+    frena:{F:'Un premio que no buscaste y con apuro: frenar.',
+           R:'Revisar: ¿participaste de verdad? ¿El mensaje vino de la cuenta oficial?',
+           E:'Elegir otro canal: entrar a la página oficial de la tienda y fijarse.',
+           N:'Nunca compartir el código: ningún premio lo necesita.',
+           A:'Avisar a amigas y amigos: el mismo “premio” les va a llegar.'}},
+   {title:'Falso soporte de Charlá', code:'214 690',
+    ctx:'Sofi está en el almuerzo del trabajo. Mandale el primer mensaje.',
+    cards:[
+     {tier:1, t:'AUT', text:'Hola, Sofi. Te escribe el equipo de Soporte de Charlá ✅ Detectamos actividad inusual en tu cuenta.', reply:'¿Actividad inusual? ¿Qué es eso?'},
+     {tier:1, t:'MIE', text:'Tu cuenta va a ser desactivada hoy y vas a perder todos tus chats y fotos.', reply:'¡No! Tengo todo ahí, hasta cosas del trabajo.'},
+     {tier:1, t:'PRE', text:'Por ser usuaria frecuente, te regalamos Charlá Premium por un año 🎁', reply:'Ah, ¡qué bueno! ¿Y cómo lo activo?'},
+     {tier:2, t:'AUT', text:'Soy Agustina, del equipo de verificación. Tu cuenta figura con un número terminado en 38.', reply:'Sí, es ese. Ok, ¿qué hago?'},
+     {tier:2, t:'PRE', text:'Si verificás ahora, además te queda Premium gratis para siempre.', reply:'Uh, me encanta. Dale.'},
+     {tier:2, t:'URG', text:'La desactivación es automática en 5 minutos.', reply:'Bueno, rápido entonces.'},
+     {tier:3, t:'COD', text:'Uy, te mandé un código por error a vos. ¿Me lo reenviás así lo anulo?'},
+     {tier:3, t:'URG', text:'Pasame el código de 6 números que te llegó por SMS y listo, cuenta verificada.'}
+    ],
+    stall:'Esperá que se me cerró la app… ahí la abro.',
+    give:'Ahí va: 214 690. ¿Ya está?',
+    nudges:['¿Hola? ¿Me van a desactivar la cuenta?','Me llegó un SMS con un código, ¿es para ustedes?'],
+    forced:'No quiero perder mis chats. Ahí va el código: 214 690.',
+    frena:{F:'Un aviso de “desactivación” con regalo incluido: frenar.',
+           R:'Revisar: el soporte de una app no te escribe por chat para pedirte nada.',
+           E:'Elegir otro canal: entrar a la ayuda oficial desde la configuración de la app.',
+           N:'Nunca compartir el código: el que lo tiene se queda con tu cuenta.',
+           A:'Avisar a tus contactos por si el estafador les escribe haciéndose pasar por vos.'}}
+  ]}
+];
+
+/* ---------------- MODO VÍCTIMA ---------------- */
+var ALERTS = {
+  num:  ['Número desconocido',        'No es el número de siempre ni el oficial.'],
+  aut:  ['Se hace pasar por empresa', 'Dice ser un banco, un correo o un soporte, pero escribe desde un número cualquiera.'],
+  fam:  ['Familiar falso',            'Dice ser alguien querido desde un número nuevo.'],
+  urg:  ['Urgencia',                  'Te apuran para que no pienses.'],
+  mie:  ['Miedo',                     'Te asustan con perder la plata, la cuenta o algo importante.'],
+  dato: ['Usa tus datos',             'Sabe cosas tuyas para que confíes. Se consiguen fácil: redes, filtraciones, compras.'],
+  cod:  ['Pide un código',            'Nadie legítimo te pide un código que te llegó.'],
+  sms:  ['El SMS decía “no lo compartas”', 'El propio mensaje te avisaba que no se lo dieras a nadie.']
+};
+
+/* Cada guion: nodos con mensajes del estafador (o notificaciones) y opciones [texto, próximo nodo].
+   El nodo 'sms' dispara el SMS con el código. 'save' = momento en que FRENÁ te salvaba. */
+var VSCRIPTS = [
+ {id:'banco', title:'Falso Banco Pampa', code:'593 204',
+  contact:{name:'+54 9 11 ••••-3021', sub:'número desconocido', av:'?'},
+  datos:[['Nombre','Carla Benítez'],['Banco','Banco Pampa'],['Tarjeta','•••• 0426'],['Saldo','$ 152.300']],
+  ctx:'Sos Carla. Es un día común, estás en casa, y te suena el celular…',
+  nodes:{
+   start:{msgs:[{t:'Banco Pampa informa: detectamos un consumo de $ 89.900 en “Electro Norte” con su tarjeta terminada en 0426. ¿Lo reconoce?', a:['num','aut','mie'],
+                 save:'Acá: no responder. Cortar y llamar vos al número oficial que está atrás de tu tarjeta.'}],
+          opts:[['¡No! Yo no compré nada','ask'],['¿Quién sos? Este no es el número del banco','p1'],['No te creo','p1']]},
+   p1:{msgs:[{t:'Entiendo su desconfianza, Carla Benítez. Es nuestra línea de seguridad. Su tarjeta termina en 0426 y su saldo es de $ 152.300.', a:['dato']},
+             {notif:'Banco Pampa', alert:true, t:'Tu cuenta será suspendida en 5 minutos por seguridad.', a:['urg','mie']}],
+       opts:[['Ok… ¿qué tengo que hacer?','ask'],['Igual voy a llamar al banco','p2']]},
+   p2:{msgs:[{t:'Si corta ahora, la compra se confirma y pierde la plata. La línea del banco tiene 40 minutos de espera.', a:['urg','mie']},
+             {t:'Yo lo resuelvo en 1 minuto. Solo necesito el código que le va a llegar.', a:['cod']}],
+       opts:[['Bueno, está bien','sms']]},
+   ask:{msgs:[{t:'Gracias, Carla. Vamos a anular la compra. Para eso le enviamos un código de verificación: dígamelo cuando le llegue.', a:['dato','cod']},
+              {t:'Rápido, por favor: el sistema se cierra en 2 minutos ⏳', a:['urg']}],
+        opts:[['Dale, espero el código','sms'],['¿El banco no decía que nunca pide códigos?','p3']]},
+   p3:{msgs:[{t:'Eso es para la clave de la tarjeta. Este es un código interno de seguridad. Si no me lo pasa, no puedo frenar la compra.', a:['cod','mie']}],
+       opts:[['Bueno, ahí te lo paso','sms']]}
+  },
+  sms:{from:'Banco Pampa', t:'Banco Pampa: tu código de verificación es 593 204. No lo compartas con nadie. Nadie del banco te lo va a pedir.',
+       ask:'¿Le llegó? Pásemelo así frenamos la compra.'},
+  after:[{t:'Listo, gracias 🙂'},
+         {notif:'Banco Pampa', alert:true, t:'Se registró un ingreso a tu cuenta desde un nuevo dispositivo.'},
+         {notif:'Banco Pampa', alert:true, t:'Transferiste $ 152.300 a la cuenta de M. R.'}],
+  loss:'− $ 152.300',
+  lost:'Con ese código, el estafador entró a la cuenta de Carla y se llevó los $ 152.300.',
+  frena:{F:'Un consumo raro y apuro: frenar antes de responder.',
+         R:'Revisar: el número no era el del banco y el SMS decía “no lo compartas”.',
+         E:'Elegir otro canal: cortar y llamar al banco por el número oficial.',
+         N:'Nunca compartir el código: el banco nunca te lo pide.',
+         A:'Avisar al banco enseguida y contarlo en casa.'}},
+
+ {id:'hijo', title:'“Hola ma, soy tu hijo”', code:'418 736',
+  contact:{name:'+54 9 11 ••••-7710', sub:'número desconocido', av:'?'},
+  datos:[['Nombre','Andrea Paz'],['Hijo','Nico, 17 años'],['Perro','Toto'],['Billetera Mía','$ 64.000']],
+  ctx:'Sos Andrea, la mamá de Nico. Estás en el trabajo y te llega un mensaje de un número que no conocés…',
+  nodes:{
+   start:{msgs:[{t:'Hola ma, soy Nico 😊 Se me cayó el celu al agua y este es mi número nuevo. ¡Agendalo!', a:['num','fam'],
+                 save:'Acá: escribirle o llamar a Nico a su número de siempre antes de seguir.'}],
+          opts:[['¡Hola, hijo! ¿Estás bien?','n1'],['¿Nico? ¿Y tu número de siempre?','p1'],['¿Quién sos?','p1']]},
+   p1:{msgs:[{t:'Jaja ma, soy yo 😅 El perro se llama Toto y vos sos Andrea. ¿Querés que te diga algo más?', a:['dato']},
+             {t:'Porfa ayudame, que en 5 minutos entro a clase y me sacan el celu 😩', a:['urg']}],
+       opts:[['Ay, perdón. ¿Qué necesitás?','n1'],['Te voy a llamar a tu número de siempre','p2']]},
+   n1:{msgs:[{t:'Todo bien, pero estoy pasando mis cosas a la app nueva y necesito una mano urgente 🙏', a:['urg']},
+             {t:'Te va a llegar un código por SMS, ¿me lo pasás? Es para recuperar mis chats.', a:['cod']}],
+       opts:[['Dale, decime','sms'],['¿Y por qué me llega a mí?','p2']]},
+   p2:{msgs:[{t:'¡No! El otro no anda, se mojó 😭 Por eso te escribo de acá. Me llega a vos porque te puse de contacto de seguridad.', a:['urg']},
+             {notif:'Charlá', t:'Nico (número nuevo): ma porfa 🙏🙏🙏', a:['urg','fam']},
+             {t:'Si no lo hago ya, pierdo todo. Pasame el código que te llega y listo ❤️', a:['cod','fam']}],
+       opts:[['Bueno, está bien','sms']]}
+  },
+  sms:{from:'Charlá', t:'Charlá: tu código de verificación es 418 736. No lo compartas con nadie.',
+       ask:'¿Te llegó? Pasámelo rápido porfa 🙏'},
+  after:[{t:'Gracias ma, sos la mejor ❤️'},
+         {notif:'Charlá', alert:true, t:'Tu cuenta se abrió en otro dispositivo. Cerramos la sesión en este celular.'}],
+  loss:'Cuenta robada',
+  lost:'Ese código era de TU cuenta de Charlá. Ahora el estafador la usa para pedirles plata a tus contactos en tu nombre.',
+  frena:{F:'“Número nuevo” y apuro: frenar.',
+         R:'Revisar: un número desconocido que dice ser tu hijo.',
+         E:'Elegir otro canal: llamar a Nico a su número de siempre o a alguien que esté con él.',
+         N:'Nunca compartir el código: ni con familia. Era la llave de tu propia cuenta.',
+         A:'Avisar a tus contactos para que no caigan si les escriben “desde vos”.'}},
+
+ {id:'correo', title:'Falso Correo Express Sur', code:'725 019',
+  contact:{name:'+54 9 11 ••••-5520', sub:'número desconocido', av:'?'},
+  datos:[['Nombre','Lucas Ferreyra'],['Compra','Zapatillas (por internet)'],['Dirección','Calle Inventada 123'],['Billetera Mía','$ 48.500']],
+  ctx:'Sos Lucas. Estás esperando unas zapatillas que compraste por internet…',
+  nodes:{
+   start:{msgs:[{t:'Correo Express Sur: tu paquete CES-77120 está retenido por falta de datos. Respondé este mensaje para reprogramar la entrega.', a:['num','aut'],
+                 save:'Acá: revisar el seguimiento en la página oficial del correo, no en este chat.'}],
+          opts:[['¡Sí! Estoy esperando unas zapatillas','n1'],['Yo no espero nada','p1'],['¿Este es el número del correo?','p1']]},
+   p1:{msgs:[{t:'Sí, Lucas. El paquete figura a tu nombre, en Calle Inventada 123. Son unas zapatillas compradas el martes.', a:['dato']},
+             {notif:'Correo Express Sur', alert:true, t:'Último aviso: tu envío vuelve al remitente hoy a las 18:00.', a:['urg']}],
+       opts:[['¡Ah, son mis zapatillas! ¿Qué hago?','n1'],['Prefiero ir a la sucursal','p2']]},
+   n1:{msgs:[{t:'Perfecto, Lucas. Para liberar el envío tenemos que validar tu identidad.', a:['dato']},
+             {t:'Te mandamos un código por SMS. Pasánoslo y el paquete sale hoy.', a:['cod']}],
+       opts:[['Dale','sms'],['¿Para qué necesitan un código?','p2']]},
+   p2:{msgs:[{t:'La sucursal ya cerró la recepción por hoy. Si vuelve al remitente, perdés la compra y el envío 😕', a:['mie','urg']},
+             {t:'Es solo un código de verificación, tranqui. Pasámelo y listo.', a:['cod']}],
+       opts:[['Bueno, ok','sms']]}
+  },
+  sms:{from:'Billetera Mía', t:'Billetera Mía: tu código para ingresar desde un nuevo dispositivo es 725 019. No lo compartas con nadie.',
+       ask:'Ese mismo, pasámelo 👍'},
+  after:[{t:'Listo, ya quedó 👌'},
+         {notif:'Billetera Mía', alert:true, t:'Ingreso desde un nuevo dispositivo.'},
+         {notif:'Billetera Mía', alert:true, t:'Transferiste $ 48.500.'}],
+  loss:'− $ 48.500',
+  lost:'El código no era del correo: era para entrar a tu Billetera Mía. El estafador se llevó los $ 48.500.',
+  frena:{F:'Un paquete “retenido” con apuro: frenar.',
+         R:'Revisar: el SMS era de Billetera Mía, no del correo. ¡No tenía nada que ver!',
+         E:'Elegir otro canal: buscar el seguimiento en la página oficial del correo.',
+         N:'Nunca compartir el código: el correo no necesita ninguno para entregarte algo.',
+         A:'Avisar a Billetera Mía y hacer la denuncia.'}}
+];
+
+/* =====================================================================
+   MOTOR (de acá para abajo no hace falta tocar para cambiar textos)
+   ===================================================================== */
+(function(){
+'use strict';
+var SITE = /^https?:/.test(location.protocol) ? location.origin : 'https://credenciales-pi.vercel.app';
+var STOP = {stop: true};
+var gen = 0, cur = 'home', loopId = null, G = null, V = null;
+var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function $(s){ return document.querySelector(s); }
+function h(tag, cls, txt){ var e = document.createElement(tag); if(cls) e.className = cls; if(txt != null) e.textContent = txt; return e; }
+function sleep(ms){ var g = gen; return new Promise(function(r, j){ setTimeout(function(){ g === gen ? r() : j(STOP); }, ms); }); }
+function guard(p){ if(p && p.catch) p.catch(function(e){ if(e !== STOP) console.error(e); }); }
+function rand(a){ return a[Math.floor(Math.random() * a.length)]; }
+function now(){ return performance.now(); }
+function nb(t){ return String(t).replace(/(\d{3}) (\d{3})/g, '$1 $2'); }
+function mmss(s){ s = Math.max(0, Math.floor(s)); return String(s / 60 | 0).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+
+/* ---------- sonido ---------- */
+var AC = null, snd = true;
+function ac(){ if(!AC){ try{ AC = new (window.AudioContext || window.webkitAudioContext)(); }catch(e){} } if(AC && AC.state === 'suspended') AC.resume(); return AC; }
+function tone(f, d, tp, v, w){ if(!snd) return; var a = ac(); if(!a) return; var o = a.createOscillator(), g = a.createGain(), t = a.currentTime + (w || 0);
+  o.type = tp || 'sine'; o.frequency.value = f; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v || .05, t + .015); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+  o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + d + .05); }
+var SND = {
+  msg:   function(){ tone(740, .12, 'sine', .05); tone(988, .16, 'sine', .04, .09); },
+  sent:  function(){ tone(520, .08, 'triangle', .03); },
+  notif: function(){ tone(880, .12, 'sine', .05); tone(1175, .18, 'sine', .04, .11); },
+  tick:  function(){ tone(1250, .05, 'square', .018); },
+  win:   function(){ [523, 659, 784, 1047].forEach(function(f, i){ tone(f, .3, 'triangle', .06, i * .1); }); },
+  lose:  function(){ tone(440, .3, 'sine', .05); tone(349, .45, 'sine', .05, .22); }
+};
+$('#snd').addEventListener('click', function(){ snd = !snd; this.textContent = snd ? '🔊' : '🔇'; });
+
+/* ---------- pantallas ---------- */
+function show(id, theme){
+  cur = id;
+  document.querySelectorAll('.scr').forEach(function(s){ s.classList.toggle('on', s.id === id); });
+  document.body.className = theme + (id === 'scamwin' ? ' noscan' : '');
+  window.scrollTo(0, 0);
+}
+function stopAll(){ gen++; clearInterval(loopId); loopId = null; $('#got').classList.remove('on'); $('#cine').className = ''; $('#vcine').className = ''; document.body.classList.remove('tense'); $('#stoast').classList.remove('on'); }
+function goHome(){ stopAll(); G = V = null; show('home', 'dark'); }
+function go(where){ if(where === 'pick') openPick(); else if(where === 'vict') startVict(); else goHome(); }
+document.addEventListener('click', function(e){
+  var b = e.target.closest('[data-go],[data-home]'); if(!b) return;
+  ac(); go(b.hasAttribute('data-home') ? 'home' : b.getAttribute('data-go'));
+});
+
+/* burbujas de estafas flotando en el inicio */
+(function(){ var f = $('#floaters'); if(!f) return;
+  var T = ['Su cuenta será <b>BLOQUEADA</b>', 'Hola ma, cambié de número 🙏', '¡<b>GANASTE</b> un celular!', 'Pasame el <b>código</b> que te llegó', 'Tu envío está <b>retenido</b>', 'Es <b>urgente</b> ⏳', 'Soporte: verificá tu cuenta', 'No le digas a nadie 🤫', 'Último aviso', 'Te mandé un código <b>por error</b>', '¿Me transferís? 🙏', 'Movimiento sospechoso'];
+  T.forEach(function(t, i){ var d = h('div', 'fl'); d.innerHTML = t; d.style.left = (innerWidth > 820 ? 52 + (i * 37) % 40 : (i * 37) % 80 + 2) + '%'; d.style.setProperty('--r', ((i % 3) - 1) * 3 + 'deg'); d.style.animationDuration = (17 + (i * 7) % 13) + 's'; d.style.animationDelay = (-i * 2.4) + 's'; f.appendChild(d); });
+})();
+/* tarjetas del inicio con inclinación 3D */
+document.querySelectorAll('.role').forEach(function(c){
+  c.addEventListener('pointermove', function(e){ if(e.pointerType !== 'mouse' || RM) return; var r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+    c.style.transform = 'perspective(900px) rotateY(' + (x * 9) + 'deg) rotateX(' + (-y * 9) + 'deg) translateY(-4px)'; c.style.setProperty('--mx', (x + .5) * 100 + '%'); c.style.setProperty('--my', (y + .5) * 100 + '%'); });
+  c.addEventListener('pointerleave', function(){ c.style.transform = ''; });
+});
+function toast(t){ var e = $('#stoast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function(){ e.classList.remove('on'); }, 2200); }
+/* ondas de la marca */
+(function(){ var w = $('#waves'); for(var i = 0; i < 46; i++){ var x = h('i', i > 38 ? 'a' : ''); x.style.height = (18 + Math.abs(Math.sin(i * .55)) * 70 + (i % 3) * 8) + '%'; w.appendChild(x); } })();
+
+/* ---------- QR a la guía ---------- */
+function qr(sel){
+  var box = $(sel); box.innerHTML = '';
+  try{
+    var q = qrcode(0, 'M'); q.addData(SITE + '/guia'); q.make(); var n = q.getModuleCount(), p = '';
+    for(var r = 0; r < n; r++) for(var c = 0; c < n; c++) if(q.isDark(r, c)) p += 'M' + c + ' ' + r + 'h1v1h-1z';
+    box.innerHTML = '<svg viewBox="0 0 ' + n + ' ' + n + '" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><path d="' + p + '" fill="#141010"/></svg>';
+  }catch(e){ box.style.lineHeight = '1.3'; box.style.color = '#141010'; box.textContent = SITE.replace(/^https?:\/\//, '') + '/guia'; }
+}
+function frenaList(sel, fr){
+  var ul = $(sel); ul.innerHTML = '';
+  [['F', 'F'], ['R', 'R'], ['E', 'E'], ['N', 'N'], ['A', 'Á']].forEach(function(k){
+    var li = h('li'); li.appendChild(h('b', '', k[1])); li.appendChild(h('span', '', fr[k[0]])); ul.appendChild(li);
+  });
+}
+
+/* =================== MODO ESTAFADOR =================== */
+function openPick(){
+  stopAll(); show('pick', 'dark');
+  var box = $('#vics'); box.innerHTML = '';
+  VICTIMS.forEach(function(v, i){
+    var b = h('button', 'vic'); b.type = 'button';
+    b.appendChild(h('div', 'scan'));
+    var ob = h('div', 'obj', 'Objetivo 0' + (i + 1)); ob.appendChild(h('span', '', '● en línea')); b.appendChild(ob);
+    b.appendChild(h('div', 'avc', v.av)); b.appendChild(h('div', 'nm', v.name)); b.appendChild(h('div', 'ag', v.age));
+    var wk = h('div', 'wk'); wk.appendChild(h('b', '', TACTICS[v.weak].ic + ' Punto débil')); wk.appendChild(document.createTextNode(v.weakTx)); b.appendChild(wk);
+    b.appendChild(h('div', 'cta', 'Elegir objetivo →'));
+    b.addEventListener('click', function(){ ac(); guard(scamCine(v).then(function(){ startScam(v); })); });
+    box.appendChild(b);
+  });
+}
+function el(){ return (now() - G.t0) / 1000; }
+var MOODS = [[0, '🤨', 'Desconfía'], [25, '🤔', 'Duda'], [60, '🙂', 'Confía'], [90, '😰', 'A punto de caer'], [100, '🔓', '¡Cayó!']];
+function setConf(v){
+  var before = G.conf;
+  G.conf = Math.max(0, Math.min(100, Math.round(v))); $('#confv').textContent = G.conf + '\u00a0%'; $('#conff').style.width = G.conf + '%';
+  var m = MOODS.filter(function(x){ return G.conf >= x[0]; }).pop();
+  $('#mood').innerHTML = m[1] + ' <em>' + m[2] + '</em>';
+  var sm = $('#smood'); if(sm.textContent !== m[1]){ sm.textContent = m[1]; sm.classList.remove('pop'); void sm.offsetWidth; sm.classList.add('pop'); }
+  if(!G.done) [2, 3].forEach(function(t){ if(G.conf >= CFG.UNLOCK[t] && before < CFG.UNLOCK[t] && !G.seen[t]){ G.seen[t] = 1; G.fresh = t; G.freshAt = now(); toast(t === 3 ? '🎯 ¡Ya podés pedir el código!' : '🔓 Nuevas tarjetas desbloqueadas'); tone(784, .12, 'triangle', .05); tone(1175, .2, 'triangle', .05, .1); } });
+}
+function fly(btn){
+  if(!btn || RM) return;
+  var r = btn.getBoundingClientRect(), t = $('#smsgs').getBoundingClientRect(), g = btn.cloneNode(true);
+  g.className = 'card ghost'; g.disabled = true;
+  g.style.cssText = 'position:fixed;left:' + r.left + 'px;top:' + r.top + 'px;width:' + r.width + 'px;margin:0;z-index:45;pointer-events:none';
+  document.body.appendChild(g);
+  var dx = (t.right - 80) - (r.left + r.width / 2), dy = (t.bottom - 60) - (r.top + r.height / 2);
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ g.style.transition = 'transform .45s cubic-bezier(.5,0,.3,1),opacity .45s'; g.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(.3) rotate(-8deg)'; g.style.opacity = '0'; }); });
+  setTimeout(function(){ g.remove(); }, 520);
+}
+function sBubble(side, text, cls){ var m = $('#smsgs'), b = h('div', 'b ' + side + (cls ? ' ' + cls : '')); b.textContent = nb(text); if(side === 'out') b.appendChild(h('span', 'rc', 'enviado')); m.insertBefore(b, $('#sdots')); m.scrollTop = m.scrollHeight; return b; }
+function sTyping(on){ if(on) document.querySelectorAll('#smsgs .rc').forEach(function(r){ r.textContent = 'leído'; r.classList.add('rd'); }); $('#sdots').classList.toggle('on', on); var st = $('#sst'); st.textContent = on ? 'escribiendo…' : 'en línea'; st.classList.toggle('typ', on); var m = $('#smsgs'); m.scrollTop = m.scrollHeight; }
+
+function startScam(v){
+  stopAll();
+  var g = rand(v.guiones);
+  G = {v: v, g: g, conf: 0, used: [], tac: [], t0: now(), busy: false, done: false, last: 0, nudges: 0, tick: -1, forcing: false, pressure: false, seen: {}, fresh: 0, freshAt: 0};
+  show('scam', 'dark');
+  $('#sav').textContent = v.av; $('#snm').textContent = v.name;
+  var m = $('#smsgs'); m.innerHTML = '';
+  m.appendChild(h('div', 'pill', g.ctx));
+  var d = h('div', 'dots'); d.id = 'sdots'; d.innerHTML = '<i></i><i></i><i></i>'; m.appendChild(d); sTyping(false);
+  $('#clock').classList.remove('warn'); $('#clock').textContent = '0:' + CFG.SCAM_S; $('#ring').style.strokeDashoffset = 0;
+  setConf(0); renderDeck();
+  loopId = setInterval(scamLoop, 100);
+}
+function scamLoop(){
+  if(!G || G.done) return;
+  var t = el(), rem = Math.max(0, CFG.SCAM_S - t), s = Math.ceil(rem);
+  $('#clock').textContent = '0:' + String(s).padStart(2, '0');
+  $('#clock').classList.toggle('warn', s <= 10); $('#ring').style.strokeDashoffset = (219.9 * (1 - rem / CFG.SCAM_S)).toFixed(1); document.body.classList.toggle('tense', s <= 10);
+  if(s <= 10 && s !== G.tick){ G.tick = s; SND.tick(); }
+  if(t >= CFG.HARD_S){ win(G.g.forced, true); return; }
+  if(t >= CFG.FORCE_S && !G.busy && !G.forcing){ G.forcing = true; guard(forced()); return; }
+  if(!G.busy && t < CFG.FORCE_S - 2 && G.nudges < G.g.nudges.length && t - G.last >= CFG.NUDGE_S) guard(nudge());
+}
+async function typingFor(text){ sTyping(true); await sleep(850 + Math.min(650, text.length * 8)); sTyping(false); }
+
+async function sendCard(c, btn){
+  if(!G || G.busy || G.done || el() >= CFG.FORCE_S || G.conf < CFG.UNLOCK[c.tier] || G.used.indexOf(c) >= 0) return;
+  G.used.push(c); if(G.tac.indexOf(c.t) < 0) G.tac.push(c.t);
+  fly(btn);
+  G.busy = true; var b = sBubble('out', c.text); b.insertBefore(h('span', 'tg', TACTICS[c.t].ic + ' ' + TACTICS[c.t].label), b.firstChild); SND.sent(); renderDeck();
+  if(c.tier === 3){ await give(); return; }
+  setConf(Math.min(95, G.conf + CFG.GAIN[c.tier] + (c.t === G.v.weak ? CFG.WEAK_BONUS : 0)));
+  await typingFor(c.reply); if(G.done) return;
+  sBubble('in', c.reply); SND.msg();
+  G.busy = false; G.last = el(); renderDeck();
+}
+async function give(){
+  setConf(Math.max(G.conf, 90));
+  await typingFor(G.g.give); if(G.done) return;
+  if(el() < CFG.MIN_WIN_S){
+    sBubble('in', G.g.stall); SND.msg(); sTyping(true);
+    while(el() < CFG.MIN_WIN_S + .5){ await sleep(150); if(G.done) return; }
+    await sleep(400); sTyping(false); if(G.done) return;
+  }
+  win(G.g.give, false);
+}
+async function nudge(){
+  G.busy = true; renderDeck();
+  var t = G.g.nudges[G.nudges]; await typingFor(t); if(G.done) return;
+  sBubble('in', t); SND.msg(); G.nudges++; G.pressure = true;
+  setConf(Math.min(95, G.conf + CFG.NUDGE_GAIN));
+  G.busy = false; G.last = el(); renderDeck();
+}
+async function forced(){
+  G.busy = true; renderDeck();
+  await typingFor(G.g.forced); if(G.done) return;
+  win(G.g.forced, true);
+}
+function win(text, pressured){
+  if(G.done) return;
+  G.done = true; G.secs = Math.max(1, Math.round(el())); if(pressured) G.pressure = true;
+  clearInterval(loopId); sTyping(false); document.body.classList.remove('tense');
+  sBubble('in', text, 'code'); setConf(100); SND.win(); renderDeck();
+  var gc = $('#gotc'); gc.innerHTML = ''; G.g.code.split('').forEach(function(ch, i){ var sp = h('span', '', ch === ' ' ? '\u00a0' : ch); sp.style.animationDelay = (.25 + i * .11) + 's'; gc.appendChild(sp); }); $('#got').classList.add('on');
+  guard(sleep(1900).then(function(){ $('#got').classList.remove('on'); showScamWin(); }));
+}
+function renderDeck(){
+  var d = $('#deck'); d.innerHTML = '';
+  var blocked = G.busy || G.done || el() >= CFG.FORCE_S;
+  Object.keys(TACTICS).forEach(function(k){
+    var cards = G.g.cards.filter(function(c){ return c.t === k; }); if(!cards.length) return;
+    var grp = h('div', 'grp');
+    var tg = h('div', 'tag' + (k === G.v.weak ? ' weak' : '')); tg.appendChild(h('span', 'ti2', TACTICS[k].ic)); tg.appendChild(document.createTextNode(TACTICS[k].label + (k === G.v.weak ? ' ★ punto débil' : ''))); grp.appendChild(tg);
+    cards.forEach(function(c){
+      var used = G.used.indexOf(c) >= 0, locked = G.conf < CFG.UNLOCK[c.tier];
+      var fresh = !used && !locked && c.tier === G.fresh && now() - G.freshAt < 2600;
+      var b = h('button', 'card' + (used ? ' used' : '') + (locked ? ' locked' : '') + (blocked ? ' wait' : '') + (fresh ? ' fresh' : '')); b.type = 'button';
+      if(fresh) b.appendChild(h('span', 'nw', 'NUEVA'));
+      b.appendChild(h('span', 'tx', c.text));
+      var ft = used ? '✓ Enviada' : locked ? '🔒 Se habilita con ' + CFG.UNLOCK[c.tier] + ' % de confianza' : c.tier === 3 ? '🎯 Pide el código' : 'Nivel ' + c.tier;
+      b.appendChild(h('span', 'ft' + (c.tier === 3 && !used && !locked ? ' kill' : ''), ft));
+      b.disabled = used || locked || blocked;
+      b.addEventListener('click', function(){ guard(sendCard(c, b)); });
+      grp.appendChild(b);
+    });
+    d.appendChild(grp);
+  });
+  $('#deckst').textContent = G.done ? '¡Listo!' : el() >= CFG.FORCE_S ? 'La víctima ya está nerviosa…' : G.busy ? 'Esperá la respuesta…' : 'Elegí una tarjeta';
+}
+function showScamWin(){
+  show('scamwin', 'dark');
+  var tt = $('#sw-t'), n0 = 0; tt.textContent = 'Lo lograste en 0 segundos.';
+  (function up(){ if(cur !== 'scamwin') return; n0++; tt.textContent = 'Lo lograste en ' + Math.min(n0, G.secs) + ' segundos.'; if(n0 < G.secs) setTimeout(up, Math.max(25, 600 / G.secs)); })();
+  var st = $('#sw-st'); st.innerHTML = '';
+  [['⏱ ' + G.secs + ' s', 'Lo que tardaste'], ['💬 ' + G.used.length, 'Mensajes que mandaste'], ['🔓 100 %', 'Confianza de ' + G.v.name]].forEach(function(x){ var d = h('div', 'stat'); d.appendChild(h('b', '', x[0])); d.appendChild(h('span', '', x[1])); st.appendChild(d); });
+  var l = $('#sw-l'); l.innerHTML = '';
+  l.appendChild(h('b', '', G.v.name)); l.appendChild(document.createTextNode(' te pasó el código ' + G.g.code + '. Con eso, un estafador de verdad entra a su cuenta. Fue fácil, ¿no? Por eso le pasa a cualquiera.'));
+  var ul = $('#sw-tac'); ul.innerHTML = '';
+  var list = G.tac.slice(); if(G.pressure) list.push('TIEMPO');
+  if(!G.tac.length){ var li0 = h('li'); li0.appendChild(h('span', 'ex', 'No mandaste ni un mensaje… y aun así cayó.')); ul.appendChild(li0); }
+  list.forEach(function(k){ var li = h('li'); li.appendChild(h('span', 'tag', TACTICS[k].ic + ' ' + TACTICS[k].label)); li.appendChild(h('span', 'ex', TACTICS[k].ex)); ul.appendChild(li); });
+  $('#sw-fh').textContent = 'Así se hubiera salvado ' + G.v.name + ':';
+  frenaList('#sw-fre', G.g.frena); qr('#sw-qr');
+}
+
+/* =================== MODO VÍCTIMA =================== */
+function vNow(){ return (now() - V.t0) / 1000; }
+function vLog(o){ o.s = vNow(); V.log.push(o); }
+function vBubble(side, text, cls){ var m = $('#vmsgs'), b = h('div', 'b ' + side + (cls ? ' ' + cls : '')); b.textContent = nb(text); m.insertBefore(b, $('#vdots')); m.scrollTop = m.scrollHeight; }
+function vTyping(on){ $('#vdots').classList.toggle('on', on); $('#vsu').textContent = on ? 'escribiendo…' : V.g.contact.sub; var m = $('#vmsgs'); m.scrollTop = m.scrollHeight; }
+function notif(app, text, kind){
+  var n = h('div', 'nt' + (kind ? ' ' + kind : '')), ap = h('div', 'ap');
+  ap.appendChild(h('span', '', app)); ap.appendChild(h('span', '', 'ahora')); n.appendChild(ap); n.appendChild(h('div', '', nb(text)));
+  $('#nots').appendChild(n);
+  if(kind !== 'sms') setTimeout(function(){ n.classList.add('out'); setTimeout(function(){ n.remove(); }, 320); }, 3800);
+  return n;
+}
+function startVict(){
+  stopAll();
+  var g = rand(VSCRIPTS);
+  V = {g: g, log: [], t0: now()};
+  show('vict', 'light');
+  var dl = $('#datos'); dl.innerHTML = '';
+  g.datos.forEach(function(d){ dl.appendChild(h('dt', '', d[0])); dl.appendChild(h('dd', '', d[1])); });
+  $('#ctx').textContent = g.ctx;
+  $('#lock').classList.remove('open'); $('#lockn').hidden = true; $('#lkh').textContent = '🔒 Celular bloqueado'; $('#pwn').classList.remove('on');
+  try{ $('#lkd').textContent = new Date().toLocaleDateString('es-AR', {weekday: 'long', day: 'numeric', month: 'long'}); }catch(e){ $('#lkd').textContent = ''; }
+  $('#vav').textContent = g.contact.av; $('#vnm').textContent = g.contact.name; $('#vsu').textContent = g.contact.sub;
+  $('#scrn').classList.remove('dead'); $('#nots').innerHTML = ''; $('#vopts').innerHTML = '';
+  var m = $('#vmsgs'); m.innerHTML = '';
+  m.appendChild(h('div', 'pill', g.ctx));
+  var d = h('div', 'dots'); d.id = 'vdots'; d.innerHTML = '<i></i><i></i><i></i>'; m.appendChild(d);
+  var tick = function(){ $('#vclock').textContent = mmss(vNow()); var x = new Date(); $('#ptime').textContent = $('#lkt').textContent = String(x.getHours()).padStart(2, '0') + ':' + String(x.getMinutes()).padStart(2, '0'); };
+  tick(); loopId = setInterval(tick, 500);
+  guard(victCine());
+}
+function vib(){ var p = $('#phone'); p.classList.remove('vib'); void p.offsetWidth; p.classList.add('vib'); }
+async function vIntro(){
+  await sleep(1200);
+  var first = V.g.nodes.start.msgs[0].t;
+  $('#lknf').textContent = V.g.contact.name; $('#lknt').textContent = nb(first.length > 72 ? first.slice(0, 70) + '…' : first);
+  $('#lockn').hidden = false; vib(); SND.notif();
+  $('#lkh').textContent = '👆 Tocá la notificación para abrirla';
+  V.waitLock = true;
+}
+function openLock(){ if(!V || !V.waitLock) return; V.waitLock = false; $('#lock').classList.add('open'); SND.sent(); guard(sleep(500).then(function(){ return vRun('start'); })); }
+$('#lock').addEventListener('click', openLock);
+async function vRun(id){
+  $('#vopts').innerHTML = '';
+  if(id === 'sms'){ await vSms(); return; }
+  var n = V.g.nodes[id];
+  for(var i = 0; i < n.msgs.length; i++) await vMsg(n.msgs[i]);
+  vOpts(n.opts);
+}
+async function vMsg(m){
+  if(m.notif){ notif(m.notif, m.t, m.alert ? 'alert' : ''); SND.notif(); vib(); vLog({k: 'notif', from: m.notif, t: m.t, a: m.a || []}); await sleep(1700); return; }
+  vTyping(true); await sleep(750 + Math.min(950, m.t.length * 10)); vTyping(false);
+  vBubble('in', m.t); SND.msg(); vLog({k: 'them', t: m.t, a: m.a || [], save: m.save}); await sleep(400);
+}
+function vOpts(opts){
+  var box = $('#vopts'); box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = h('button', 'opt', o[0]); b.type = 'button'; b.style.animationDelay = (i * 90) + 'ms';
+    b.addEventListener('click', function(){ box.innerHTML = ''; vBubble('out', o[0]); SND.sent(); vLog({k: 'me', t: o[0]}); guard(sleep(450).then(function(){ return vRun(o[1]); })); });
+    box.appendChild(b);
+  });
+  if(opts.length > 1) box.appendChild(h('div', 'vhint', 'Tocá una respuesta'));
+  vDown();
+}
+function vDown(){ var m = $('#vmsgs'); m.scrollTop = m.scrollHeight; }
+async function vSms(){
+  var g = V.g; await sleep(900);
+  V.smsEl = notif('SMS · ' + g.sms.from, g.sms.t, 'sms'); SND.notif(); vib();
+  vLog({k: 'sms', from: g.sms.from, t: g.sms.t, a: ['sms']});
+  await sleep(1600);
+  await vMsg({t: g.sms.ask, a: ['cod', 'urg']});
+  var box = $('#vopts'); box.innerHTML = '';
+  box.appendChild(h('div', 'mini', '⚠ No pongas tus datos reales: todo es de mentira'));
+  var cp = h('button', 'copy', '📋 Copiar el código del SMS y enviar'); cp.type = 'button'; cp.addEventListener('click', vSend); box.appendChild(cp);
+  var row = h('div', 'crow'), inp = h('input'); inp.type = 'text'; inp.inputMode = 'numeric'; inp.autocomplete = 'off'; inp.placeholder = 'o escribilo acá…'; inp.setAttribute('aria-label', 'Escribí el código del SMS');
+  inp.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); vSend(); } });
+  var sb = h('button', '', 'Enviar'); sb.type = 'button'; sb.addEventListener('click', vSend);
+  row.appendChild(inp); row.appendChild(sb); box.appendChild(row);
+  vDown();
+}
+function vSend(){
+  if(!V || V.sent) return; V.sent = true;
+  /* Lo que se escriba no se lee ni se guarda: siempre se "envía" el código ficticio. */
+  $('#vopts').innerHTML = '';
+  if(V.smsEl){ V.smsEl.classList.add('out'); }
+  vBubble('out', V.g.code, 'code'); SND.sent(); vLog({k: 'me', t: V.g.code, gave: true});
+  guard((async function(){
+    await sleep(600);
+    for(var i = 0; i < V.g.after.length; i++) await vMsg(V.g.after[i]);
+    $('#scrn').classList.add('dead'); $('#pwnl').textContent = V.g.loss; $('#pwn').classList.add('on'); vib(); SND.lose();
+    await sleep(2600); showVictEnd();
+  })());
+}
+function showVictEnd(){
+  clearInterval(loopId);
+  show('victend', 'light');
+  $('#ve-l').textContent = 'No te sientas mal: estaba armado para que cayeras. Le pasa a cualquiera. ' + V.g.lost;
+  var tl = $('#tl'); tl.innerHTML = ''; var seen = {};
+  var vh = $('#vhs'); vh.className = 'vhs'; vh.innerHTML = '<i>◀◀</i> rebobinando'; setTimeout(function(){ if(cur === 'victend'){ vh.className = 'vhs play'; vh.innerHTML = '<i>▶</i> así fue'; } }, 1600);
+  V.log.forEach(function(e, idx){
+    var a = e.a || [], li = h('li', (a.length ? 'al ' : '') + (e.k === 'me' ? 'me' : '')); li.style.setProperty('--i', idx);
+    var who = e.k === 'me' ? 'Vos' : e.k === 'them' ? 'Estafador · ' + V.g.contact.name : e.k === 'sms' ? 'SMS de ' + e.from : 'Notificación · ' + e.from;
+    li.appendChild(h('div', 'wh', mmss(e.s) + ' · ' + who));
+    li.appendChild(h('div', 'tx', nb(e.gave ? e.t + '   ← acá entregaste el código' : e.t)));
+    if(a.length){
+      var tg = h('div', 'tags'); a.forEach(function(k){ tg.appendChild(h('span', '', ALERTS[k][0])); }); li.appendChild(tg);
+      var why = h('ul', 'why'); a.forEach(function(k){ if(!seen[k]){ seen[k] = 1; why.appendChild(h('li', '', '🚩 ' + ALERTS[k][1])); } }); if(why.children.length) li.appendChild(why);
+    }
+    if(e.save){ var sv = h('div', 'save'); sv.appendChild(h('b', '', '✋ Acá FRENÁ te salvaba')); sv.appendChild(document.createTextNode(e.save)); li.appendChild(sv); }
+    if(e.k === 'sms'){ var s2 = h('div', 'save'); s2.appendChild(h('b', '', '✋ Última oportunidad')); s2.appendChild(document.createTextNode('El SMS es de verdad y te lo dice clarito: no lo compartas con nadie.')); li.appendChild(s2); }
+    tl.appendChild(li);
+  });
+  frenaList('#ve-fre', V.g.frena); qr('#ve-qr');
+}
+
+
+/* =================== CINEMÁTICAS =================== */
+var CN = {skip: false};
+function csleep(ms){ var g = gen; return new Promise(function(r, j){ if(CN.skip) return r(); var t = setTimeout(function(){ g === gen ? r() : j(STOP); }, ms); CN.wake = function(){ clearTimeout(t); r(); }; }); }
+function ring(){ tone(440, .4, 'sine', .04); tone(480, .4, 'sine', .04); }
+async function cline(html, ms){ var b = $('#cnbody'), d = h('div'); d.innerHTML = html; var c = b.querySelector('.cur'); if(c) c.remove(); b.appendChild(d); d.insertAdjacentHTML('beforeend', ' <span class="cur"></span>'); tone(1800 + Math.random() * 500, .02, 'square', .012); await csleep(ms || 420); }
+async function scamCine(v){
+  stopAll(); CN.skip = false;
+  var c = $('#cine'), bs = $('#bscr'), bu = $('#burner');
+  $('#cnbody').innerHTML = ''; c.className = 'on'; bu.className = 'burner';
+  bs.className = 'bscr'; bs.innerHTML = '<div class="isl"></div><div class="hid">número oculto</div><div class="bav">' + v.av + '</div><div class="bnm">' + v.name + '</div><div class="bst">preparando…</div>';
+  await cline('<span class="c">$ fh-scam --linea descartable</span>', 500);
+  await cline('<span class="p">[+]</span> Chip prepago activado · número oculto', 420);
+  await cline('<span class="p">[+]</span> Objetivo: <span class="c">' + v.name + '</span> · ' + v.age, 420);
+  await cline('<span class="p">[+]</span> Punto débil: <span class="w">' + v.weakTx + '</span>', 520);
+  await cline('<span class="w">[*]</span> Llamando al objetivo…', 200);
+  bs.querySelector('.bst').textContent = 'Llamando…'; bs.insertAdjacentHTML('beforeend', '<div class="bcall"><i>🔇</i><i class="end">📞</i><i>🔊</i></div>');
+  bu.classList.add('ring');
+  for(var i = 0; i < 3 && !CN.skip; i++){ ring(); await csleep(900); }
+  bu.classList.remove('ring'); bs.classList.add('noans'); bs.querySelector('.bst').textContent = 'No contesta'; tone(330, .25, 'sine', .04);
+  await cline('<span class="r">[!]</span> No atiende. Plan B: escribirle por Charlá.', 650);
+  bs.className = 'bscr chat'; bs.innerHTML = '<div class="isl"></div><div class="capp"><div class="hd2"><span>Charlá</span>' + v.av + ' ' + v.name + '</div><div class="typ">✍️ escribiendo el primer mensaje…</div></div>';
+  tone(660, .1, 'triangle', .05); tone(990, .16, 'triangle', .05, .08);
+  await cline('<span class="p">[+]</span> Chat abierto. <span class="c">Tenés 30 segundos.</span>', 900);
+  c.classList.add('out'); await csleep(560);
+  c.className = '';
+}
+$('#cnskip').addEventListener('click', function(){ CN.skip = true; if(CN.wake) CN.wake(); });
+$('#cine').addEventListener('pointerdown', function(e){ if(e.target.closest('.cn-skip')) return; if(CN.wake) CN.wake(); });
+
+async function victCine(){
+  CN.skip = false; V.cine = true;
+  var vc = $('#vcine'), ph = $('#cphone');
+  vc.className = 'on'; ph.className = 'cphone';
+  var x = new Date(); $('#cpt').textContent = String(x.getHours()).padStart(2, '0') + ':' + String(x.getMinutes()).padStart(2, '0');
+  $('#vccap').textContent = V.g.ctx;
+  var first = V.g.nodes.start.msgs[0].t;
+  $('#cpf').textContent = V.g.contact.name; $('#cpm').textContent = nb(first.length > 64 ? first.slice(0, 62) + '…' : first);
+  await csleep(1700);
+  ph.classList.add('lit'); tone(523, .08, 'sine', .03);
+  await csleep(500);
+  ph.classList.add('notif', 'buzz'); SND.notif();
+  for(var i = 0; i < 3; i++) tone(70, .35, 'sawtooth', .05, i * .9);
+  $('#vccap').innerHTML = 'Te llegó un mensaje. <b>Tocalo para abrirlo 👆</b>';
+  V.waitCine = true;
+}
+function openCine(){
+  if(!V || !V.cine) return;
+  V.waitCine = false; V.cine = false;
+  var ph = $('#cphone'); ph.classList.remove('buzz'); ph.classList.add('zoom'); SND.sent();
+  $('#lock').classList.add('open');
+  setTimeout(function(){ $('#vcine').className = ''; }, 650);
+  guard(sleep(750).then(function(){ return vRun('start'); }));
+}
+$('#cphone').addEventListener('click', function(){ ac(); if(V && V.waitCine) openCine(); });
+$('#vskip').addEventListener('click', function(){ ac(); if(!V) return; CN.skip = true; if(CN.wake) CN.wake(); var t = setInterval(function(){ if(!V || !V.cine){ clearInterval(t); return; } if(V.waitCine){ clearInterval(t); openCine(); } }, 60); });
+
+/* =================== KIOSCO =================== */
+var lastAct = Date.now(), idleOn = false, idleN = 0, escT = [];
+function act(){ lastAct = Date.now(); if(idleOn){ idleOn = false; $('#idle').classList.remove('on'); } }
+['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function(ev){ addEventListener(ev, act, {passive: true}); });
+setInterval(function(){
+  if(cur === 'home' || (cur === 'scam' && G && !G.done)){ lastAct = Date.now(); return; }
+  var s = (Date.now() - lastAct) / 1000;
+  if(!idleOn && s >= CFG.IDLE_S){ idleOn = true; idleN = CFG.IDLE_COUNT; $('#idle').classList.add('on'); }
+  if(idleOn){ $('#idlec').textContent = idleN; if(idleN-- <= 0){ idleOn = false; $('#idle').classList.remove('on'); goHome(); } }
+}, 1000);
+addEventListener('keydown', function(e){
+  ac();
+  if(e.key !== 'Escape') return;
+  var t = Date.now(); escT = escT.filter(function(x){ return t - x < 2000; }); escT.push(t);
+  if(escT.length >= 3){ escT = []; goHome(); }
+});
+
+/* para las pruebas automáticas */
+window.__QC = {state: function(){ return {cur: cur, G: G && {conf: G.conf, done: G.done, secs: G.secs, busy: G.busy, t: G.done ? G.secs : el(), guion: G.g.title}, V: V && {guion: V.g.id, sent: !!V.sent}}; }};
+
+goHome();
+})();
+</script>
+</body>
+</html>

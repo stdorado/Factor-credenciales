@@ -34,6 +34,15 @@ Sitio estático: solo HTML, CSS y JS, sin build ni frameworks. Se publica en Ver
 index.html                     Sitio principal (cuenta regresiva, temas, inscripción)
 guia.html                      /guia · página de la guía de prevención (descargar, ver, compartir)
 cartel-guia.html               Cartel A4 con QR a /guia (se imprime desde el sitio publicado)
+investigador.html              /investigador · stand 2 "Rastro Digital": herramienta de rastreo simulada "FH-Trace" (grafo) + 3 redes ficticias
+                               (Vecinal, Lente = solo fotos, Pío = mensajes cortos). 4 perfiles x 11 datos, editables en PROFILES;
+                               los datos se marcan como [[clave|texto]] (también dentro de las fotos, en img.ovs).
+hacker.html                    /hacker · juego "Operación Lezama": encendido de la compu (botón ON, BIOS, escritorio FH-OS) → terminal
+                               de hacker ético, 5 misiones, credencial final con QR a /guia
+estafa.html                    /estafa · stand 3 "¿Quién cae?": estafador (cinemática de llamada desde un celular descartable, escritorio
+                               FH-OS, tarjetas, 30 s) o víctima (cinemática del celular en la mesa, chat, rebobinar).
+                               Guiones editables en objetos JS al principio (CFG, TACTICS, VICTIMS, ALERTS, VSCRIPTS).
+                               Todo ficticio (Banco Pampa, Correo Express Sur, Billetera Mía, app "Charlá"); no guarda nada.
 credenciales.html              Credenciales 6,8 × 10,8 cm con QR a /rol/<rol>, 4 por hoja A4
 rol/
   autoridades.html  invitados-especiales.html  instituciones.html  prensa.html

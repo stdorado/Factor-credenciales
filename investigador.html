@@ -1,0 +1,1088 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0707">
+<title>Rastro Digital · Factor Humano 2026</title>
+<meta name="description" content="Simulación educativa: rastreá un perfil ficticio con una herramienta de investigación y descubrí todo lo que se puede saber de alguien por lo que publica.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Inter+Tight:wght@800;900&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{
+  --bg:#0a0707; --panel:#151010; --bar:#1f1716; --line:#33221f; --fg:#efe7dc; --dim:#8d8177;
+  --red:#d62b1f; --red2:#ff4a36; --ok:#4dff88; --amb:#ffc56b; --paper:#f3eee8; --ink:#141010;
+  --sans:Inter,system-ui,"Segoe UI",Roboto,Arial,sans-serif;
+  --disp:"Inter Tight",Inter,system-ui,"Segoe UI",Arial,sans-serif;
+  --mono:"JetBrains Mono",Consolas,"Cascadia Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:var(--sans);background:var(--bg);color:var(--fg);-webkit-font-smoothing:antialiased;overflow:hidden}
+body:before{content:"";position:fixed;left:0;top:0;bottom:0;width:6px;background:var(--red);z-index:60}
+button{font:inherit;color:inherit;cursor:pointer}
+.mono{font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;font-size:.72rem}
+.scr{display:none;position:fixed;inset:0;flex-direction:column}
+.scr.on{display:flex}
+#crtov{position:fixed;inset:0;pointer-events:none;z-index:55;background:repeating-linear-gradient(to bottom,rgba(0,0,0,.13) 0 1px,transparent 1px 3px),radial-gradient(ellipse at center,transparent 62%,rgba(0,0,0,.45) 100%)}
+body.noscan #crtov{display:none}
+#snd{position:fixed;top:9px;right:12px;z-index:70;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:rgba(20,14,13,.8);color:#fff;font-size:.95rem}
+.grid{background:radial-gradient(ellipse at 78% 0%,rgba(214,43,31,.2),transparent 55%),radial-gradient(ellipse at 0% 100%,rgba(77,255,136,.06),transparent 50%),var(--bg)}
+.grid:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:38px 38px;pointer-events:none}
+
+/* ---------- inicio ---------- */
+#net{position:absolute;inset:0;width:100%;height:100%}
+#home{justify-content:center;padding:40px 24px;overflow:hidden}
+#home .wrap{position:relative;z-index:1;width:min(1000px,100%);margin:0 auto}
+.osline{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--ok);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.osline:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok);animation:bk 1.4s steps(1) infinite}
+@keyframes bk{50%{opacity:.2}}
+#home .eye{color:var(--red2)}
+#home h1{font-family:var(--disp);font-weight:900;font-size:clamp(3rem,9.5vw,7rem);line-height:.88;letter-spacing:-.045em;margin:.15em 0 .2em}
+#home h1 span{color:var(--red2)}
+#home p{font-size:clamp(1.05rem,1.9vw,1.35rem);line-height:1.45;max-width:31em;color:#d9cdc1;margin:0 0 30px}
+.big{border:0;background:var(--red);color:#fff;font-weight:900;font-size:1.2rem;padding:17px 34px;border-radius:999px;font-family:var(--disp);display:inline-flex;gap:10px;align-items:center;transition:transform .15s,background .15s;box-shadow:0 0 0 0 rgba(255,74,54,.5);animation:ring 1.8s ease-out infinite}
+.big:hover{background:var(--red2);transform:translateY(-2px)}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(255,74,54,.5)}100%{box-shadow:0 0 0 22px rgba(255,74,54,0)}}
+#home .note{margin-top:24px;color:var(--dim);font-size:.92rem}
+
+/* ---------- arranque ---------- */
+#boot{background:#040303;padding:2em 2.4em;font-family:var(--mono);font-size:.95rem;line-height:1.7;color:#cfd8cf}
+#boot .ok{color:var(--ok);font-weight:700}
+#boot .bar{width:min(340px,70vw);height:6px;background:#1c1312;border-radius:3px;overflow:hidden;margin-top:14px}
+#boot .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--red2),var(--ok))}
+
+/* ---------- escritorio ---------- */
+#desk{overflow:hidden}
+.top{flex:none;height:42px;display:flex;align-items:center;gap:14px;padding:0 60px 0 22px;background:rgba(16,11,10,.96);border-bottom:1px solid #2c1d1b;font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);white-space:nowrap;position:relative;z-index:5}
+.top b{color:var(--red2)}
+.top .g{color:var(--ok)}
+.top .sp{flex:1}
+.tbtn{background:none;border:1px solid #3a2724;border-radius:6px;padding:5px 10px;font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg)}
+.tbtn:hover{border-color:var(--red2)}
+#work{flex:1;min-height:0;position:relative;display:grid;gap:16px;padding:16px 18px 18px 24px;grid-template-columns:1fr;grid-template-rows:1fr}
+#work.hunt{grid-template-columns:minmax(380px,520px) minmax(0,1fr)}
+.wnd{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.55);display:flex;flex-direction:column;min-height:0;min-width:0}
+.wnd.pop{animation:wnin .5s cubic-bezier(.2,1.3,.4,1) both}
+@keyframes wnin{from{transform:translateY(20px) scale(.96);opacity:0}to{transform:none;opacity:1}}
+.wbar{flex:none;display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bar);border-bottom:1px solid #2c1f1d;font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);white-space:nowrap}
+.wd{display:flex;gap:6px}
+.wd i{width:10px;height:10px;border-radius:50%;background:#4b3330}
+.wd i:first-child{background:var(--red2)}
+.wbar .wt{flex:1;overflow:hidden;text-overflow:ellipsis}
+.wbar .wt b{color:var(--fg)}
+.url{flex:none;display:flex;gap:8px;align-items:center;padding:6px 12px;background:var(--panel);border-bottom:1px solid #2c1f1d;font-family:var(--mono);font-size:.7rem;color:var(--dim);white-space:nowrap}
+.url span{flex:1;background:#0d0909;border-radius:999px;padding:4px 12px;overflow:hidden;text-overflow:ellipsis}
+.url b{color:var(--ok);font-weight:400}
+
+/* ---------- FH-Trace: búsqueda ---------- */
+#vwin{display:none}
+#work.hunt #vwin{display:flex;animation:wnin .5s cubic-bezier(.2,1.3,.4,1) both}
+#search{flex:1;overflow:auto;padding:34px 30px;display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;background:radial-gradient(ellipse at 50% 0%,#24110f,transparent 60%)}
+.logo{font-family:var(--mono);font-weight:700;font-size:1.05rem;letter-spacing:.2em;color:var(--ok);display:flex;align-items:center;gap:10px}
+.logo i{width:30px;height:30px;position:relative;display:inline-block}
+.logo i:before,.logo i:after{content:"";position:absolute;border:2px solid var(--ok);border-radius:50%}
+.logo i:before{left:0;top:9px;width:12px;height:12px}
+.logo i:after{right:0;top:0;width:10px;height:10px;box-shadow:-4px 18px 0 -2px var(--red2)}
+#search h2{margin:0;font-family:var(--disp);font-weight:900;font-size:clamp(1.8rem,3.6vw,2.8rem);letter-spacing:-.035em;line-height:1}
+#search h2 span{color:var(--red2)}
+#search .sub{margin:0;color:var(--dim);max-width:34em;line-height:1.45}
+.sform{display:flex;gap:8px;width:min(620px,100%);background:#0d0909;border:1px solid #3a2724;border-radius:14px;padding:7px;box-shadow:0 0 0 4px rgba(255,74,54,.05)}
+.sform:focus-within{border-color:var(--red2)}
+.sform .pr{display:flex;align-items:center;padding:0 4px 0 10px;font-family:var(--mono);color:var(--ok);font-size:.85rem;white-space:nowrap}
+#q{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--fg);font:inherit;font-size:16px;font-family:var(--mono);padding:10px 4px}
+#q::placeholder{color:#6b5d55}
+#go{border:0;border-radius:10px;background:var(--red);color:#fff;font-weight:800;padding:0 18px;font-family:var(--disp);white-space:nowrap}
+#go:hover{background:var(--red2)}
+#smsg{min-height:1.3em;font-family:var(--mono);font-size:.8rem;color:var(--amb);max-width:40em}
+.cases{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;width:min(980px,100%);margin-top:4px}
+.case{background:linear-gradient(170deg,#1c1312,#120c0b);border:1px solid var(--line);border-radius:12px;padding:16px 14px;text-align:left;display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden;transition:all .2s}
+.case:hover{border-color:var(--red2);transform:translateY(-3px);box-shadow:0 14px 34px rgba(214,43,31,.22)}
+.case .cn{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;color:var(--red2);display:flex;justify-content:space-between}
+.case .cn span{color:var(--ok)}
+.case .av{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.9rem;background:radial-gradient(circle at 35% 30%,#3a2523,#170e0d);box-shadow:0 0 0 2px #33221f;margin:4px 0}
+.case .nm{font-family:var(--disp);font-weight:900;font-size:1.2rem;letter-spacing:-.02em}
+.case .ag{color:var(--dim);font-size:.82rem}
+.case .bl{font-size:.84rem;line-height:1.35;color:#cdbfb3}
+.case .ft{margin-top:auto;padding-top:6px;font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;color:var(--ok);text-transform:uppercase}
+.disclaim{font-size:.78rem;color:var(--dim);max-width:44em}
+
+/* ---------- FH-Trace: grafo ---------- */
+#gview{flex:1;min-height:0;display:none;flex-direction:column}
+#twin.graph #search{display:none}
+#twin.graph #gview{display:flex}
+.gtools{flex:none;display:flex;align-items:center;gap:14px;padding:10px 14px;border-bottom:1px solid #2c1f1d;background:#120d0c;flex-wrap:wrap}
+.cnt{display:flex;align-items:baseline;gap:6px;font-family:var(--mono)}
+.cnt b{font-size:2rem;color:#fff;line-height:1}
+.cnt span{color:var(--dim);font-size:1rem}
+.cnt.bump b{animation:bump .45s ease-out}
+@keyframes bump{40%{transform:scale(1.3);color:var(--red2)}}
+.prog{flex:1;min-width:120px}
+.prog .tr{height:8px;background:#2a1a18;border-radius:4px;overflow:hidden}
+.prog .tr i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--red),var(--red2));box-shadow:0 0 10px rgba(255,74,54,.6);transition:width .5s cubic-bezier(.3,1.3,.5,1)}
+.prog .ex{display:flex;justify-content:space-between;margin-top:5px;font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.prog .ex b{color:var(--amb)}
+.gbtn{border:1px solid #3a2724;background:#1a1211;border-radius:8px;padding:8px 12px;font-weight:700;font-size:.85rem;color:var(--fg)}
+.gbtn:hover{border-color:var(--red2)}
+.gbtn.go{background:var(--ok);color:var(--ink);border-color:var(--ok);font-family:var(--disp);font-weight:900}
+.gbtn[hidden]{display:none}
+.gwrap{flex:1;min-height:0;position:relative;background:radial-gradient(circle at 1px 1px,rgba(255,255,255,.05) 1px,transparent 0) 0 0/22px 22px,radial-gradient(ellipse at center,#1a0f0e,#0d0909 70%)}
+#graph{position:absolute;inset:0;width:100%;height:100%}
+.log{flex:none;height:118px;overflow-y:auto;padding:8px 14px;background:#070505;border-top:1px solid #2c1f1d;font-family:var(--mono);font-size:.74rem;line-height:1.55;color:#a9b8a9;scrollbar-width:thin}
+.log .c{color:var(--fg)}
+.log .p{color:var(--ok)}
+.log .w{color:var(--amb)}
+.log .r{color:var(--red2)}
+/* nodos */
+.edge{stroke:#4a3532;stroke-width:2;fill:none}
+.edge.hub{stroke:#5b4440;stroke-width:2.5}
+.edge.pend{stroke-dasharray:5 6;stroke:#3d2c29}
+.edge.on{stroke:var(--red2);stroke-dasharray:none;filter:drop-shadow(0 0 4px rgba(255,74,54,.7));animation:draw .6s ease-out}
+.edge.rv{stroke:var(--red2);stroke-dasharray:4 5;opacity:.7}
+@keyframes draw{from{stroke-dashoffset:300;stroke-dasharray:300}to{stroke-dashoffset:0;stroke-dasharray:300}}
+.gn{opacity:0;transform-box:fill-box;transition:opacity .35s}
+.gn.in{opacity:1}
+.gn .ring{fill:#140d0c;stroke:#4a3532;stroke-width:2}
+.gn.k .ring{stroke-dasharray:4 4}
+.gn .ic{font-size:22px;text-anchor:middle;dominant-baseline:central}
+.gn .lt{font-family:var(--mono);font-size:12px;letter-spacing:1px;fill:#8d8177;text-anchor:middle;text-transform:uppercase}
+.gn .lv{font-family:var(--sans);font-size:15px;font-weight:700;fill:#5e504a;text-anchor:middle}
+.gn.center .ring{fill:var(--red);stroke:var(--red2);stroke-width:3;filter:drop-shadow(0 0 16px rgba(255,74,54,.6))}
+.gn.center .ic{font-size:36px}
+.gn.center .lv{fill:#fff;font-family:var(--disp);font-size:19px;font-weight:900}
+.gn.hubn .ring{fill:#101a13;stroke:var(--ok);stroke-width:2}
+.gn.hubn .lt{fill:var(--ok)}
+.gn.ok .ring{fill:var(--red);stroke:var(--red2);stroke-dasharray:none;filter:drop-shadow(0 0 10px rgba(255,74,54,.75))}
+.gn.ok .lv{fill:#fff}
+.gn.ok .lt{fill:#ffb3a9}
+.gn.rv .ring{stroke:var(--red2);stroke-dasharray:3 4}
+.gn.rv .lv{fill:#ffb3a9}
+.gn.pop .ring{animation:npop .6s cubic-bezier(.2,1.6,.4,1)}
+@keyframes npop{0%{transform:scale(.5)}100%{transform:scale(1)}}
+.gn .ring{transform-box:fill-box;transform-origin:center}
+.gn.hint .ring{animation:nhint .5s ease-in-out 5}
+@keyframes nhint{50%{stroke:var(--amb);stroke-width:5}}
+.gn.center.pulse .ring{animation:cpulse 1.2s ease-out 3}
+@keyframes cpulse{0%{filter:drop-shadow(0 0 0 rgba(255,74,54,.9))}100%{filter:drop-shadow(0 0 30px rgba(255,74,54,0))}}
+
+/* ---------- Vecinal (la red social, dentro del navegador) ---------- */
+#feedwrap{flex:1;min-height:0;overflow-y:auto;background:#ebe3d9;padding:14px 12px 30px;scrollbar-width:thin;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle cx='13' cy='13' r='9' fill='rgba(255,255,255,.25)' stroke='%23141010' stroke-width='3'/%3E%3Cline x1='20' y1='20' x2='29' y2='29' stroke='%23d62b1f' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E") 13 13,zoom-in}
+#feed{width:100%;max-width:480px;margin:0 auto;background:#fff;border-radius:18px;box-shadow:0 10px 30px rgba(20,16,16,.15);overflow:hidden;color:var(--ink)}
+.vbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #eee5db}
+.vlogo{font-family:var(--disp);font-weight:900;font-size:1.15rem;letter-spacing:-.03em;display:flex;align-items:center;gap:7px}
+.vlogo i{display:inline-block;width:22px;height:22px;border-radius:6px;background:var(--ink);position:relative}
+.vlogo i:after{content:"";position:absolute;left:5px;top:5px;width:12px;height:12px;border-radius:50% 50% 50% 0;background:var(--paper)}
+.vbar .pub{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;color:var(--red);border:1px solid var(--red);padding:3px 7px;border-radius:4px}
+.phead{padding:18px 18px 14px;border-bottom:8px solid #f4efe9}
+.phead .row{display:flex;gap:14px;align-items:center}
+.phead .av{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.3rem;flex:none}
+.phead .nm{font-family:var(--disp);font-weight:900;font-size:1.3rem;letter-spacing:-.02em;line-height:1.1}
+.phead .hn{color:#6b6058;font-size:.85rem}
+.phead .st{display:flex;gap:16px;font-size:.82rem;color:#6b6058;margin-top:4px}
+.phead .st b{color:var(--ink)}
+.phead .bio{margin-top:12px;font-size:.95rem;line-height:1.45}
+.post{border-bottom:8px solid #f4efe9}
+.post .ph{display:flex;align-items:center;gap:10px;padding:12px 16px}
+.post .ph .av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.05rem}
+.post .ph .nm{font-weight:700;font-size:.9rem}
+.post .ph .dt{color:#6b6058;font-size:.75rem}
+.post .tx{padding:0 16px 12px;font-size:.95rem;line-height:1.45}
+.pic{position:relative;height:240px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pic .art{font-size:7rem;line-height:1;filter:drop-shadow(0 10px 14px rgba(0,0,0,.18))}
+.pic .ov{position:absolute;font-weight:700}
+.ov.sign{top:16px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:7px 14px;border-radius:6px;font-family:var(--disp);font-size:1.05rem;white-space:nowrap;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.ov.plate{bottom:26px;left:50%;transform:translateX(-50%);background:#fff;color:var(--ink);border:3px solid var(--ink);border-top:10px solid #1f3d8f;padding:2px 14px;border-radius:6px;font-family:var(--mono);font-size:1.25rem;letter-spacing:.08em;white-space:nowrap}
+.ov.candles{top:20px;right:22px;background:#fff;color:var(--red);border-radius:50%;width:74px;height:74px;display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:900;font-size:2rem;box-shadow:0 6px 16px rgba(0,0,0,.15)}
+.ov.tag{bottom:22px;right:22px;background:#fff7d6;color:var(--ink);border:1px dashed #9b8f85;padding:8px 12px;font-family:var(--mono);font-size:.78rem;transform:rotate(-4deg);max-width:70%}
+.ov.badge{bottom:30px;left:50%;transform:translateX(-50%);background:#fff;color:#1f3d8f;border:2px dashed #1f3d8f;border-radius:10px;padding:5px 12px;font-size:.9rem;white-space:nowrap}
+.ov.street{top:22px;left:22px;background:#1d5a3a;color:#fff;border:2px solid #fff;padding:5px 10px;border-radius:4px;font-size:.85rem;box-shadow:0 3px 8px rgba(0,0,0,.25)}
+.post .acts{display:flex;gap:18px;padding:10px 16px;color:#6b6058;font-size:.85rem}
+.post .cms{padding:0 16px 14px;display:grid;gap:6px}
+.cm{font-size:.88rem;line-height:1.4;background:#f7f2ec;border-radius:12px;padding:7px 11px}
+.cm b{font-weight:700;margin-right:5px}
+.post.blink,.phead.blink{animation:blink .6s ease-in-out 4}
+@keyframes blink{50%{box-shadow:inset 0 0 0 4px var(--red2);background:#fff1ee}}
+.z{cursor:inherit;border-radius:3px;transition:background .3s,box-shadow .3s}
+.z.found{background:linear-gradient(transparent 55%,rgba(255,74,54,.35) 55%);box-shadow:0 2px 0 var(--red)}
+.ov .z.found{background:rgba(255,74,54,.35)}
+.z.revealed{outline:2px dashed var(--red);outline-offset:2px;background:rgba(255,74,54,.08)}
+.z.pop{animation:zpop .5s ease-out}
+@keyframes zpop{0%{box-shadow:0 0 0 0 rgba(255,74,54,.7)}100%{box-shadow:0 0 0 14px rgba(255,74,54,0)}}
+
+
+/* ---------- pestañas del navegador ---------- */
+#vwin{position:relative}
+.tabs{flex:none;display:flex;gap:4px;padding:6px 8px 0;background:var(--bar)}
+.tab{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;border:0;border-radius:8px 8px 0 0;padding:8px 10px;background:#2a201e;color:var(--dim);font-size:.82rem;font-weight:700;position:relative;white-space:nowrap}
+.tab:hover{color:var(--fg)}
+.tab.on{background:var(--panel);color:var(--fg)}
+.tab .tl{width:18px;height:18px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:900;flex:none}
+.tab .nd{position:absolute;top:5px;right:7px;min-width:16px;height:16px;border-radius:8px;background:var(--red2);color:#fff;font-size:.6rem;line-height:16px;padding:0 4px;font-family:var(--mono)}
+.tab .nd[hidden]{display:none}
+.lg-vecinal{background:var(--ink);color:var(--paper)}
+.lg-lente{background:#fff;border:3px solid var(--red);border-radius:50%!important;width:18px;height:18px}
+.lg-pio{background:#f2b33d;color:#3a2600}
+/* ---------- Lente (solo fotos) ---------- */
+.lhead{padding:18px 16px 12px;display:flex;gap:16px;align-items:center;border-bottom:1px solid #efe7de}
+.lhead .av{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.3rem;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--ink);flex:none}
+.lhead .nm{font-weight:800;font-size:1.05rem}
+.lhead .st{display:flex;gap:14px;font-size:.8rem;color:#6b6058;margin:4px 0}
+.lhead .st b{color:var(--ink)}
+.lhead .bio{font-size:.88rem}
+.lbrand{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #efe7de;font-family:var(--disp);font-weight:900;letter-spacing:-.02em;font-size:1.2rem}
+.lbrand i{display:inline-block;width:20px;height:20px;border-radius:50%;border:4px solid var(--red);margin-right:6px;vertical-align:-3px}
+.lgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:3px}
+.tile{aspect-ratio:1;border:0;padding:0;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2.9rem;cursor:inherit}
+.tile:after{content:"🔍";position:absolute;right:5px;bottom:4px;font-size:.75rem;opacity:.7}
+.tile:hover{filter:brightness(1.07)}
+.lhint{padding:10px 16px 16px;font-size:.8rem;color:#6b6058;text-align:center}
+#viewer{position:absolute;inset:0;z-index:6;background:rgba(10,7,7,.9);display:none;align-items:center;justify-content:center;padding:12px}
+#viewer.on{display:flex}
+.vcard{background:#fff;color:var(--ink);border-radius:14px;overflow:hidden;width:min(460px,100%);max-height:100%;overflow-y:auto;animation:wnin .3s cubic-bezier(.2,1.3,.4,1)}
+.vcard .vh{display:flex;align-items:center;gap:10px;padding:10px 12px}
+.vcard .vh .av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.vcard .vh b{flex:1;font-size:.88rem}
+.vclose{border:0;background:#f1ebe4;border-radius:50%;width:32px;height:32px;font-size:1rem}
+.vcard .pic{height:300px}
+.vcard .cap{padding:10px 14px 4px;font-size:.92rem}
+.vcard .cap b{margin-right:6px}
+.vcard .dt{padding:0 14px 8px;font-size:.72rem;color:#8a7d73;text-transform:uppercase;letter-spacing:.06em}
+/* ---------- Pío (mensajes cortos) ---------- */
+.pbrand{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid #efe7de;font-family:var(--disp);font-weight:900;font-size:1.2rem;letter-spacing:-.02em}
+.pbrand i{font-style:normal;background:#f2b33d;color:#3a2600;border-radius:12px 12px 12px 3px;padding:2px 8px;font-size:.85rem}
+.phd{padding:16px;border-bottom:1px solid #efe7de}
+.phd .row{display:flex;gap:12px;align-items:center}
+.phd .av{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem}
+.phd .nm{font-weight:800}
+.phd .hn{color:#6b6058;font-size:.85rem}
+.phd .bio{margin-top:8px;font-size:.9rem}
+.pio{display:grid;grid-template-columns:42px 1fr;gap:10px;padding:13px 16px;border-bottom:1px solid #efe7de}
+.pio .av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+.pio .meta{font-size:.85rem;color:#6b6058}
+.pio .meta b{color:var(--ink);margin-right:4px}
+.pio .tx{font-size:.98rem;line-height:1.42;margin-top:2px}
+.pio .ac{display:flex;gap:22px;margin-top:8px;font-size:.8rem;color:#8a7d73}
+.pio .rp{margin-top:8px;border-left:3px solid #f2b33d;padding:4px 0 4px 10px;font-size:.86rem;color:#4a403b}
+.pio .rp b{color:var(--ink);margin-right:5px}
+/* ---------- nuevos sellos en fotos ---------- */
+.ov.collar{background:radial-gradient(circle at 35% 30%,#ffe9a0,#d9a520);color:#3a2a00;border-radius:50%;padding:10px 9px;font-family:var(--mono);font-size:.72rem;border:2px solid #9b7a18;box-shadow:0 4px 10px rgba(0,0,0,.25);transform:translateX(-50%) rotate(-8deg)}
+.ov.pass{bottom:22px;left:50%;transform:translateX(-50%) rotate(-3deg);background:#fff;color:var(--ink);border-radius:8px;padding:8px 12px;font-family:var(--mono);font-size:.74rem;border-left:7px solid var(--red);box-shadow:0 6px 16px rgba(0,0,0,.2);white-space:nowrap}
+/* ---------- nodos de red en el grafo ---------- */
+.gn.netn .ring{fill:#1c1612;stroke:#6b5a4a;stroke-width:2}
+.gn.netn .ic{font-size:16px}
+.gn.netn .lt{fill:#a5978c}
+.gn.netn.vis .ring{stroke:var(--amb);filter:drop-shadow(0 0 8px rgba(255,197,107,.6))}
+.gn.netn.vis .lt{fill:var(--amb)}
+.edge.net{stroke:#3b302a;stroke-dasharray:2 5}
+.edge.net.vis{stroke:var(--amb);stroke-dasharray:none;opacity:.7}
+
+/* globos y efectos */
+.globo{position:fixed;z-index:80;transform:translate(-50%,-100%);background:#0d0909;color:#fff;border:1px solid var(--red2);padding:10px 14px;border-radius:10px;font-size:.86rem;line-height:1.35;width:max-content;max-width:min(320px,86vw);box-shadow:0 10px 30px rgba(0,0,0,.4),0 0 20px rgba(255,74,54,.25);animation:gin .3s cubic-bezier(.2,1.4,.4,1);pointer-events:none}
+.globo:after{content:"";position:absolute;left:50%;bottom:-7px;margin-left:-7px;border:7px solid transparent;border-bottom:0;border-top-color:var(--red2)}
+.globo b{color:var(--red2)}
+.globo.miss{background:#fff;color:var(--ink);border-color:#d9cec2}
+.globo.miss:after{border-top-color:#d9cec2}
+.globo.out{animation:gout .25s ease-in forwards}
+@keyframes gin{from{opacity:0;transform:translate(-50%,-80%) scale(.9)}to{opacity:1}}
+@keyframes gout{to{opacity:0;transform:translate(-50%,-120%)}}
+.spark{position:fixed;z-index:79;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--red2);box-shadow:0 0 16px var(--red2);pointer-events:none;transition:transform .6s cubic-bezier(.5,0,.3,1),opacity .6s}
+#done{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;background:rgba(10,7,7,.82);padding:20px;text-align:center}
+#done.on{display:flex}
+#done .bx{background:var(--panel);border:1px solid var(--red2);border-radius:14px;padding:30px 34px;max-width:460px;animation:gin .5s cubic-bezier(.2,1.4,.4,1);box-shadow:0 0 60px rgba(255,74,54,.25)}
+#done h3{font-family:var(--disp);font-weight:900;font-size:2.4rem;letter-spacing:-.03em;margin:.15em 0}
+#done p{color:var(--dim);margin:0 0 20px;line-height:1.45}
+.stamp{display:inline-block;border:3px solid var(--red2);color:var(--red2);font-family:var(--disp);font-weight:900;letter-spacing:.12em;padding:4px 12px;transform:rotate(-6deg);animation:slam .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes slam{from{transform:scale(2.4) rotate(-6deg);opacity:0}to{transform:rotate(-6deg);opacity:1}}
+.btn{border:0;padding:14px 24px;font-weight:800;font-size:1rem;border-radius:999px;font-family:var(--disp)}
+.btn.pri{background:var(--red);color:#fff}
+.btn.pri:hover{background:var(--red2)}
+.btn.sec{background:none;box-shadow:inset 0 0 0 2px var(--fg)}
+
+/* ---------- informe ---------- */
+#report{overflow-y:auto}
+#report .in{width:min(1120px,100%);margin:0 auto;padding:30px 60px 40px 34px;position:relative}
+#report .k{color:var(--red2)}
+#report h2{font-family:var(--disp);font-weight:900;font-size:clamp(2.1rem,5vw,3.8rem);letter-spacing:-.04em;line-height:.95;margin:.15em 0 .3em}
+#report .lead{font-size:1.08rem;line-height:1.45;max-width:46em;margin:0 0 22px;color:#cdbfb3}
+.rtop{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:18px;margin-bottom:22px}
+.rgraph{background:#0d0909;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.rgraph .gwrap{min-height:330px}
+.abuse{display:grid;gap:12px;align-content:start}
+.ab{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--red2);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.ab .n{grid-row:span 2;font-family:var(--mono);font-size:1.4rem;color:var(--red2);font-weight:700}
+.ab .t{font-family:var(--disp);font-weight:900;font-size:1.08rem;letter-spacing:-.01em}
+.ab .d{font-size:.92rem;line-height:1.45;color:#cdbfb3}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:22px}
+.chips span{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;background:#1f1514;border:1px solid var(--line);color:var(--fg);padding:5px 9px;border-radius:4px}
+.chips span.rv{color:var(--red2);border-color:var(--red2)}
+.cols{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) auto;gap:16px;align-items:start}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.box h3{font-family:var(--mono);font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;margin:0 0 12px;color:var(--red2)}
+.box ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.care li,.fre li{display:grid;grid-template-columns:auto 1fr;gap:10px;font-size:.94rem;line-height:1.4;align-items:start}
+.fre li b{display:inline-block;width:1.7em;height:1.7em;line-height:1.7em;text-align:center;background:var(--red);color:#fff;font-family:var(--disp);font-weight:900}
+.qrb{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;min-width:190px}
+.qrb .qr{background:#fff;padding:10px;line-height:0}
+.qrb .qr svg{width:150px;height:150px;display:block}
+.qrb .t{font-family:var(--disp);font-weight:900}
+.qrb .s{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.calm{margin:22px 0 0;color:#cdbfb3}
+.btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+
+/* ---------- inactividad ---------- */
+#idle{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;background:rgba(10,7,7,.92);text-align:center;padding:20px}
+#idle.on{display:flex}
+#idle .c{font-family:var(--disp);font-weight:900;font-size:6rem;color:var(--red2);line-height:1}
+
+/* ---------- celular ---------- */
+@media (max-width:860px){
+  .top{padding:0 56px 0 16px;font-size:.62rem;gap:8px}
+  .top .hs{display:none}
+  #work{padding:10px 10px 0 14px;gap:10px}
+  #work.hunt{grid-template-columns:1fr;padding-bottom:84px}
+  #search{padding:22px 14px}
+  .cases{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sform .pr{display:none}
+  #work.hunt #twin{position:fixed;left:0;right:0;bottom:0;z-index:40;height:82dvh;border-radius:16px 16px 0 0;transform:translateY(calc(100% - 74px));transition:transform .35s cubic-bezier(.3,1,.4,1);box-shadow:0 -12px 40px rgba(0,0,0,.6)}
+  #work.hunt #twin.open{transform:none}
+  #work.hunt #twin.pop{animation:none}
+  .tab{font-size:.74rem;padding:7px 6px}
+  .vcard .pic{height:240px}
+  #work.hunt #twin .wbar{display:none}
+  .gtools{padding:10px 14px 10px 20px;min-height:74px}
+  #sheetT{display:inline-block!important}
+  .log{height:84px}
+  .pic{height:200px}
+  .pic .art{font-size:5.6rem}
+  #report .in{padding:22px 16px 30px 20px}
+  .rtop,.cols{grid-template-columns:1fr}
+  .qrb{min-width:0}
+}
+@media (max-width:480px){ .cases{grid-template-columns:1fr} .gbtn{padding:7px 9px;font-size:.78rem} }
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<button id="snd" type="button" aria-label="Apagar o prender el sonido">🔊</button>
+<div id="crtov"></div>
+
+<!-- ============ INICIO ============ -->
+<section class="scr grid" id="home">
+  <canvas id="net" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="osline">FH-OS · FH-Trace listo</div>
+    <div class="eye mono">Factor Humano 2026 · Stand 2</div>
+    <h1>Rastro<br><span>Digital</span></h1>
+    <p>Sos investigador/a. Rastreá un perfil con una herramienta de investigación y descubrí todo lo que un estafador podría saber de esa persona.</p>
+    <button class="big" type="button" id="bstart">Empezar ▶</button>
+    <div class="note">Simulación educativa: personas, calles, comercios y la red social son ficticios. Cualquier parecido es casualidad.</div>
+  </div>
+</section>
+
+<!-- ============ ARRANQUE ============ -->
+<section class="scr" id="boot"></section>
+
+<!-- ============ ESCRITORIO ============ -->
+<section class="scr grid" id="desk">
+  <div class="top"><b>FH-OS</b><span class="hs">· modo investigación</span><span class="g">● simulación</span><span class="sp"></span><span id="clock">00:00</span><button class="tbtn" type="button" id="bnew">↺ Nuevo caso</button></div>
+  <div id="work">
+    <div class="wnd" id="vwin">
+      <div class="wbar"><span class="wd"><i></i><i></i><i></i></span><span class="wt"><b>navegador</b> · redes sociales</span></div>
+      <div class="tabs" id="tabs">
+        <button class="tab on" type="button" data-net="vecinal"><span class="tl lg-vecinal">V</span>Vecinal<span class="nd" hidden></span></button>
+        <button class="tab" type="button" data-net="lente"><span class="tl lg-lente"></span>Lente<span class="nd" hidden></span></button>
+        <button class="tab" type="button" data-net="pio"><span class="tl lg-pio">p</span>Pío<span class="nd" hidden></span></button>
+      </div>
+      <div class="url">🔒<span><b>https://</b><span id="vurl"></span></span></div>
+      <div id="feedwrap"><div id="feed"></div></div>
+      <div id="viewer"></div>
+    </div>
+    <div class="wnd pop" id="twin">
+      <div class="wbar"><span class="wd"><i></i><i></i><i></i></span><span class="wt"><b>FH-Trace</b> · <span id="tt">nuevo grafo</span></span></div>
+      <div id="search">
+        <div class="logo"><i></i>FH-TRACE</div>
+        <h2>¿A quién vas a <span>rastrear</span>?</h2>
+        <p class="sub">Escribí el nombre de la persona y FH-Trace va a buscar en fuentes abiertas todo lo que dejó a la vista.</p>
+        <form class="sform" id="sform" autocomplete="off"><span class="pr">objetivo ›</span><input id="q" type="text" placeholder="Escribí un nombre…" aria-label="Nombre de la persona a rastrear" spellcheck="false" autocapitalize="off"><button id="go" type="submit">Rastrear ▶</button></form>
+        <div id="smsg"></div>
+        <div class="mono" style="color:var(--dim)">Casos disponibles en la base simulada</div>
+        <div class="cases" id="cases"></div>
+        <div class="disclaim">FH-Trace es una herramienta inventada para este juego. No busca en internet ni guarda lo que escribís: solo conoce estos 4 perfiles ficticios.</div>
+      </div>
+      <div id="gview">
+        <div class="gtools">
+          <div class="cnt" id="cnt"><b id="cnum">0</b><span>/ 11</span></div>
+          <div class="prog"><div class="tr"><i id="cbar"></i></div><div class="ex"><span>datos confirmados</span><span>exposición: <b id="expo">—</b></span></div></div>
+          <button class="gbtn" type="button" id="sheetT" style="display:none">Ver grafo ▲</button>
+          <button class="gbtn" type="button" id="bhint">💡 Pista</button>
+          <button class="gbtn" type="button" id="bgive">Me rindo / ver todo</button>
+          <button class="gbtn go" type="button" id="breport" hidden>Ver el informe →</button>
+        </div>
+        <div class="gwrap"><svg id="graph" viewBox="0 0 1000 660" preserveAspectRatio="xMidYMid meet" aria-label="Grafo de datos encontrados"></svg></div>
+        <div class="log" id="log" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<div id="done"><div class="bx"><div class="stamp">EXPEDIENTE COMPLETO</div><h3>¡11 de 11!</h3><p>Conectaste todo el grafo. Ahora mirá qué podría hacer un estafador con esto.</p><button class="btn pri" type="button" id="bdone">Ver el informe →</button></div></div>
+
+<!-- ============ INFORME ============ -->
+<section class="scr grid" id="report">
+  <div class="in">
+    <div class="mono k" id="rk">Informe FH-Trace</div>
+    <h2>Lo que un estafador podría hacer con esto</h2>
+    <p class="lead" id="rlead"></p>
+    <div class="rtop">
+      <div class="rgraph"><div class="wbar"><span class="wd"><i></i><i></i><i></i></span><span class="wt"><b>FH-Trace</b> · grafo final</span></div><div class="gwrap"><svg id="rgraph" viewBox="0 0 1000 660" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg></div></div>
+      <div class="abuse" id="rabuse"></div>
+    </div>
+    <div class="chips" id="rchips"></div>
+    <div class="cols">
+      <div class="box"><h3>Cómo cuidarte</h3><ul class="care" id="rcare"></ul></div>
+      <div class="box"><h3>Y si igual te escriben: FRENÁ</h3><ul class="fre" id="rfre"></ul></div>
+      <div class="qrb"><div class="qr" id="rqr"></div><div class="t">Llevate la guía</div><div class="s">Escaneá con tu celular</div></div>
+    </div>
+    <p class="calm">Esto le pasa a cualquiera: publicar lo que nos pasa es lo más normal del mundo. La idea no es dejar de usar redes, sino elegir qué mostrar y a quién.</p>
+    <div class="btns"><button class="btn pri" type="button" id="bagain">🔎 Investigar otro perfil</button><button class="btn sec" type="button" id="bend">Terminar</button></div>
+  </div>
+</section>
+
+<div id="idle"><div><div style="opacity:.7">¿Seguís investigando?</div><div class="c" id="idlec">10</div><div style="opacity:.7">Tocá la pantalla para seguir</div></div></div>
+
+<script src="assets/js/qrcode.js"></script>
+<script>
+/* =====================================================================
+   RASTRO DIGITAL · Factor Humano 2026 · stand 2
+   Simulación educativa. Todo es ficticio: personas, calles, comercios,
+   teléfonos, patentes, la red social "Vecinal" y la herramienta
+   "FH-Trace". No busca nada en internet y no guarda nada.
+
+   ── CONTENIDO EDITABLE ──────────────────────────────────────────────
+   LABELS    nombre de cada tipo de dato + por qué importa
+   ICONS     ícono de cada dato en el grafo
+   CATS      a qué rama del grafo va cada dato
+   PROFILES  los 4 perfiles. En cualquier texto, un dato se marca así:
+                [[clave|texto visible]]
+             La "clave" tiene que estar en data del perfil. Un mismo dato
+             puede aparecer en varios lugares: encontrar uno cuenta.
+             img: {bg:[color1,color2], art:'emoji', ov:'texto', ovc:'estilo'}
+             estilos de ov: sign, plate, candles, tag, badge, street
+   ===================================================================== */
+
+var CFG = { IDLE_S: 90, IDLE_COUNT: 10 };
+
+var LABELS = {
+  nombre:     ['Nombre completo',      'Con el nombre completo te buscan en otras redes y arman tu ficha.'],
+  cumple:     ['Fecha de cumpleaños',  'Aparece en muchas contraseñas y en preguntas para “verificar tu identidad”.'],
+  edad:       ['Edad',                 'Con la edad y el cumple sacan tu año de nacimiento: otra clave típica.'],
+  calle:      ['Barrio o calle',       'Saben dónde vivís. Con tus horarios, saben cuándo no hay nadie.'],
+  trabajo:    ['Lugar de trabajo',     'Pueden hacerse pasar por un cliente o proveedor, o saber dónde estás de día.'],
+  mascota:    ['Nombre de la mascota', 'Muchas personas lo usan como contraseña.'],
+  madre:      ['Nombre de la madre',   '“¿Nombre de tu madre?” es una pregunta de seguridad típica.'],
+  escuela:    ['Escuela de los hijos', 'Pueden escribirte haciéndose pasar por la escuela.'],
+  estudio:    ['Lugar de estudio',     'Pueden hacerse pasar por el instituto: “tenés una cuota vencida”.'],
+  rutina:     ['Horario / rutina',     'Saben cuándo la casa queda vacía.'],
+  vacaciones: ['Fechas de vacaciones', 'Casa vacía varios días… y la excusa ideal para “me robaron en el viaje”.'],
+  patente:    ['Patente del auto',     'Sirve para mandarte una multa falsa o averiguar más datos.'],
+  club:       ['Club',                 'Tema perfecto para ganarse tu confianza o venderte entradas truchas.'],
+  telefono:   ['Parte del teléfono',   'Ya tienen por dónde escribirte… o les falta poco para completarlo.'],
+  mail:       ['Mail',                 'Con tu mail y tu cumple prueban contraseñas o te mandan correos falsos.']
+};
+
+/* Cada perfil tiene presencia en 3 redes ficticias:
+     vecinal  publicaciones largas con comentarios
+     lente    solo fotos: los datos están DENTRO de las imágenes (hay que abrirlas)
+     pio      mensajes cortos
+   Imagen: {bg:[c1,c2], art:'emoji', ovs:[{t:'texto', c:'estilo', s:'posición css opcional'}]}
+   Estilos: sign, plate, candles, tag, badge, street, collar, pass */
+var PROFILES = [
+ {id:'marcela', name:'Marcela', full:'Marcela Iturbide', age:'41 años · peluquera',
+  blurb:'Publica mucho de su negocio y de su familia.', av:'💇‍♀️', avbg:'#f7d6dc',
+  handles:{vecinal:'@marce.estilo', lente:'marce.estilo', pio:'@marce_iturbide'},
+  data:{nombre:'Marcela Iturbide', cumple:'14 de agosto', edad:'41 años', calle:'Calle Las Calandrias 812', trabajo:'Peluquería Marce Estilo',
+        mascota:'Rocky', madre:'Norma', escuela:'Escuela del Ombú', rutina:'Martes a sábado, 9 a 19 h, en el local', vacaciones:'Del 2 al 16 de enero', telefono:'11 5xxx-xx47'},
+  vecinal:{followers:'1.240', bio:'[[nombre|Marcela Iturbide]] · ✂️ Dueña de [[trabajo|Peluquería Marce Estilo]] · Mamá de dos terremotos 💕',
+   posts:[
+    {date:'hace 3 días', img:{bg:['#f7d6dc','#e9a9b6'], art:'💈', ovs:[{t:'Marce Estilo', c:'sign'}]},
+     text:'¡Nueva vidriera! Te espero en el local de [[calle|Calle Las Calandrias 812]]. ¡Pasá a saludar! 💕', cms:[['Ani','¡Qué lindo quedó, Marce!']]},
+    {date:'20 feb', img:{bg:['#efe6dc','#d6c4b0'], art:'🕘', ovs:[{t:'[[rutina|Mar a Sáb · 9 a 19 h]]', c:'sign'}]},
+     text:'Recuerden los horarios: [[rutina|martes a sábado de 9 a 19 h]]. Domingos y lunes, descanso en familia 💕', cms:[['Pocha','¡Allá voy el martes!']]},
+    {date:'10 dic', img:null, text:'Turnos SOLO por mensaje al [[telefono|11 5xxx-xx47]] 📲 ¡En el local no atiendo llamadas!', cms:[]},
+    {date:'1 dic', img:null, text:'Mate y a trabajar ☕ ¡Feliz semana para todos!', cms:[['Ani','¡Igualmente! 🧉']]}
+   ]},
+  lente:{bio:'✂️ peluquería · mamá · 🐶', followers:'860',
+   photos:[
+    {date:'14 ago', img:{bg:['#fde7c8','#f5c48a'], art:'🎂', ovs:[{t:'[[edad|41]]', c:'candles'}]}, cap:'Otro añito más 🎂 ¡Feliz [[cumple|14/8]] a mí!', cms:[['Tía Bety','¡Feliz cumple, Marce! ¡Saludos a tu mamá [[madre|Norma]]!']]},
+    {date:'2 ago', img:{bg:['#e6efe0','#bcd3ad'], art:'🐶', ovs:[{t:'[[mascota|ROCKY]]', c:'collar', s:'bottom:34px;left:54%'}]}, cap:'El guardián del local 🐾', cms:[['Sole','¡El más lindo de la cuadra!']]},
+    {date:'4 mar', img:{bg:['#dfe8f5','#a9bfe0'], art:'🎒', ovs:[{t:'[[escuela|Escuela del Ombú]]', c:'badge'}]}, cap:'Primer día 🎒 ¡cómo pasa el tiempo!', cms:[['Gabi','¡Qué grandes están!']]},
+    {date:'28 dic', img:{bg:['#d5eef2','#f6e2b3'], art:'🏖️', ovs:[{t:'CERRADO POR VACACIONES · [[vacaciones|2 al 16/1]]', c:'tag'}]}, cap:'Contando los días ☀️', cms:[['Marta','¿Y quién te riega las plantas? 😂'],['marce.estilo','¡Nadie, se quedan solitas!']]},
+    {date:'15 nov', img:{bg:['#fbe3ee','#f2b9cf'], art:'🌷'}, cap:'Lunes ✨', cms:[]},
+    {date:'3 nov', img:{bg:['#efe6dc','#cdb9a6'], art:'🚪', ovs:[{t:'N° [[calle|812]]', c:'sign'}]}, cap:'Mi lugar en el mundo 💈', cms:[]}
+   ]},
+  pio:{bio:'Peluquera. Mamá. Fan del mate.',
+   pios:[
+    {date:'2 h', text:'Otra vez se cortó la luz en [[calle|Las Calandrias]] y yo con dos clientas con tintura 🙃', rp:[['@vecina_ani','¡A nosotros también!']]},
+    {date:'1 d', text:'Mi vieja [[madre|Norma]] dice que cada día me parezco más a ella. ¿Es un elogio? 😂', rp:[]},
+    {date:'3 d', text:'Necesito playa urgente. [[vacaciones|Del 2 al 16 de enero]] cierro y no existo 🏖️', rp:[['@clienta_pocha','¡Te lo merecés!']]},
+    {date:'1 sem', text:'Día de la madre con los terremotos 💕', rp:[]}
+   ]},
+  abuse:[
+   ['Adivinar contraseñas','Probar combinaciones como “Rocky1408” o “Marce41”: mascota, cumple y edad, todo publicado.'],
+   ['Responder preguntas de seguridad','“¿Nombre de tu madre?” Norma. “¿Nombre de tu mascota?” Rocky (estaba en la chapita del collar).'],
+   ['Saber cuándo la casa está vacía','Del 2 al 16 de enero no hay nadie en Calle Las Calandrias… y lo contó en tres redes distintas.'],
+   ['Hacerse pasar por la escuela','Un mensaje al 11 5xxx-xx47: “Le escribimos de la Escuela del Ombú, hubo un problema con su hijo…”.']
+  ]},
+
+ {id:'ruben', name:'Don Rubén', full:'Rubén Oscar Aldao', age:'68 años · jubilado',
+  blurb:'Recién empezó a usar redes y comparte todo.', av:'👴', avbg:'#dbe7f1',
+  handles:{vecinal:'@ruben.aldao', lente:'ruben.aldao58', pio:'@RubenAldao'},
+  data:{nombre:'Rubén Oscar Aldao', cumple:'3 de marzo', edad:'68 años', calle:'Pasaje Los Jilgueros 255', mascota:'Pirata', madre:'Elvira',
+        club:'Club Social y Deportivo Los Teros', rutina:'Martes y jueves, 17 a 20 h, en el club', vacaciones:'15 días en la costa, desde el lunes', patente:'ZX 482 FH', telefono:'11 5xxx-xx21'},
+  vecinal:{followers:'212', bio:'[[nombre|Rubén Oscar Aldao]]. Ferroviario jubilado 🚂. Abuelo chocho. Recién aprendiendo a usar esto 😅',
+   posts:[
+    {date:'hace 2 días', img:{bg:['#e3f0dc','#b7d6a4'], art:'🏡', ovs:[{t:'[[calle|N° 255]]', c:'sign'}]},
+     text:'Miren cómo quedó el jardín de casa, en [[calle|Pasaje Los Jilgueros 255]]. ¡Las rosas este año explotaron! 🌹', cms:[['Chiche','¡Hermoso, Rubén!']]},
+    {date:'9 feb', img:{bg:['#ece6f2','#cfc3df'], art:'🕯️'},
+     text:'Hoy se cumplen 10 años sin mi vieja, [[madre|Elvira]]. Te extraño todos los días, mamá.', cms:[['Primo Hugo','¡Qué mujer tu mamá Elvira! Un abrazo, Rubén.']]},
+    {date:'30 ene', img:{bg:['#f6e2b3','#d5eef2'], art:'🧳', ovs:[{t:'[[vacaciones|Costa · 15 días]]', c:'tag'}]},
+     text:'¡Nos vamos con la Negra [[vacaciones|15 días a la costa]]! Salimos el lunes temprano 🚗', cms:[['Chiche','¿Les cuido algo?'],['Rubén','No hace falta, queda todo cerrado 👍']]},
+    {date:'15 ene', img:null, text:'Me cambié de número, agéndenlo: [[telefono|11 5xxx-xx21]]. Cualquier cosa me llaman ahí.', cms:[['La Negra','¡Ya te agendé!']]}
+   ]},
+  lente:{bio:'🚂 jubilado · 🏆 bochas · 🌹 jardín', followers:'97',
+   photos:[
+    {date:'3 mar', img:{bg:['#fde7c8','#f5c48a'], art:'🎂', ovs:[{t:'[[edad|68]]', c:'candles'}]}, cap:'¡68 pirulos! 🎉', cms:[['Tito','¡Feliz [[cumple|3 de marzo]], Rubén! ¿Asado?']]},
+    {date:'18 feb', img:{bg:['#f1e6d6','#d9c2a2'], art:'🐈‍⬛', ovs:[{t:'[[mascota|PIRATA]]', c:'collar', s:'bottom:32px;left:56%'}]}, cap:'El verdadero dueño de la casa 😂', cms:[]},
+    {date:'28 ene', img:{bg:['#e7e2dc','#c3b8ac'], art:'🚗', ovs:[{t:'[[patente|ZX 482 FH]]', c:'plate'}]}, cap:'Listo para el viaje. ¡Impecable!', cms:[['Tito','¡Una joya!']]},
+    {date:'4 feb', img:{bg:['#e0ecf5','#a9c6de'], art:'🏆', ovs:[{t:'[[club|Club Los Teros]]', c:'badge'}]}, cap:'Campeones del torneo de bochas 🏆', cms:[['Beto','¡Grande, Rubén!']]},
+    {date:'1 ene', img:{bg:['#fbe3e3','#efb8b8'], art:'🌹'}, cap:'Las rosas de este año', cms:[]}
+   ]},
+  pio:{bio:'Jubilado. Aprendiendo a usar esto.',
+   pios:[
+    {date:'5 h', text:'Los [[rutina|martes y jueves de 17 a 20]] no me llamen que estoy en las bochas 😎', rp:[]},
+    {date:'2 d', text:'¿Alguien sabe si el [[club|Club Social y Deportivo Los Teros]] abre el feriado?', rp:[['@beto_bochas','¡Abre, Rubén!']]},
+    {date:'3 mar', text:'Hoy cumplo [[edad|68]] y todavía no entiendo cómo funciona esto del Pío 😅', rp:[['@lanegra','¡Feliz cumple, viejo! ❤️']]},
+    {date:'1 sem', text:'Qué lindo día para un asado.', rp:[]}
+   ]},
+  abuse:[
+   ['Llamarlo con una excusa creíble','Al 11 5xxx-xx21: “Rubén, le hablo del Club Los Teros, hay que regularizar la cuota y le va a llegar un código…”.'],
+   ['Saber cuándo la casa está vacía','Martes y jueves de 17 a 20, y 15 días seguidos de vacaciones: Pasaje Los Jilgueros 255 queda solo.'],
+   ['Adivinar contraseñas','Probar “Pirata1958” o “Elvira68”: mascota, madre, edad y año de nacimiento (¡está en su usuario de Lente!).'],
+   ['Inventar una multa','Con la patente ZX 482 FH, mandarle una “multa” falsa para que pague por un link.']
+  ]},
+
+ {id:'lucia', name:'Lucía', full:'Lucía Bertolotti', age:'23 años · estudiante',
+  blurb:'Viaja y sube historias todo el tiempo.', av:'👩‍🎓', avbg:'#fbe3cf',
+  handles:{vecinal:'@lu.bertolotti', lente:'lu.viajera', pio:'@lu_berto03'},
+  data:{nombre:'Lucía Bertolotti', mail:'lu.berto03@xxxx.com', cumple:'22 de noviembre', edad:'23 años', madre:'Silvia', estudio:'Instituto Monte Verde',
+        rutina:'Lunes a viernes, 8 a 13 h, cursa', calle:'Esquina Ombú Viejo y Los Sauces', mascota:'Luna', trabajo:'Heladería Copo Frío', vacaciones:'Del 5 al 25 de febrero, en el norte'},
+  vecinal:{followers:'640', bio:'[[nombre|Lucía Bertolotti]] · Estudiante de Enfermería · 📩 [[mail|lu.berto03@xxxx.com]]',
+   posts:[
+    {date:'10 nov', img:{bg:['#e3eef8','#b3cde6'], art:'📚', ovs:[{t:'[[estudio|Instituto Monte Verde]]', c:'badge'}]},
+     text:'¡Primer parcial aprobado en el [[estudio|Instituto Monte Verde]]! 📚 Cursando de [[rutina|lunes a viernes de 8 a 13]], pero vale la pena.', cms:[['Agus','¡Genia total!']]},
+    {date:'12 oct', img:{bg:['#e8f4f6','#bfe3ea'], art:'🍦', ovs:[{t:'[[trabajo|Copo Frío]]', c:'sign'}]},
+     text:'Fin de semana de laburo en la [[trabajo|Heladería Copo Frío]] 🍦 ¡Vengan que los atiendo yo!', cms:[['Fede','¡El sábado caigo!']]},
+    {date:'28 ene', img:null, text:'Domingo de mate y apuntes ☕📒', cms:[]}
+   ]},
+  lente:{bio:'✈️🌎 viajes · 🐾 Luna · 💉 futura enfermera', followers:'2.890',
+   photos:[
+    {date:'22 nov', img:{bg:['#fde1ec','#f7b6cf'], art:'🎈', ovs:[{t:'[[edad|23]]', c:'candles'}]}, cap:'Feliz cumple a mí 🥳', cms:[['Cami','¡Pasala lindo con tu mamá [[madre|Silvia]]! 💕']]},
+    {date:'2 nov', img:{bg:['#ffd9b0','#f59f7a'], art:'🌅', ovs:[{t:'[[calle|Ombú Viejo · Los Sauces]]', c:'street'}]}, cap:'Atardecer desde la esquina de casa 🧡', cms:[['Vero','¡Estoy a dos cuadras! 😮']]},
+    {date:'25 oct', img:{bg:['#e6efe0','#bcd3ad'], art:'🐕', ovs:[{t:'[[mascota|LUNA]]', c:'collar', s:'bottom:32px;left:55%'}]}, cap:'Mi compañera de estudio 🐾', cms:[]},
+    {date:'4 feb', img:{bg:['#f3e3c3','#d9b77d'], art:'🎒', ovs:[{t:'BUS · [[vacaciones|5 → 25 FEB · NORTE]]', c:'pass'}]}, cap:'¡Se viene! 🌵', cms:[['Silvia','Cuidate mucho, hija ❤️']]},
+    {date:'6 feb', img:{bg:['#f4d9b5','#e0a96d'], art:'🌵'}, cap:'📍 ✨', cms:[]}
+   ]},
+  pio:{bio:'Enfermería 💉 · viajera ✈️',
+   pios:[
+    {date:'21 nov', text:'Mañana cumplo [[edad|23]] y mi vieja ya me está haciendo la torta 🥹 ¡[[cumple|22/11]] se festeja!', rp:[]},
+    {date:'3 d', text:'Si me buscan, de [[rutina|lunes a viernes de 8 a 13]] estoy en el instituto. Después ni me hablen 😴', rp:[]},
+    {date:'1 sem', text:'¿Alguien tiene los apuntes de anatomía? Mándenlos a [[mail|lu.berto03@xxxx.com]] 🙏', rp:[['@agus_enf','¡Te los paso!']]},
+    {date:'6 feb', text:'📍 En vivo desde Salta 🌵 [[vacaciones|La casa quedó sola, Luna con la vecina]]', rp:[]}
+   ]},
+  abuse:[
+   ['Hacerse pasar por ella','Mientras está de viaje, escribirle a su mamá Silvia desde un número nuevo: “Ma, me robaron el celu en el norte, mandame plata”.'],
+   ['Adivinar contraseñas','Probar “Luna2003” o “lu.berto2211”: mascota, año y fecha de cumpleaños, todo a la vista.'],
+   ['Hacerse pasar por el instituto','Un mail a lu.berto03@…: “Instituto Monte Verde: tenés una cuota vencida, pagá con este link”.'],
+   ['Saber cuándo la casa está vacía','Del 5 al 25 de febrero no hay nadie en la esquina de Ombú Viejo y Los Sauces (y Luna está con la vecina).']
+  ]},
+
+ {id:'diego', name:'Diego', full:'Diego Sanmartino', age:'35 años · empleado',
+  blurb:'Fanático del fútbol. Publica su auto y su rutina de gimnasio.', av:'🧑‍🦱', avbg:'#d9e4f5',
+  handles:{vecinal:'@diego.sanmartino', lente:'diego.pampa', pio:'@DiegoPampa35'},
+  data:{nombre:'Diego Sanmartino', club:'Club Atlético Pampa Unida', edad:'35 años', cumple:'9 de julio', madre:'Graciela', patente:'ZY 736 KT',
+        calle:'Av. de los Teros al 1300', rutina:'Lunes a viernes, 19 a 21 h, en el gimnasio', trabajo:'Distribuidora El Trébol', mascota:'Bruno', vacaciones:'Del 20 al 27 de diciembre, en las sierras'},
+  vecinal:{followers:'512', bio:'[[nombre|Diego Sanmartino]] · ⚽ Hincha de [[club|Pampa Unida]] de toda la vida · 💪 Gym todos los días',
+   posts:[
+    {date:'9 jul', img:{bg:['#dceaf7','#a8c8ea'], art:'🎂', ovs:[{t:'35', c:'candles'}]},
+     text:'¡Cumple patrio! 🇦🇷 [[cumple|9 de julio]] y [[edad|35 abriles]]. ¡Gracias, banda!', cms:[['Pato','¡Feliz cumple! Tu mamá [[madre|Graciela]] ya me invitó al asado 😂']]},
+    {date:'hace 3 semanas', img:{bg:['#e9efe3','#c3d4ae'], art:'🪪', ovs:[{t:'[[trabajo|Distribuidora El Trébol]]', c:'badge'}]},
+     text:'Otro lunes en la [[trabajo|Distribuidora El Trébol]] 💼 ¡Arrancamos!', cms:[['Juan','¡Café y a cargar camiones!']]},
+    {date:'hace 1 mes', img:null, text:'¡Ya sacamos los pasajes! Del [[vacaciones|20 al 27 de diciembre]] nos vamos a las sierras 🏞️', cms:[['Pato','¿Y la casa? ¡Dejame la llave que hago un asado! 😂']]},
+    {date:'hace 2 meses', img:null, text:'Lunes de piernas 😩🦵 ¿Quién más sufre?', cms:[['Rulo','Yo 😭']]}
+   ]},
+  lente:{bio:'⚽ Pampa Unida · 💪 · 🐕 Bruno', followers:'1.120',
+   photos:[
+    {date:'hace 5 días', img:{bg:['#e7e2dc','#c3b8ac'], art:'🚙', ovs:[{t:'[[patente|ZY 736 KT]]', c:'plate'}]}, cap:'Lavando la nave en la puerta de casa ✨', cms:[['Nico','¿Esa es tu casa de [[calle|Av. de los Teros]]? ¡Te vi ayer!']]},
+    {date:'hace 1 semana', img:{bg:['#dfe8f5','#9fb7de'], art:'👕', ovs:[{t:'[[club|Pampa Unida]]', c:'badge'}]}, cap:'Domingo de cancha ⚽', cms:[['Rulo','¡Este año salimos campeones!']]},
+    {date:'hace 1 mes', img:{bg:['#f1e6d6','#d9c2a2'], art:'🐕‍🦺', ovs:[{t:'[[mascota|BRUNO]]', c:'collar', s:'bottom:30px;left:57%'}]}, cap:'Compañero de vida 🐾', cms:[['Sofi','¡Qué facha!']]},
+    {date:'hace 2 semanas', img:{bg:['#ece7e1','#cbbfb2'], art:'🏋️', ovs:[{t:'[[rutina|Lun a Vie · 19 a 21 h]]', c:'sign'}]}, cap:'Como todos los días 💪', cms:[]},
+    {date:'hace 2 meses', img:{bg:['#f3dccb','#e2b08d'], art:'🍖'}, cap:'Domingo = asado', cms:[]}
+   ]},
+  pio:{bio:'Pampa Unida 💙 · gym · asado',
+   pios:[
+    {date:'4 h', text:'Otro día en la [[trabajo|Distribuidora El Trébol]]. Los lunes deberían estar prohibidos.', rp:[]},
+    {date:'1 d', text:'📍 Gimnasio Fuerza Sur. Si no estoy acá de [[rutina|19 a 21]] es porque me morí 😂', rp:[['@profe_mati','¡Te espero!']]},
+    {date:'2 sem', text:'[[vacaciones|Del 20 al 27 de diciembre]] desconectado en las sierras. La casa queda sola, así que no me roben jaja', rp:[]},
+    {date:'oct', text:'Feliz día a mi vieja, [[madre|Graciela]], la mejor ❤️', rp:[]}
+   ]},
+  abuse:[
+   ['Saber cuándo la casa está vacía','De lunes a viernes de 19 a 21 está en el gimnasio, y del 20 al 27 de diciembre en las sierras: Av. de los Teros queda sola.'],
+   ['Inventar una multa','Con la patente ZY 736 KT (estaba en una foto), mandarle una “multa de tránsito” falsa para pagar por un link.'],
+   ['Venderle entradas truchas','“Diego, tengo dos plateas para Pampa Unida, transferime y te las mando”.'],
+   ['Adivinar contraseñas y preguntas','Probar “Bruno0907” o “PampaUnida35”. Y a “¿nombre de tu madre?” ya sabe que es Graciela.']
+  ]}
+];
+
+var CARE = [
+  ['🔒','Poné tu perfil en privado y revisá quién te sigue.'],
+  ['🏖️','Contá las vacaciones a la vuelta, no mientras estás afuera.'],
+  ['🚗','No muestres patentes, uniformes escolares ni el número de tu casa.'],
+  ['🔑','No uses en tus contraseñas el nombre de tu mascota, tu cumple ni el de tu familia.'],
+  ['👀','Antes de publicar, preguntate: ¿esto le sirve a alguien que me quiere engañar?']
+];
+var FRENA = [['F','Frená: si te apuran, pará un minuto.'],['R','Revisá quién te escribe y desde dónde.'],['E','Elegí otro canal: llamá vos al número de siempre.'],['N','Nunca compartas códigos.'],['Á','Avisá: contalo, así cuidás a los demás.']];
+
+
+var ICONS = {nombre:'🪪', cumple:'🎂', edad:'🔢', calle:'📍', trabajo:'💼', mascota:'🐾', madre:'👩', escuela:'🏫', estudio:'🎓',
+             rutina:'🕒', vacaciones:'🧳', patente:'🚗', club:'⚽', telefono:'📞', mail:'✉️'};
+var CATS = [
+  {id:'id',  label:'Identidad', ic:'🧬', ang:-140, keys:['nombre','cumple','edad','telefono','mail']},
+  {id:'lug', label:'Lugares',   ic:'🗺️', ang:-40,  keys:['calle','trabajo','escuela','estudio','club']},
+  {id:'rut', label:'Rutina',    ic:'⏱️', ang:40,   keys:['rutina','vacaciones','patente']},
+  {id:'fam', label:'Vínculos',  ic:'❤️', ang:140,  keys:['madre','mascota']}
+];
+var NETS = {
+  vecinal: {name:'Vecinal', host:'vecinal.sim/', ic:'🏘️', ang:112},
+  lente:   {name:'Lente',   host:'lente.sim/',   ic:'📷', ang:90},
+  pio:     {name:'Pío',     host:'pio.sim/',     ic:'💬', ang:68}
+};
+var NOMATCH = 'Sin coincidencias en la base simulada. FH-Trace solo conoce perfiles ficticios: elegí uno de los casos de abajo.';
+
+/* =====================================================================
+   MOTOR (para cambiar textos no hace falta tocar de acá para abajo)
+   ===================================================================== */
+(function(){
+'use strict';
+var SITE = /^https?:/.test(location.protocol) ? location.origin : 'https://credenciales-pi.vercel.app';
+var STOP = {stop: true};
+var cur = 'home', P = null, found = {}, revealed = false, gen = 0, speed = 1, phase = 'search', NODES = {}, EDGES = {}, NET = 'vecinal', VIEW = -1, visited = {};
+var MOBILE = matchMedia('(max-width:860px)'), RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var SVGNS = 'http://www.w3.org/2000/svg';
+
+function $(s){ return document.querySelector(s); }
+function h(tag, cls, txt){ var e = document.createElement(tag); if(cls) e.className = cls; if(txt != null) e.textContent = txt; return e; }
+function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function norm(s){ return String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9ñ ]/g, ' ').replace(/\s+/g, ' ').trim(); }
+function mk(s){ return esc(s).replace(/\[\[([a-z]+)\|([^\]]+)\]\]/g, function(_, k, t){ return '<span class="z" data-k="' + k + '">' + t + '</span>'; }); }
+function sleep(ms){ var g = gen; return new Promise(function(r, j){ setTimeout(function(){ g === gen ? r() : j(STOP); }, ms * speed); }); }
+function guard(p){ if(p && p.catch) p.catch(function(e){ if(e !== STOP) console.error(e); }); }
+function keys(){ return Object.keys(P.data); }
+function nFound(){ return keys().filter(function(k){ return found[k]; }).length; }
+function catOf(k){ for(var i = 0; i < CATS.length; i++) if(CATS[i].keys.indexOf(k) >= 0) return CATS[i]; return CATS[0]; }
+function short(t, n){ t = String(t); return t.length > n ? t.slice(0, n - 1) + '…' : t; }
+
+/* ---------- sonido ---------- */
+var AC = null, snd = true;
+function ac(){ if(!AC){ try{ AC = new (window.AudioContext || window.webkitAudioContext)(); }catch(e){} } if(AC && AC.state === 'suspended') AC.resume(); return AC; }
+function tone(f, d, tp, v, w){ if(!snd) return; var a = ac(); if(!a) return; var o = a.createOscillator(), g = a.createGain(), t = a.currentTime + (w || 0);
+  o.type = tp || 'sine'; o.frequency.value = f; g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(v || .05, t + .015); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+  o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + d + .05); }
+function sKey(){ tone(1800 + Math.random() * 600, .02, 'square', .01); }
+function sNode(){ tone(520 + Math.random() * 200, .08, 'triangle', .035); }
+function sFound(){ tone(660, .12, 'triangle', .06); tone(990, .2, 'triangle', .05, .1); }
+function sMiss(){ tone(220, .15, 'sine', .035); }
+function sWin(){ [523, 659, 784, 1047].forEach(function(f, i){ tone(f, .3, 'triangle', .06, i * .1); }); }
+$('#snd').addEventListener('click', function(){ snd = !snd; this.textContent = snd ? '🔊' : '🔇'; });
+
+/* ---------- pantallas ---------- */
+function show(id){ cur = id; document.querySelectorAll('.scr').forEach(function(s){ s.classList.toggle('on', s.id === id); }); $('#done').classList.remove('on'); clearGlobos(); document.body.classList.toggle('noscan', id === 'report'); }
+function goHome(){ gen++; speed = 1; P = null; show('home'); }
+setInterval(function(){ var d = new Date(); $('#clock').textContent = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }, 1000);
+
+/* ---------- red animada del inicio ---------- */
+(function(){
+  var c = $('#net'), x = c.getContext('2d'), pts = [];
+  function size(){ c.width = c.offsetWidth; c.height = c.offsetHeight; }
+  size(); addEventListener('resize', size);
+  for(var i = 0; i < 46; i++) pts.push({x: Math.random(), y: Math.random(), vx: (Math.random() - .5) * .0007, vy: (Math.random() - .5) * .0007, r: Math.random() < .18 ? 4 : 2, red: Math.random() < .3});
+  (function f(){
+    if(cur === 'home' && !RM){
+      var W = c.width, H = c.height; x.clearRect(0, 0, W, H);
+      pts.forEach(function(p){ p.x += p.vx; p.y += p.vy; if(p.x < 0 || p.x > 1) p.vx *= -1; if(p.y < 0 || p.y > 1) p.vy *= -1; });
+      for(var i = 0; i < pts.length; i++) for(var j = i + 1; j < pts.length; j++){
+        var a = pts[i], b = pts[j], dx = (a.x - b.x) * W, dy = (a.y - b.y) * H, d = Math.sqrt(dx * dx + dy * dy);
+        if(d < 170){ x.strokeStyle = (a.red || b.red) ? 'rgba(255,74,54,' + (1 - d / 170) * .35 + ')' : 'rgba(239,231,220,' + (1 - d / 170) * .12 + ')'; x.lineWidth = 1; x.beginPath(); x.moveTo(a.x * W, a.y * H); x.lineTo(b.x * W, b.y * H); x.stroke(); }
+      }
+      pts.forEach(function(p){ x.fillStyle = p.red ? '#ff4a36' : 'rgba(239,231,220,.5)'; x.beginPath(); x.arc(p.x * W, p.y * H, p.r, 0, 7); x.fill(); });
+    }
+    requestAnimationFrame(f);
+  })();
+})();
+
+/* ---------- arranque ---------- */
+$('#bstart').addEventListener('click', function(){ ac(); guard(boot()); });
+async function boot(){
+  gen++; speed = 1; show('boot'); var b = $('#boot'); b.innerHTML = '';
+  var L = ['FH-OS 26.11 · modo investigación', 'Cargando FH-Trace 2.6 …', 'Transformaciones OSINT (simuladas) … <span class="ok">[ OK ]</span>', 'Base de perfiles ficticios … <span class="ok">[ OK ]</span>', 'Modo ético: solo fuentes públicas … <span class="ok">[ ACTIVADO ]</span>'];
+  try{
+    for(var i = 0; i < L.length; i++){ var d = h('div'); d.innerHTML = L[i]; b.appendChild(d); sKey(); await sleep(260); }
+    var bar = h('div', 'bar'), bi = h('i'); bar.appendChild(bi); b.appendChild(bar);
+    for(var p = 0; p <= 100; p += 5){ bi.style.width = p + '%'; await sleep(28); }
+    await sleep(200);
+  }catch(e){ return; }
+  openSearch();
+}
+$('#boot').addEventListener('pointerdown', function(){ speed = .15; });
+
+/* ---------- FH-Trace: búsqueda ---------- */
+function openSearch(){
+  gen++; speed = 1; P = null; phase = 'search';
+  show('desk'); $('#work').className = ''; var tw = $('#twin'); tw.className = 'wnd pop'; void tw.offsetWidth;
+  $('#tt').textContent = 'nuevo grafo'; $('#q').value = ''; $('#smsg').textContent = '';
+  var box = $('#cases'); box.innerHTML = '';
+  PROFILES.forEach(function(p, i){
+    var b = h('button', 'case'); b.type = 'button';
+    var cn = h('div', 'cn', 'CASO 0' + (i + 1)); cn.appendChild(h('span', '', '● público')); b.appendChild(cn);
+    var av = h('div', 'av', p.av); b.appendChild(av);
+    b.appendChild(h('div', 'nm', p.full)); b.appendChild(h('div', 'ag', p.age)); b.appendChild(h('div', 'bl', p.blurb));
+    b.appendChild(h('div', 'ft', 'Rastrear →'));
+    b.addEventListener('click', function(){ ac(); guard(typeAndGo(p)); });
+    box.appendChild(b);
+  });
+  if(!MOBILE.matches) setTimeout(function(){ if(phase === 'search') $('#q').focus({preventScroll: true}); }, 300);
+}
+async function typeAndGo(p){
+  if(phase !== 'search') return; phase = 'typing';
+  var q = $('#q'); q.value = '';
+  for(var i = 0; i < p.full.length; i++){ q.value += p.full[i]; sKey(); await sleep(38); }
+  await sleep(250); startTrace(p);
+}
+$('#sform').addEventListener('submit', function(e){
+  e.preventDefault(); ac(); if(phase !== 'search') return;
+  var v = norm($('#q').value); if(!v){ $('#smsg').textContent = 'Escribí el nombre de la persona a rastrear, o tocá uno de los casos.'; sMiss(); return; }
+  var m = PROFILES.filter(function(p){ var f = norm(p.full), n = norm(p.name); return f === v || n === v || f.indexOf(v) === 0 || (v.length >= 4 && f.indexOf(v) >= 0) || Object.keys(p.handles).some(function(n){ return norm(p.handles[n]).indexOf(v) >= 0; }); });
+  if(m.length === 1){ startTrace(m[0]); return; }
+  $('#smsg').textContent = m.length > 1 ? 'Hay más de una coincidencia: escribí el nombre completo o tocá un caso.' : NOMATCH; sMiss();
+  $('#q').value = '';   /* lo que se escribe no se guarda */
+});
+
+/* ---------- FH-Trace: grafo ---------- */
+function sv(tag, attrs, parent){ var e = document.createElementNS(SVGNS, tag); for(var k in attrs) e.setAttribute(k, attrs[k]); if(parent) parent.appendChild(e); return e; }
+function pos(angDeg, r){ var a = angDeg * Math.PI / 180; return {x: 500 + Math.cos(a) * r, y: 330 + Math.sin(a) * r}; }
+function buildGraph(svg, prof, store){
+  svg.innerHTML = ''; var gE = sv('g', {}, svg), gN = sv('g', {}, svg), nodes = {}, edges = {}, ks = Object.keys(prof.data);
+  function node(id, x, y, r, cls, ic, lt, lv){
+    var g = sv('g', {'class': 'gn ' + cls, transform: 'translate(' + x.toFixed(1) + ',' + y.toFixed(1) + ')'}, gN);
+    sv('circle', {'class': 'ring', r: r}, g);
+    var t = sv('text', {'class': 'ic', y: 1}, g); t.textContent = ic;
+    if(lt){ var a = sv('text', {'class': 'lt', y: r + 18}, g); a.textContent = lt; }
+    var b = sv('text', {'class': 'lv', y: r + (lt ? 36 : 22)}, g); b.textContent = lv || '';
+    var ti = sv('title', {}, g); ti.textContent = (lt ? lt + ': ' : '') + (lv || '');
+    nodes[id] = g; return g;
+  }
+  function edge(id, a, b, cls){ edges[id] = sv('line', {'class': 'edge ' + cls, x1: a.x.toFixed(1), y1: a.y.toFixed(1), x2: b.x.toFixed(1), y2: b.y.toFixed(1)}, gE); }
+  var C = {x: 500, y: 330};
+  node('center', C.x, C.y, 44, 'center', prof.av, '', prof.full);
+  Object.keys(NETS).forEach(function(n){
+    var N = NETS[n], Q = pos(N.ang, 178);
+    edges['net-' + n] = sv('line', {'class': 'edge net', x1: C.x, y1: C.y, x2: Q.x.toFixed(1), y2: Q.y.toFixed(1)}, gE);
+    node('net-' + n, Q.x, Q.y, 20, 'netn', N.ic, N.name, '');
+  });
+  CATS.forEach(function(cat){
+    var kids = cat.keys.filter(function(k){ return ks.indexOf(k) >= 0; }); if(!kids.length) return;
+    var H = pos(cat.ang, 150);
+    edge('h-' + cat.id, C, H, 'hub'); node('h-' + cat.id, H.x, H.y, 30, 'hubn', cat.ic, cat.label, '');
+    var spread = kids.length > 3 ? 22 : 25;
+    kids.forEach(function(k, i){
+      var K = pos(cat.ang + (i - (kids.length - 1) / 2) * spread, 292);
+      edge(k, H, K, 'pend'); node(k, K.x, K.y, 26, 'k', '?', LABELS[k][0], 'sin confirmar');
+    });
+  });
+  if(store){ NODES = nodes; EDGES = edges; }
+  return {nodes: nodes, edges: edges};
+}
+function setNode(k, state){
+  var n = NODES[k], e = EDGES[k]; if(!n) return;
+  n.classList.remove('k'); n.classList.add(state);
+  n.querySelector('.ic').textContent = ICONS[k] || '•';
+  n.querySelector('.lv').textContent = short(P.data[k], 22);
+  n.querySelector('title').textContent = LABELS[k][0] + ': ' + P.data[k];
+  if(state === 'ok'){ n.classList.remove('pop'); void n.getBBox(); n.classList.add('pop'); }
+  if(e){ e.classList.remove('pend'); e.classList.add(state === 'ok' ? 'on' : 'rv'); }
+}
+function log(html, cls){ var l = $('#log'), d = h('div', cls || ''); d.innerHTML = html; l.appendChild(d); l.scrollTop = l.scrollHeight; }
+
+function startTrace(p){
+  P = p; found = {}; revealed = false; phase = 'build'; gen++; speed = 1;
+  var tw = $('#twin'); tw.classList.add('graph'); tw.classList.remove('open');
+  $('#tt').textContent = 'grafo · ' + p.full; $('#log').innerHTML = ''; $('#breport').hidden = true; $('#bhint').hidden = false; $('#bgive').hidden = false;
+  $('#bhint').disabled = $('#bgive').disabled = true;
+  buildGraph($('#graph'), p, true); updCount(false);
+  guard(animateBuild());
+}
+async function animateBuild(){
+  var p = P, comments = 0, photos = 0;
+  p.vecinal.posts.forEach(function(po){ comments += po.cms.length; if(po.img) photos++; });
+  p.lente.photos.forEach(function(ph){ comments += ph.cms.length; photos++; });
+  p.pio.pios.forEach(function(x){ comments += x.rp.length; });
+  log('<span class="c">$ fh-trace --objetivo "' + esc(p.full) + '"</span>');
+  await sleep(350); log('[*] Buscando en fuentes abiertas (simuladas)…'); sKey();
+  NODES.center.classList.add('in'); sNode();
+  var nets = Object.keys(NETS);
+  for(var q = 0; q < nets.length; q++){ await sleep(420); NODES['net-' + nets[q]].classList.add('in'); sNode();
+    log('<span class="p">[+]</span> Coincidencia: ' + NETS[nets[q]].name + ' · ' + esc(p.handles[nets[q]]) + ' · perfil <span class="r">PÚBLICO</span>'); }
+  await sleep(400); log('<span class="w">[i]</span> Mismo nombre y misma foto en 3 redes → es la misma persona.');
+  await sleep(400); log('<span class="p">[+]</span> ' + (p.vecinal.posts.length + p.pio.pios.length) + ' publicaciones · ' + photos + ' fotos · ' + comments + ' comentarios');
+  await sleep(400); log('[*] Ejecutando transformaciones: identidad, lugares, rutina, vínculos…');
+  for(var i = 0; i < CATS.length; i++){ var c = CATS[i]; if(NODES['h-' + c.id]){ NODES['h-' + c.id].classList.add('in'); sNode(); await sleep(220); } }
+  var ks = keys();
+  for(var j = 0; j < ks.length; j++){ NODES[ks[j]].classList.add('in'); sNode(); log('<span class="w">[?]</span> posible dato: ' + esc(LABELS[ks[j]][0].toLowerCase())); await sleep(140); }
+  await sleep(300);
+  log('<span class="w">[!]</span> ' + ks.length + ' datos posibles. Abrí el perfil y <b>confirmalos tocando donde aparecen</b>.');
+  await sleep(500);
+  openFeed();
+}
+function openFeed(){
+  phase = 'hunt';
+  visited = {}; $('#twin').classList.remove('pop');
+  setNet('vecinal');
+  $('#work').className = 'hunt';
+  $('#bhint').disabled = $('#bgive').disabled = false;
+  log('<span class="c">[>] Abriendo el navegador · probá las 3 pestañas: Vecinal, Lente y Pío</span>');
+  if(MOBILE.matches) $('#sheetT').textContent = 'Ver grafo ▲';
+}
+
+/* ---------- las 3 redes ---------- */
+function plain(t){ return esc(String(t).replace(/\[\[[a-z]+\|([^\]]+)\]\]/g, '$1')); }
+function picHtml(img, live){
+  if(!img) return '';
+  var s = '<div class="pic" style="background:linear-gradient(135deg,' + img.bg[0] + ',' + img.bg[1] + ')"><div class="art">' + img.art + '</div>';
+  (img.ovs || []).forEach(function(o){ s += '<div class="ov ' + o.c + '"' + (o.s ? ' style="' + o.s + '"' : '') + '>' + (live ? mk(o.t) : plain(o.t)) + '</div>'; });
+  return s + '</div>';
+}
+function av(p, size){ return '<div class="av" style="background:' + p.avbg + '">' + p.av + '</div>'; }
+function setNet(n){
+  NET = n; VIEW = -1; $('#viewer').classList.remove('on'); $('#viewer').innerHTML = '';
+  document.querySelectorAll('#tabs .tab').forEach(function(t){ t.classList.toggle('on', t.dataset.net === n); });
+  $('#vurl').textContent = NETS[n].host + P.handles[n].replace(/^@/, '');
+  var f = $('#feed'); f.innerHTML = n === 'vecinal' ? vecinalHtml() : n === 'lente' ? lenteHtml() : pioHtml();
+  $('#feedwrap').scrollTop = 0; refreshZones();
+  if(!visited[n]){ visited[n] = 1; var nd = NODES['net-' + n], e = EDGES['net-' + n]; if(nd) nd.classList.add('vis'); if(e) e.classList.add('vis'); if(phase === 'hunt') log('<span class="c">[>] ' + NETS[n].host + esc(P.handles[n].replace(/^@/, '')) + '</span>'); }
+  updTabs();
+}
+function vecinalHtml(){
+  var p = P, V = p.vecinal, s = '';
+  s += '<div class="vbar"><span class="vlogo"><i></i>Vecinal</span><span class="pub">🌐 PERFIL PÚBLICO</span></div>';
+  s += '<div class="phead"><div class="row">' + av(p) + '<div><div class="nm">' + esc(p.full) + '</div><div class="hn">' + esc(p.handles.vecinal) + '</div>' +
+       '<div class="st"><span><b>' + V.posts.length + '</b> publicaciones</span><span><b>' + V.followers + '</b> seguidores</span></div></div></div>' +
+       '<div class="bio">' + mk(V.bio) + '</div></div>';
+  V.posts.forEach(function(po){
+    s += '<article class="post" data-src="publicación del ' + esc(po.date) + '"><div class="ph">' + av(p) + '<div><div class="nm">' + esc(p.full) + '</div><div class="dt">' + esc(po.date) + ' · 🌐 Público</div></div></div>';
+    s += '<div class="tx">' + mk(po.text) + '</div>' + picHtml(po.img, true);
+    s += '<div class="acts"><span>♡ ' + (12 + po.text.length % 40) + '</span><span>💬 ' + po.cms.length + '</span><span>↗ Compartir</span></div>';
+    if(po.cms.length){ s += '<div class="cms">'; po.cms.forEach(function(c){ s += '<div class="cm" data-who="' + esc(c[0]) + '"><b>' + esc(c[0]) + '</b>' + mk(c[1]) + '</div>'; }); s += '</div>'; }
+    s += '</article>';
+  });
+  return s;
+}
+function lenteHtml(){
+  var p = P, L = p.lente, s = '';
+  s += '<div class="lbrand"><span><i></i>lente</span><span class="pub" style="font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;color:var(--red);border:1px solid var(--red);padding:3px 7px;border-radius:4px">🌐 PÚBLICO</span></div>';
+  s += '<div class="lhead post" data-src="perfil de Lente">' + av(p) + '<div><div class="nm">' + esc(p.handles.lente) + '</div><div class="st"><span><b>' + L.photos.length + '</b> fotos</span><span><b>' + L.followers + '</b> seguidores</span></div><div class="bio">' + esc(L.bio) + '</div></div></div>';
+  s += '<div class="lgrid">';
+  L.photos.forEach(function(ph, i){ s += '<button class="tile" type="button" data-i="' + i + '" style="background:linear-gradient(135deg,' + ph.img.bg[0] + ',' + ph.img.bg[1] + ')" aria-label="Abrir foto">' + ph.img.art + '</button>'; });
+  s += '</div><div class="lhint">En Lente todo son fotos: abrilas y mirá los detalles 🔍</div>';
+  return s;
+}
+function openPhoto(i){
+  var p = P, ph = p.lente.photos[i]; VIEW = i;
+  var s = '<div class="vcard post" data-src="foto de Lente del ' + esc(ph.date) + '"><div class="vh">' + av(p) + '<b>' + esc(p.handles.lente) + '</b><button class="vclose" type="button" aria-label="Cerrar foto">✕</button></div>' +
+          picHtml(ph.img, true) + '<div class="cap"><b>' + esc(p.handles.lente) + '</b>' + mk(ph.cap) + '</div><div class="dt">' + esc(ph.date) + '</div>';
+  if(ph.cms.length){ s += '<div class="cms">'; ph.cms.forEach(function(c){ s += '<div class="cm" data-who="' + esc(c[0]) + '"><b>' + esc(c[0]) + '</b>' + mk(c[1]) + '</div>'; }); s += '</div>'; }
+  var v = $('#viewer'); v.innerHTML = s + '</div>'; v.classList.add('on'); refreshZones();
+}
+function pioHtml(){
+  var p = P, Q = p.pio, s = '';
+  s += '<div class="pbrand"><i>pío</i>Pío</div>';
+  s += '<div class="phd post" data-src="perfil de Pío"><div class="row">' + av(p) + '<div><div class="nm">' + esc(p.full) + '</div><div class="hn">' + esc(p.handles.pio) + '</div></div></div><div class="bio">' + esc(Q.bio) + '</div></div>';
+  Q.pios.forEach(function(x){
+    s += '<article class="pio post" data-src="pío del ' + esc(x.date) + '">' + av(p) + '<div><div class="meta"><b>' + esc(p.full) + '</b>' + esc(p.handles.pio) + ' · ' + esc(x.date) + '</div><div class="tx">' + mk(x.text) + '</div>' +
+         '<div class="ac"><span>💬 ' + x.rp.length + '</span><span>🔁 ' + (x.text.length % 9) + '</span><span>♡ ' + (4 + x.text.length % 30) + '</span></div>';
+    x.rp.forEach(function(r){ s += '<div class="rp cm" data-who="' + esc(r[0]) + '"><b>' + esc(r[0]) + '</b>' + mk(r[1]) + '</div>'; });
+    s += '</div></article>';
+  });
+  return s;
+}
+function refreshZones(){
+  document.querySelectorAll('#vwin .z').forEach(function(z){ var k = z.dataset.k; z.classList.toggle('found', !!found[k]); z.classList.toggle('revealed', revealed && !found[k]); });
+}
+/* dónde está cada dato: [{net, photo}] */
+function where(k){
+  var out = [], re = new RegExp('\\[\\[' + k + '\\|'), p = P;
+  var V = p.vecinal; if(re.test(V.bio)) out.push({net: 'vecinal'});
+  V.posts.forEach(function(po){ if(re.test(JSON.stringify(po))) out.push({net: 'vecinal'}); });
+  p.lente.photos.forEach(function(ph, i){ if(re.test(JSON.stringify(ph))) out.push({net: 'lente', photo: i}); });
+  p.pio.pios.forEach(function(x){ if(re.test(JSON.stringify(x))) out.push({net: 'pio'}); });
+  return out;
+}
+function updTabs(){
+  if(!P) return;
+  Object.keys(NETS).forEach(function(n){
+    var left = keys().filter(function(k){ return !found[k] && where(k).some(function(w){ return w.net === n; }); }).length;
+    var b = document.querySelector('#tabs .tab[data-net="' + n + '"] .nd'); b.textContent = left; b.hidden = !left || revealed;
+  });
+}
+function sourceOf(z){
+  var cm = z.closest('.cm'), box = z.closest('[data-src]');
+  return NETS[NET].name + ' · ' + (cm ? 'comentario de ' + cm.dataset.who : box ? box.dataset.src : 'perfil');
+}
+/* ---------- contador ---------- */
+function updCount(bump){
+  var n = P ? nFound() : 0, t = P ? keys().length : 11, f = n / t;
+  $('#cnum').textContent = n; $('#cnt span').textContent = '/ ' + t; $('#cbar').style.width = (f * 100) + '%';
+  $('#expo').textContent = n === 0 ? '—' : f < .34 ? 'BAJA' : f < .67 ? 'MEDIA' : f < 1 ? 'ALTA' : 'TOTAL';
+  if(bump){ var c = $('#cnt'); c.classList.remove('bump'); void c.offsetWidth; c.classList.add('bump'); }
+  var end = P && (n === t || revealed);
+  $('#breport').hidden = !end; $('#bhint').hidden = !!end; $('#bgive').hidden = !!end;
+}
+
+/* ---------- globos ---------- */
+function clearGlobos(){ document.querySelectorAll('.globo,.spark').forEach(function(g){ g.remove(); }); }
+function globo(html, x, y, miss){
+  document.querySelectorAll('.globo').forEach(function(g){ g.remove(); });
+  var g = h('div', 'globo' + (miss ? ' miss' : '')); g.innerHTML = html; document.body.appendChild(g);
+  var w = g.offsetWidth, hh = g.offsetHeight;
+  x = Math.max(w / 2 + 10, Math.min(innerWidth - w / 2 - 10, x)); y = Math.max(hh + 12, y - 12);
+  g.style.left = x + 'px'; g.style.top = y + 'px';
+  setTimeout(function(){ g.classList.add('out'); setTimeout(function(){ g.remove(); }, 260); }, miss ? 1600 : 3600);
+}
+function spark(x, y, k){
+  if(RM) return; var n = NODES[k]; if(!n) return;
+  var target = MOBILE.matches && !$('#twin').classList.contains('open') ? $('#cnt').getBoundingClientRect() : n.getBoundingClientRect();
+  var s = h('div', 'spark'); s.style.left = x + 'px'; s.style.top = y + 'px'; document.body.appendChild(s);
+  var tx = target.left + target.width / 2 - x, ty = target.top + target.height / 2 - y;
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ s.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(.6)'; s.style.opacity = '.2'; }); });
+  setTimeout(function(){ s.remove(); }, 650);
+}
+
+/* ---------- clic en el feed ---------- */
+var lastMiss = 0;
+$('#tabs').addEventListener('click', function(e){ var t = e.target.closest('.tab'); if(!t || !P || phase !== 'hunt') return; ac(); sKey(); setNet(t.dataset.net); });
+$('#vwin').addEventListener('click', function(e){
+  if(!P || phase !== 'hunt') return;
+  if(e.target.closest('.vclose') || e.target.id === 'viewer'){ $('#viewer').classList.remove('on'); VIEW = -1; return; }
+  var tile = e.target.closest('.tile'); if(tile){ sKey(); openPhoto(+tile.dataset.i); return; }
+  var z = e.target.closest('.z');
+  if(z){
+    var k = z.dataset.k; if(found[k] || revealed) return;
+    found[k] = true;
+    refreshZones(); updTabs();
+    z.classList.remove('pop'); void z.offsetWidth; z.classList.add('pop');
+    spark(e.clientX, e.clientY, k);
+    setTimeout(function(){ setNode(k, 'ok'); }, RM ? 0 : 450);
+    updCount(true); sFound();
+    log('<span class="p">[+]</span> ' + esc(LABELS[k][0]) + ' = <span class="r">' + esc(P.data[k]) + '</span>  ← ' + esc(sourceOf(z)));
+    globo('📌 <b>Dato encontrado:</b> ' + esc(LABELS[k][0].toLowerCase()) + ' (' + esc(P.data[k]) + '). ' + esc(LABELS[k][1]), e.clientX, e.clientY);
+    if(nFound() === keys().length) setTimeout(complete, 1500);
+    return;
+  }
+  if(e.target.closest('.post,.phead,.pic') && !revealed && Date.now() - lastMiss > 700){
+    lastMiss = Date.now(); sMiss(); globo('Eso no es un dato útil, seguí buscando 🔎', e.clientX, e.clientY, true);
+  }
+});
+function complete(){
+  if(cur !== 'desk' || !P) return;
+  NODES.center.classList.add('pulse'); log('<span class="p">[✔] Grafo completo: ' + keys().length + ' datos conectados a ' + esc(P.full) + '.</span>');
+  sWin(); setTimeout(function(){ if(cur === 'desk' && P) $('#done').classList.add('on'); }, 900);
+}
+$('#bhint').addEventListener('click', function(){
+  if(!P) return; var left = keys().filter(function(k){ return !found[k]; }); if(!left.length) return;
+  var k = left[Math.floor(Math.random() * left.length)], w = where(k)[0]; if(!w) return;
+  if(MOBILE.matches){ $('#twin').classList.remove('open'); $('#sheetT').textContent = 'Ver grafo ▲'; }
+  if(NET !== w.net) setNet(w.net);
+  var box;
+  if(w.net === 'lente'){ box = document.querySelector('#feed .tile[data-i="' + w.photo + '"]'); }
+  else { var z = document.querySelector('#feed .z[data-k="' + k + '"]'); box = z && (z.closest('.post') || z.closest('.phead')); }
+  if(!box) return;
+  box.scrollIntoView({block: 'center', behavior: 'smooth'});
+  box.classList.remove('blink'); void box.offsetWidth; box.classList.add('blink');
+  var n = NODES[k]; n.classList.remove('hint'); void n.getBBox(); n.classList.add('hint');
+  log('<span class="w">[pista]</span> Andá a <b>' + NETS[w.net].name + '</b>' + (w.net === 'lente' ? ' y abrí la foto que titila' : ' y mirá lo que titila') + ': ahí aparece «' + esc(LABELS[k][0].toLowerCase()) + '».');
+  setTimeout(function(){ box.classList.remove('blink'); n.classList.remove('hint'); }, 2800);
+});
+$('#bgive').addEventListener('click', function(){
+  if(!P) return; revealed = true;
+  keys().forEach(function(k){ if(!found[k]) setNode(k, 'rv'); }); refreshZones(); updTabs();
+  log('<span class="r">[!]</span> Se revelaron los datos que faltaban (punteados en el grafo y en las 3 redes; en Lente, adentro de las fotos).');
+  updCount(false);
+  if(MOBILE.matches){ $('#twin').classList.add('open'); $('#sheetT').textContent = 'Ver perfil ▼'; }
+});
+$('#sheetT').addEventListener('click', function(){ var t = $('#twin'); t.classList.toggle('open'); this.textContent = t.classList.contains('open') ? 'Ver perfil ▼' : 'Ver grafo ▲'; });
+$('#bnew').addEventListener('click', function(){ ac(); openSearch(); });
+$('#bagain').addEventListener('click', function(){ ac(); openSearch(); });
+$('#bend').addEventListener('click', function(){ goHome(); });
+$('#bdone').addEventListener('click', showReport);
+$('#breport').addEventListener('click', showReport);
+
+/* ---------- informe ---------- */
+function showReport(){
+  var p = P; if(!p) return; var n = nFound(), t = keys().length;
+  show('report'); $('#report').scrollTop = 0;
+  $('#rk').textContent = 'Informe FH-Trace · ' + p.full;
+  $('#rlead').textContent = (n === t ? 'Confirmaste los ' + t + ' datos. ' : 'Confirmaste ' + n + ' de ' + t + ' datos; el resto estaba igual de a la vista. ') +
+    'Todo salió de 3 perfiles públicos de ' + p.name + ' (Vecinal, Lente y Pío), sin hackear nada. Así lo podría usar alguien con malas intenciones:';
+  var g = buildGraph($('#rgraph'), p, false);
+  Object.keys(g.nodes).forEach(function(id){ g.nodes[id].classList.add('in'); if(id.indexOf('net-') === 0){ g.nodes[id].classList.add('vis'); g.edges[id].classList.add('vis'); } });
+  keys().forEach(function(k){ var nd = g.nodes[k], e = g.edges[k], st = found[k] ? 'ok' : 'rv';
+    nd.classList.remove('k'); nd.classList.add(st); nd.querySelector('.ic').textContent = ICONS[k] || '•'; nd.querySelector('.lv').textContent = short(p.data[k], 22);
+    if(e){ e.classList.remove('pend'); e.classList.add(st === 'ok' ? 'on' : 'rv'); } });
+  var ch = $('#rchips'); ch.innerHTML = '';
+  keys().forEach(function(k){ ch.appendChild(h('span', found[k] ? '' : 'rv', (ICONS[k] || '') + ' ' + LABELS[k][0] + ': ' + p.data[k])); });
+  var ab = $('#rabuse'); ab.innerHTML = '';
+  p.abuse.forEach(function(a, i){ var d = h('div', 'ab'); d.appendChild(h('div', 'n', '0' + (i + 1))); d.appendChild(h('div', 't', a[0])); d.appendChild(h('div', 'd', a[1])); ab.appendChild(d); });
+  var cu = $('#rcare'); cu.innerHTML = '';
+  CARE.forEach(function(c){ var li = h('li'); li.appendChild(h('span', '', c[0])); li.appendChild(h('span', '', c[1])); cu.appendChild(li); });
+  var fr = $('#rfre'); fr.innerHTML = '';
+  FRENA.forEach(function(f){ var li = h('li'); li.appendChild(h('b', '', f[0])); li.appendChild(h('span', '', f[1])); fr.appendChild(li); });
+  qr('#rqr');
+}
+function qr(sel){
+  var box = $(sel); box.innerHTML = '';
+  try{
+    var q = qrcode(0, 'M'); q.addData(SITE + '/guia'); q.make(); var n = q.getModuleCount(), d = '';
+    for(var r = 0; r < n; r++) for(var c = 0; c < n; c++) if(q.isDark(r, c)) d += 'M' + c + ' ' + r + 'h1v1h-1z';
+    box.innerHTML = '<svg viewBox="0 0 ' + n + ' ' + n + '" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><path d="' + d + '" fill="#141010"/></svg>';
+  }catch(e){ box.style.lineHeight = '1.3'; box.style.color = '#141010'; box.textContent = SITE.replace(/^https?:\/\//, '') + '/guia'; }
+}
+
+/* ---------- kiosco ---------- */
+var lastAct = Date.now(), idleOn = false, idleN = 0, escT = [];
+function act(){ lastAct = Date.now(); if(idleOn){ idleOn = false; $('#idle').classList.remove('on'); } }
+['pointerdown', 'keydown', 'wheel', 'touchstart', 'scroll'].forEach(function(ev){ addEventListener(ev, act, {passive: true, capture: true}); });
+setInterval(function(){
+  if(cur === 'home' || cur === 'boot'){ lastAct = Date.now(); return; }
+  var s = (Date.now() - lastAct) / 1000;
+  if(!idleOn && s >= CFG.IDLE_S){ idleOn = true; idleN = CFG.IDLE_COUNT; $('#idle').classList.add('on'); }
+  if(idleOn){ $('#idlec').textContent = idleN; if(idleN-- <= 0){ idleOn = false; $('#idle').classList.remove('on'); goHome(); } }
+}, 1000);
+addEventListener('keydown', function(e){
+  ac(); if(e.key !== 'Escape') return;
+  var t = Date.now(); escT = escT.filter(function(x){ return t - x < 2000; }); escT.push(t);
+  if(escT.length >= 3){ escT = []; goHome(); }
+});
+
+goHome();
+})();
+</script>
+</body>
+</html>
