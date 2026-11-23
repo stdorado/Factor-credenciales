@@ -14,6 +14,7 @@ guia.html                      Página de la guía (descargar, ver y compartir) 
 cartel-guia.html               Cartel A4 con QR a /guia para el día del evento
 investigador.html              Stand 2 "Rastro Digital": rastreo simulado (grafo) en 3 redes ficticias · /investigador
 hacker.html                    Juego "Operación Lezama" (terminal de hacker ético) · /hacker
+cuantica.html                  Computación cuántica explicada, con gráficos interactivos · /cuantica
 estafa.html                    Stand 3 "¿Quién cae?": jugá de estafador o de víctima · /estafa
 rol/
   invitados-especiales.html    Página que abre el QR de la credencial "Invitado especial"

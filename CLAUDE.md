@@ -43,6 +43,8 @@ estafa.html                    /estafa · stand 3 "¿Quién cae?": estafador (ci
                                FH-OS, tarjetas, 30 s) o víctima (cinemática del celular en la mesa, chat, rebobinar).
                                Guiones editables en objetos JS al principio (CFG, TACTICS, VICTIMS, ALERTS, VSCRIPTS).
                                Todo ficticio (Banco Pampa, Correo Express Sur, Billetera Mía, app "Charlá"); no guarda nada.
+cuantica.html                  /cuantica · explicación interactiva de computación cuántica (esfera de Bloch, medición, interferencia,
+                               entrelazamiento, Grover, Shor, criptografía post-cuántica). Sin dependencias externas salvo fuentes.
 credenciales.html              Credenciales 6,8 × 10,8 cm con QR a /rol/<rol>, 4 por hoja A4
 rol/
   autoridades.html  invitados-especiales.html  instituciones.html  prensa.html
