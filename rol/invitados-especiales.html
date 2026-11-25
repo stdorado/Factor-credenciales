@@ -12,6 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;600&family=Inter+Tight:wght@800;900&family=JetBrains+Mono:wght@500&display=swap">
 <link rel="stylesheet" href="../assets/css/rol.css">
+<link rel="stylesheet" href="../assets/css/kit.css">
 <style>
 /* Invitados especiales: amigos, familia, la gente de siempre. Más íntima y emotiva. */
 .hola{font-family:"Caveat",cursive;font-weight:700;font-size:clamp(2.6rem,12vw,3.6rem);line-height:1;color:var(--acc);margin-top:30px;animation:sube .9s .95s cubic-bezier(.2,.8,.2,1) both;transform-origin:left}
@@ -67,6 +68,76 @@
   .latido .pulso{stroke-dasharray:none}
   .firma svg path{stroke-dashoffset:0;transition:none}
 }
+/* ---------- Tu pase: credencial 3D que se da vuelta ---------- */
+.pase-zona{margin-top:34px;perspective:1100px;animation:sube 1s 1.7s cubic-bezier(.2,.8,.2,1) both}
+.pase{all:unset;box-sizing:border-box;display:block;position:relative;width:100%;aspect-ratio:1.62/1;cursor:pointer;transform-style:preserve-3d;
+  transform:rotateX(var(--rx,0deg)) rotateY(calc(var(--ry,0deg) + var(--vuelta,0deg)));transition:transform .9s cubic-bezier(.2,.8,.2,1);-webkit-tap-highlight-color:transparent}
+.pase.flot{animation:flota 6s ease-in-out infinite}
+@keyframes flota{0%,100%{translate:0 0}50%{translate:0 -8px}}
+.pase.vuelta{--vuelta:180deg}
+.pase:focus-visible{outline:3px solid var(--acc);outline-offset:6px}
+.cara{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;background:var(--paper);color:var(--ink);
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.06);display:grid;grid-template-columns:14px 1fr 30%}
+.cara.dorso{transform:rotateY(180deg);background:var(--red2);grid-template-columns:14px 1fr}
+.cara > .fr{background:var(--red2)}
+.dorso > .fr{background:var(--ink)}
+.cara .cuerpo{padding:clamp(12px,4vw,20px) clamp(12px,4vw,20px) clamp(10px,3vw,16px);display:flex;flex-direction:column;min-width:0}
+.cara .mono{font-size:clamp(.5rem,2.2vw,.62rem)}
+.cara .arriba{display:flex;justify-content:space-between;gap:8px;color:var(--red)}
+.cara .quien{font-family:var(--f-display);font-weight:900;letter-spacing:-.045em;line-height:.9;font-size:clamp(1.6rem,8.6vw,2.6rem);margin-top:auto;overflow-wrap:anywhere}
+.cara .quien em{color:var(--red)}
+.cara .tipo{display:inline-block;align-self:flex-start;background:var(--ink);color:var(--paper);padding:5px 9px;margin-top:10px}
+.cara .datos{display:flex;gap:14px;margin-top:10px;padding-top:8px;border-top:2px solid rgba(20,16,16,.18);color:#4a403c}
+.cara .talon{position:relative;border-left:3px dashed rgba(20,16,16,.3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:10px 6px;background:#ece5dd}
+.cara .talon::before,.cara .talon::after{content:"";position:absolute;left:-12px;width:22px;height:22px;border-radius:50%;background:var(--bg)}
+.cara .talon::before{top:-11px}.cara .talon::after{bottom:-11px}
+.talon b{font-family:var(--f-display);font-weight:900;font-size:clamp(1.5rem,7vw,2.2rem);letter-spacing:-.04em;line-height:.9;color:var(--red);text-align:center}
+.talon .barras{display:flex;gap:2px;height:34px;align-items:center}
+.talon .barras i{display:block;width:3px;background:var(--ink)}
+.cara .holo{position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.55;
+  background:linear-gradient(115deg,transparent 20%,rgba(255,74,54,.35) 36%,rgba(255,214,120,.35) 44%,rgba(120,200,255,.3) 52%,transparent 68%);
+  background-size:250% 250%;background-position:var(--hx,0%) var(--hy,0%);transition:background-position .3s}
+.cara .brillo{position:absolute;inset:0;pointer-events:none;background:radial-gradient(300px circle at var(--lx,30%) var(--ly,20%),rgba(255,255,255,.55),transparent 55%);mix-blend-mode:soft-light}
+.pase.auto .holo{animation:holo 5s ease-in-out infinite}
+@keyframes holo{0%,100%{background-position:0% 0%}50%{background-position:100% 100%}}
+.dorso .cuerpo{color:var(--ink)}
+.dorso h3{font-family:var(--f-display);font-weight:900;letter-spacing:-.04em;line-height:.95;font-size:clamp(1.4rem,6.6vw,2rem);margin-top:8px}
+.dorso h3 em{color:#fff}
+.dorso ul{list-style:none;margin-top:auto;display:grid;gap:2px}
+.dorso li{display:flex;gap:10px;font-family:var(--f-display);font-weight:800;font-size:clamp(.78rem,3.5vw,1rem);letter-spacing:-.01em;line-height:1.2}
+.dorso li b{width:1.1em;color:#fff;font-weight:900}
+.cara .mini{display:flex;align-items:center;gap:2px;height:22%;margin:auto 0 0;opacity:.9}
+.cara .mini i{flex:1;background:var(--ink);animation:breathe 2.6s ease-in-out infinite}
+.cara .mini i.a{background:var(--red2)}
+.cara .quien{margin-top:10px}
+.pase-pie{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:16px;color:var(--soft)}
+.pase-pie .mono{font-size:.6rem}
+.pase-nombre{margin-top:14px;display:grid;gap:6px}
+.pase-nombre .mono{font-size:.6rem;color:var(--soft)}
+
+/* ---------- Kit ---------- */
+.kit-intro{display:flex;align-items:center;gap:14px;margin-top:18px;padding:14px 16px;border:3px dashed var(--line)}
+.kit-intro b{font-family:var(--f-display);font-weight:900;font-size:2.4rem;letter-spacing:-.04em;line-height:1;color:var(--acc)}
+.kit-intro p{font-size:.92rem;color:var(--soft);line-height:1.4}
+
+/* ---------- Mensaje para la familia: burbuja de chat ---------- */
+.chat{margin-top:20px;padding:20px 16px;background:#0f1a17;border:3px solid var(--fg);position:relative;overflow:hidden}
+.chat::before{content:"";position:absolute;inset:0;opacity:.06;background-image:radial-gradient(circle,#fff 1px,transparent 1.4px);background-size:18px 18px}
+.burbuja{position:relative;max-width:92%;margin-left:auto;background:#1f5c4b;color:#eef7f3;padding:12px 14px 22px;font-size:.95rem;line-height:1.45;white-space:pre-line;border-radius:10px 2px 10px 10px}
+.burbuja time{position:absolute;right:10px;bottom:5px;font-size:.66rem;opacity:.7}
+.burbuja time::after{content:" ✓✓";color:#7fd3ff}
+.chat .escribiendo{position:relative;display:inline-flex;gap:4px;background:#22302c;padding:10px 12px;border-radius:2px 10px 10px 10px;margin-bottom:10px}
+.chat .escribiendo i{width:7px;height:7px;border-radius:50%;background:#9fb3ad;animation:punto 1.2s infinite}
+.chat .escribiendo i:nth-child(2){animation-delay:.15s}.chat .escribiendo i:nth-child(3){animation-delay:.3s}
+@keyframes punto{0%,60%,100%{transform:none;opacity:.5}30%{transform:translateY(-4px);opacity:1}}
+.chat.listo .escribiendo{display:none}
+.chat.espera .burbuja{opacity:0;transform:translateY(14px) scale(.96)}
+.chat .burbuja{transition:opacity .5s,transform .6s cubic-bezier(.2,.8,.2,1)}
+
+@media (prefers-reduced-motion:reduce){
+  .pase-zona,.pase.flot,.pase.auto .holo,.chat .escribiendo i{animation:none}
+  .pase{transition:none}
+}
 </style>
 </head>
 <body class="t-especial">
@@ -87,6 +158,37 @@
       <path class="base" d="M0 45 H210 L228 45 L240 18 L256 78 L272 6 L288 62 L300 45 H600"/>
       <path class="pulso" pathLength="1200" d="M0 45 H210 L228 45 L240 18 L256 78 L272 6 L288 62 L300 45 H600"/>
     </svg>
+
+    <div class="pase-zona">
+      <button class="pase flot auto" id="pase" type="button" aria-label="Tu pase de invitado especial. Tocá para darlo vuelta">
+        <span class="cara frente">
+          <span class="fr"></span>
+          <span class="cuerpo">
+            <span class="arriba mono"><span>Factor Humano 2026</span><span>Lezama</span></span>
+            <span class="mini" id="mini" aria-hidden="true"></span>
+            <span class="quien" id="pase-quien">Invitado <em>especial.</em></span>
+            <span class="tipo mono">Pase · Invitado especial</span>
+            <span class="datos mono"><span>Jue 26.11</span><span>18:00 h</span></span>
+          </span>
+          <span class="talon"><b>26<br>11</b><span class="barras" id="barras" aria-hidden="true"></span><span class="mono">Admite 1</span></span>
+          <span class="holo"></span><span class="brillo"></span>
+        </span>
+        <span class="cara dorso">
+          <span class="fr"></span>
+          <span class="cuerpo">
+            <span class="arriba mono" style="color:var(--ink)"><span>Para no olvidar</span><span>#YoFreno</span></span>
+            <h3>Si te apura, <em>FRENÁ.</em></h3>
+            <ul>
+              <li><b>F</b>Frená</li><li><b>R</b>Revisá</li><li><b>E</b>Elegí otro canal</li><li><b>N</b>Nunca compartas códigos</li><li><b>Á</b>Avisá</li>
+            </ul>
+          </span>
+          <span class="brillo"></span>
+        </span>
+      </button>
+      <div class="pase-pie"><span class="mono">Tocá el pase para darlo vuelta</span><span class="mono" aria-hidden="true">↻</span></div>
+      <label class="pase-nombre"><span class="mono">Poné tu nombre en el pase (queda solo en tu celular)</span>
+        <input class="fh-input" id="nombre" type="text" maxlength="28" autocomplete="given-name" placeholder="Tu nombre"></label>
+    </div>
   </div>
 
   <section aria-labelledby="h-carta">
@@ -134,6 +236,15 @@
     </div>
   </section>
 
+  <section aria-labelledby="h-kit" id="kit">
+    <div class="eb mono">Tu kit para llevarte</div>
+    <h2 id="h-kit">Esta noche, <em>en tu bolsillo.</em></h2>
+    <p class="p">Preparé cosas para que te lleves y compartas. Tocá cualquiera para verla en grande, elegir el color y descargarla. Se arman en tu celular: no se sube nada.</p>
+    <div class="kit-intro"><b id="kit-n">8</b><p>recuerdos, fondos y herramientas para cuidar a los tuyos, con el diseño del evento.</p></div>
+    <div class="kt-grid" id="kit-grilla"></div>
+    <button class="btn kt-todo" id="kit-zip" type="button">Descargar todo <span class="mono">.zip</span><i class="kt-barra" aria-hidden="true"></i></button>
+  </section>
+
   <section aria-labelledby="h-prog">
     <div class="eb mono">Jueves 26 de noviembre</div>
     <h2 id="h-prog">La noche, <em>paso a paso.</em></h2>
@@ -164,11 +275,22 @@
 
   <section aria-labelledby="h-llevate">
     <div class="eb mono">Para cuidar a los tuyos</div>
-    <h2 id="h-llevate">Llevate <em>lo de hoy.</em></h2>
-    <p class="p">Si esta noche te sirve para cuidar a alguien que querés, ya valió la pena.</p>
+    <h2 id="h-llevate">Mandáselo <em>a tu familia.</em></h2>
+    <p class="p">Si esta noche te sirve para cuidar a alguien que querés, ya valió la pena. Este mensaje está listo para el grupo de la familia.</p>
+    <div class="chat" id="chat">
+      <span class="escribiendo" aria-hidden="true"><i></i><i></i><i></i></span>
+      <p class="burbuja"><span id="msg-familia">Fui a Factor Humano, en Lezama. Me quedé con esta regla para que no nos engañen:
+🛑 Frená: si un mensaje te apura, pará.
+🔎 Revisá quién te escribe y adónde te lleva el enlace.
+📞 Elegí otro canal: cortá y llamá al número de siempre.
+🔒 Nunca compartas códigos. Con nadie.
+📣 Avisá: contale a alguien.
+¿Armamos una palabra clave de la familia? 🤍</span><time id="msg-hora">20:15</time></p>
+    </div>
     <div class="btns">
-      <a class="btn" href="../assets/docs/Guia_de_Prevencion.pdf" download>Guía de prevención <span class="mono">PDF</span></a>
-      <a class="btn ghost" href="../index.html">Sitio del evento <span class="mono">Ir</span></a>
+      <button class="btn" id="wa" type="button">Mandar por WhatsApp <span class="mono">Enviar</span></button>
+      <button class="btn ghost" type="button" data-copiar="msg-familia">Copiar el mensaje <span class="mono">Copiar</span></button>
+      <a class="btn ghost" href="../guia">La guía completa <span class="mono">Ver</span></a>
     </div>
   </section>
 
@@ -180,18 +302,15 @@
   </footer>
 </div>
 <script src="../assets/js/rol.js" defer></script>
+<script src="../assets/js/kit.js"></script>
 <script>
 (function () {
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Saludo con nombre opcional: /rol/invitados-especiales?para=Juli
+  // Saludo con nombre opcional: /rol/invitados-especiales?para=Juli (el resto lo maneja el bloque del pase)
   try {
     var para = new URLSearchParams(location.search).get('para');
-    if (para) {
-      para = para.trim().slice(0, 30);
-      document.getElementById('para').textContent = ', ' + para;
-      document.title = para + ' · Invitado especial · Factor Humano 2026';
-    }
+    if (para) document.title = para.trim().slice(0, 30) + ' · Invitado especial · Factor Humano 2026';
   } catch (e) {}
 
   // Abrazo a distancia: mantener apretado ~1,6 s
@@ -248,6 +367,101 @@
   b.addEventListener('contextmenu', function (e) { e.preventDefault(); });
   b.addEventListener('keydown', function (e) { if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) empieza(e); });
   b.addEventListener('keyup', function (e) { if (e.key === ' ' || e.key === 'Enter') suelta(); });
+})();
+
+/* ---------- Pase, kit de descargas y mensaje para la familia ---------- */
+(function () {
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var K = window.FHKit;
+
+  // Nombre: viene de ?para=, o de lo que la persona escribió antes en este celular
+  var nombre = '';
+  try { nombre = new URLSearchParams(location.search).get('para') || localStorage.getItem('fh_nombre') || ''; } catch (e) {}
+  nombre = nombre.trim().slice(0, 28);
+  var input = document.getElementById('nombre'), quien = document.getElementById('pase-quien'), para = document.getElementById('para');
+  var estado = { nombre: nombre };
+  function pintarNombre(n) {
+    quien.innerHTML = '';
+    if (n) { quien.textContent = n; var em = document.createElement('em'); em.textContent = '.'; quien.appendChild(em); }
+    else quien.innerHTML = 'Invitado <em>especial.</em>';
+    para.textContent = n ? ', ' + n : '';
+  }
+  input.value = nombre; pintarNombre(nombre);
+  var kitCfg;
+  input.addEventListener('input', function () {
+    var n = input.value.trim().slice(0, 28); estado.nombre = n; pintarNombre(n);
+    try { localStorage.setItem('fh_nombre', n); } catch (e) {}
+    clearTimeout(input._t); input._t = setTimeout(function () { kitCfg && kitCfg.refrescar(); }, 250);
+  });
+
+  // Código de barras del talón
+  var barras = document.getElementById('barras');
+  for (var i = 0, s = 26; i < 16; i++) { s = (s * 16807) % 2147483647; var b = document.createElement('i'); b.style.height = (40 + (s % 60)) + '%'; b.style.width = (1 + s % 3) + 'px'; barras.appendChild(b); }
+
+  // Mini ondas del frente del pase
+  var mini = document.getElementById("mini");
+  for (var j = 0, s2 = 9; j < 34; j++) { s2 = (s2 * 16807) % 2147483647; var u = j / 34, m = document.createElement("i"); m.style.height = Math.max(10, (0.25 + 0.75 * (s2 % 100) / 100) * (Math.sin(Math.PI * u) * 0.8 + 0.2) * 100) + "%"; if (u < 0.55) m.style.opacity = (0.3 + 0.55 * u).toFixed(2); else m.className = "a"; m.style.animationDelay = (-(j % 13) * 0.2).toFixed(1) + "s"; mini.appendChild(m); }
+
+  // Pase: se inclina con el dedo/mouse (o con el giro del celular) y se da vuelta al tocarlo
+  var pase = document.getElementById('pase');
+  pase.addEventListener('click', function () {
+    pase.classList.toggle('vuelta');
+    if (navigator.vibrate) try { navigator.vibrate(10); } catch (e) {}
+  });
+  if (!reduce) {
+    function mover(x, y) { // x, y entre -0.5 y 0.5
+      pase.style.setProperty('--rx', (-y * 16).toFixed(2) + 'deg'); pase.style.setProperty('--ry', (x * 20).toFixed(2) + 'deg');
+      pase.style.setProperty('--lx', ((x + .5) * 100).toFixed(1) + '%'); pase.style.setProperty('--ly', ((y + .5) * 100).toFixed(1) + '%');
+      pase.style.setProperty('--hx', ((x + .5) * 100).toFixed(1) + '%'); pase.style.setProperty('--hy', ((y + .5) * 100).toFixed(1) + '%');
+    }
+    pase.addEventListener('pointermove', function (e) {
+      var r = pase.getBoundingClientRect(); pase.classList.remove('auto', 'flot'); pase.style.transition = 'transform .15s';
+      mover((e.clientX - r.left) / r.width - .5, (e.clientY - r.top) / r.height - .5);
+    });
+    pase.addEventListener('pointerleave', function () { pase.style.transition = ''; mover(0, 0); pase.classList.add('auto', 'flot'); });
+    addEventListener('deviceorientation', function (e) {
+      if (e.gamma == null) return;
+      pase.classList.remove('auto');
+      mover(Math.max(-.5, Math.min(.5, e.gamma / 50)), Math.max(-.5, Math.min(.5, (e.beta - 45) / 60)));
+    });
+  }
+
+  // Kit de descargas
+  if (K) {
+    kitCfg = K.montar({
+      grilla: '#kit-grilla', zip: '#kit-zip', carpeta: 'Factor_Humano_2026_Invitado_especial',
+      estado: estado, textoCompartir: 'Lezama no se deja engañar. #FactorHumanoLezama #YoFreno',
+      alCambiar: function (k, v) { if (k === 'nombre') { input.value = v; input.dispatchEvent(new Event('input')); } },
+      items: [
+        { tpl: 'recuerdo', temas: ['tinta', 'rojo', 'papel'], fmt: 'Historia', titulo: 'Yo estuve ahí', desc: 'Recuerdo con tu nombre para subir a historias.', largo: 'Un recuerdo de esta noche con tu nombre, en formato historia (9:16) para Instagram o WhatsApp. Escribí tu nombre abajo y elegí el color.', archivo: 'FH2026_recuerdo', ext: 'png' },
+        { tpl: 'fondoFrena', temas: ['tinta', 'rojo', 'papel'], fmt: 'Fondo', titulo: 'Fondo FRENÁ', desc: 'La regla en tu pantalla de bloqueo.', largo: 'Fondo de pantalla para el celular con la regla FRENÁ. Cada vez que lo prendas, te acordás de frenar antes de hacer clic o transferir.', archivo: 'FH2026_fondo_FRENA', ext: 'png' },
+        { tpl: 'fondoLema', temas: ['rojo', 'tinta', 'papel'], fmt: 'Fondo', titulo: 'Fondo del lema', desc: '“Lezama no se deja engañar.”', largo: 'Fondo de pantalla con el lema del evento y las ondas de la marca.', archivo: 'FH2026_fondo_lema', ext: 'png' },
+        { tpl: 'postal', temas: ['tinta', 'rojo', 'papel'], fmt: 'Postal', titulo: 'La postal de Santino', desc: 'La frase de esta noche, para guardar.', largo: '“Para mí, el factor humano siempre fueron ustedes.” Una postal cuadrada para guardar o compartir.', archivo: 'FH2026_postal', ext: 'png' },
+        { tpl: 'pacto', temas: ['papel', 'tinta', 'rojo'], fmt: 'Imprimible', titulo: 'Pacto digital de la casa', desc: 'Cinco acuerdos para la heladera.', largo: 'Cinco acuerdos simples para la familia: palabra clave, códigos que no se comparten, otro canal, verificación en dos pasos y avisar sin vergüenza. Imprimilo y pegalo en la heladera.', archivo: 'FH2026_pacto_familiar', ext: 'png' },
+        { tpl: 'bolsillo', temas: ['papel', 'tinta', 'rojo'], fmt: 'Imprimible', titulo: 'Tarjeta FRENÁ', desc: 'Del tamaño de una tarjeta, para la billetera.', largo: 'Tarjeta de 85,6 × 54 mm (el tamaño de una tarjeta de débito) con la regla FRENÁ. Imprimila al 100 %, recortala y guardala en la billetera, o regalásela a tus abuelos.', archivo: 'FH2026_tarjeta_FRENA', ext: 'png', ancho: true },
+        { href: '../assets/docs/Guia_de_Prevencion.pdf', fmt: 'PDF', peso: '8 páginas', titulo: 'Guía de prevención', desc: 'Todo lo de la charla, en 10 minutos.', largo: 'La guía completa: la regla FRENÁ, las cinco señales de un engaño, tu escudo en 10 minutos, cómo cuidar a chicos y abuelos y qué hacer si ya te pasó.', archivo: 'Guia_de_Prevencion_Factor_Humano', ext: 'pdf' },
+        { generar: K.ics, fmt: 'Calendario', peso: '.ics', titulo: 'Agendá la noche', desc: 'Jueves 26, 18:00 h, con aviso.', largo: 'Agregá Factor Humano 2026 a tu calendario, con un aviso una hora antes. Funciona con Google Calendar, iPhone y Outlook.', archivo: 'Factor_Humano_2026', ext: 'ics' }
+      ]
+    });
+    document.getElementById('kit-n').textContent = kitCfg ? kitCfg.items.length : 8;
+    K.enlazarCopiar();
+  }
+
+  // Mensaje para la familia: "escribiendo…" y aparece la burbuja
+  var chat = document.getElementById('chat');
+  var d = new Date(); document.getElementById('msg-hora').textContent = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  if (!reduce && 'IntersectionObserver' in window) {
+    chat.classList.add('espera');
+    var io = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return; io.disconnect();
+      setTimeout(function () { chat.classList.add('listo'); chat.classList.remove('espera'); }, 1400);
+    }, { threshold: .4 });
+    io.observe(chat);
+  } else chat.classList.add('listo');
+  document.getElementById('wa').addEventListener('click', function () {
+    var txt = document.getElementById('msg-familia').innerText.trim() + '\n' + location.origin + '/guia';
+    location.href = 'https://wa.me/?text=' + encodeURIComponent(txt);
+  });
 })();
 </script>
 </body>

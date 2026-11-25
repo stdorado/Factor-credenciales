@@ -1,0 +1,126 @@
+/* FACTOR HUMANO 2026 · Kit de descargas (invitados especiales y prensa)
+   Se apoya en las variables de tema de rol.css. */
+
+/* ---------- Grilla de descargables ---------- */
+.kt-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px;perspective:900px}
+.kt-card{all:unset;box-sizing:border-box;position:relative;display:flex;flex-direction:column;cursor:pointer;background:var(--card);border:3px solid var(--fg);
+  transform:rotateX(var(--rx,0)) rotateY(var(--ry,0));transform-style:preserve-3d;transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .35s;-webkit-tap-highlight-color:transparent}
+.kt-card.ancho{grid-column:1/-1;flex-direction:row}
+.kt-card:hover{box-shadow:8px 8px 0 var(--acc)}
+.t-red .kt-card:hover{box-shadow:8px 8px 0 var(--ink)}
+.kt-card:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
+.kt-card:active{transform:scale(.97)}
+.kt-card::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;
+  background:radial-gradient(240px circle at var(--lx,50%) var(--ly,0%),rgba(255,255,255,.22),transparent 60%)}
+.kt-card:hover::after{opacity:1}
+.kt-thumb{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:4/5;overflow:hidden;
+  background:repeating-linear-gradient(135deg,transparent 0 10px,var(--card) 10px 20px)}
+.kt-card.ancho .kt-thumb{width:42%;flex:none;aspect-ratio:auto;min-height:150px}
+.kt-thumb.trans,.kt-prev.trans{background-color:#8a817c;background-image:linear-gradient(45deg,#6f6763 25%,transparent 25%,transparent 75%,#6f6763 75%),linear-gradient(45deg,#6f6763 25%,transparent 25%,transparent 75%,#6f6763 75%);background-size:16px 16px;background-position:0 0,8px 8px}
+.kt-thumb::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.12) 50%,transparent 70%);animation:kt-cargando 1.3s linear infinite}
+.kt-thumb:has(canvas)::before,.kt-thumb:has(.kt-doc)::before{display:none}
+@keyframes kt-cargando{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.kt-cv{display:block;max-width:86%;max-height:86%;width:auto;height:auto;box-shadow:0 10px 30px rgba(0,0,0,.35);transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.kt-card:hover .kt-cv{transform:translateZ(30px) scale(1.04) rotate(-1deg)}
+.kt-meta{display:flex;flex-direction:column;gap:4px;padding:12px 12px 14px;border-top:3px solid var(--fg)}
+.kt-card.ancho .kt-meta{border-top:0;border-left:3px solid var(--fg);justify-content:center;padding:16px}
+.kt-meta .mono{font-size:.56rem;color:var(--acc);letter-spacing:.12em}
+.t-red .kt-meta .mono{color:var(--ink)}
+.kt-meta strong{font-family:var(--f-display);font-weight:800;font-size:1rem;letter-spacing:-.01em;line-height:1.15}
+.kt-meta small{font-size:.8rem;line-height:1.35;color:var(--soft)}
+.kt-go{position:absolute;right:8px;top:8px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:var(--fg);color:var(--bg);font-weight:900;font-size:.95rem;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),background .3s}
+.kt-card:hover .kt-go{transform:translateY(3px);background:var(--acc)}
+.t-red .kt-card:hover .kt-go{color:#fff}
+
+/* Documento (PDF / TXT / ICS) dibujado con CSS */
+.kt-doc{position:relative;width:52%;aspect-ratio:1/1.3;background:var(--paper);box-shadow:0 10px 30px rgba(0,0,0,.35);display:flex;flex-direction:column;gap:9%;padding:16% 12% 0;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.kt-doc::before{content:"";position:absolute;right:0;top:0;width:24%;aspect-ratio:1;background:linear-gradient(225deg,var(--bg) 50%,#d9d1ca 50%)}
+.kt-doc b{font-family:var(--f-display);font-weight:900;font-size:1.2rem;color:var(--red);letter-spacing:-.02em;line-height:1}
+.kt-doc i{display:block;height:5px;background:rgba(20,16,16,.18)}
+.kt-doc i:nth-of-type(2){width:80%}.kt-doc i:nth-of-type(3){width:60%}
+.kt-doc.grande{width:min(46%,200px)}
+.kt-doc.grande b{font-size:2rem}
+.kt-card:hover .kt-doc{transform:translateZ(30px) rotate(-3deg)}
+
+/* Entrada escalonada */
+.kt-oculta .kt-card{opacity:0;transform:translateY(40px) rotateX(18deg)}
+.kt-oculta.kt-in .kt-card{opacity:1;transform:rotateX(var(--rx,0)) rotateY(var(--ry,0));
+  transition:opacity .8s cubic-bezier(.2,.8,.2,1) calc(var(--i) * 70ms),transform .9s cubic-bezier(.2,.8,.2,1) calc(var(--i) * 70ms),box-shadow .35s}
+
+/* ---------- Botón "descargar todo" con progreso ---------- */
+.kt-todo{margin-top:16px;width:100%;font:inherit;--pz:0}
+.kt-todo b{font:inherit}
+.kt-todo .kt-barra{position:absolute;left:0;bottom:0;height:5px;width:calc(var(--pz) * 100%);background:var(--fg);transition:width .2s}
+.btn.cargando{pointer-events:none}
+.btn.cargando .mono::after{content:"";width:10px;height:10px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:kt-gira .7s linear infinite;margin-left:10px;vertical-align:-1px}
+@keyframes kt-gira{to{transform:rotate(360deg)}}
+button.btn{font-family:var(--f-display);text-align:left;width:100%}
+
+/* ---------- Vista previa (hoja inferior) ---------- */
+html.kt-abierto{overflow:hidden}
+.kt-modal{position:fixed;inset:0;z-index:300;display:flex;align-items:flex-end;justify-content:center}
+.kt-modal[hidden]{display:none}
+.kt-velo{position:absolute;inset:0;background:rgba(10,8,8,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);opacity:0;transition:opacity .38s}
+.kt-modal.on .kt-velo{opacity:1}
+.kt-hoja{position:relative;width:100%;max-width:640px;max-height:94vh;max-height:94dvh;overflow-y:auto;overscroll-behavior:contain;background:var(--bg);color:var(--fg);
+  border-top:6px solid var(--acc);padding:12px 20px calc(22px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.t-red .kt-hoja{border-top-color:var(--ink)}
+.kt-modal.on .kt-hoja{transform:none}
+.kt-asa{width:46px;height:5px;background:var(--line);margin:0 auto 10px}
+.kt-x{all:unset;position:absolute;right:12px;top:12px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:1.7rem;line-height:1;cursor:pointer;border:2px solid var(--fg);z-index:2;transition:transform .3s,background .3s}
+.kt-x:hover{transform:rotate(90deg);background:var(--fg);color:var(--bg)}
+.kt-x:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.kt-prev{display:flex;align-items:center;justify-content:center;height:min(48vh,440px);margin:18px 0 4px;background:repeating-linear-gradient(135deg,transparent 0 12px,var(--card) 12px 24px)}
+.kt-prev .kt-cv{max-width:92%;max-height:92%;box-shadow:0 18px 50px rgba(0,0,0,.45)}
+.kt-info{padding-top:14px}
+.kt-info .mono{color:var(--acc)}
+.t-red .kt-info .mono{color:var(--ink)}
+.kt-info h3{font-family:var(--f-display);font-weight:900;font-size:1.7rem;letter-spacing:-.03em;line-height:1.05;margin-top:8px}
+.kt-desc{color:var(--soft);margin-top:8px;font-size:.95rem;text-wrap:pretty}
+.kt-opts{display:grid;gap:12px;margin-top:14px}
+.kt-opts:empty{display:none}
+.kt-chips{display:flex;flex-wrap:wrap;gap:8px}
+.kt-chip{all:unset;display:inline-flex;align-items:center;gap:8px;cursor:pointer;padding:8px 12px;border:2px solid var(--line);font-family:var(--f-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;transition:border-color .2s,background .2s,transform .2s}
+.kt-chip i{width:16px;height:16px;background:linear-gradient(135deg,var(--sw,var(--fg)) 55%,var(--sw2,var(--acc)) 55%);box-shadow:0 0 0 1px var(--line)}
+.kt-chip[aria-checked="true"]{border-color:var(--fg);background:var(--card)}
+.kt-chip:active{transform:scale(.95)}
+.kt-chip:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.kt-campo{display:grid;gap:6px}
+.kt-campo .mono{font-size:.6rem;color:var(--soft)}
+.kt-campo input,.fh-input{font:600 1.05rem var(--f-body);color:var(--fg);background:var(--card);border:3px solid var(--fg);padding:12px 14px;border-radius:0;width:100%;outline:none;transition:box-shadow .25s}
+.kt-campo input:focus,.fh-input:focus{box-shadow:5px 5px 0 var(--acc)}
+.kt-campo input::placeholder,.fh-input::placeholder{color:var(--soft);opacity:.6}
+.kt-acc{display:grid;gap:10px;margin-top:16px}
+.kt-acc .btn[hidden]{display:none}
+
+/* ---------- Aviso y confeti ---------- */
+.kt-toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));z-index:400;display:flex;align-items:center;gap:10px;background:var(--fg);color:var(--bg);
+  padding:12px 18px;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;transform:translate(-50%,160%);transition:transform .45s cubic-bezier(.2,.8,.2,1);max-width:calc(100vw - 40px)}
+.kt-toast.on{transform:translate(-50%,0)}
+.kt-toast b{width:8px;height:8px;background:var(--acc);flex:none}
+.kt-confeti{position:fixed;inset:0;width:100vw;height:100vh;z-index:450;pointer-events:none}
+
+/* ---------- Bloques para copiar ---------- */
+.cp{position:relative;margin-top:14px;border:3px solid var(--fg);padding:18px 18px 16px;background:var(--card)}
+.cp .mono{display:block;color:var(--acc);margin-bottom:8px}
+.t-red .cp .mono{color:var(--ink)}
+.cp-t{font-size:.95rem;line-height:1.55;white-space:pre-line;text-wrap:pretty}
+.cp-b{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:8px 12px;background:var(--fg);color:var(--bg);font-family:var(--f-mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;transition:transform .2s,background .3s}
+.cp-b::before{content:"⧉";font-size:.9rem;letter-spacing:0}
+.cp-b.ok{background:var(--acc)}
+.t-red .cp-b.ok{color:#fff}
+.cp-b.ok::before{content:"✓"}
+.cp-b:active{transform:scale(.95)}
+.cp-b:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.cp details summary{cursor:pointer;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);margin-top:10px;list-style:none}
+.cp details summary::-webkit-details-marker{display:none}
+.cp details summary::before{content:"+ ";}
+.cp details[open] summary::before{content:"− "}
+
+@media (max-width:360px){.kt-grid{grid-template-columns:1fr}.kt-card.ancho{flex-direction:column}.kt-card.ancho .kt-thumb{width:auto;aspect-ratio:16/9}.kt-card.ancho .kt-meta{border-left:0;border-top:3px solid var(--fg)}}
+@media (prefers-reduced-motion:reduce){
+  .kt-card,.kt-cv,.kt-doc,.kt-hoja,.kt-velo,.kt-toast{transition:none !important}
+  .kt-thumb::before{animation:none}
+  .kt-oculta .kt-card{opacity:1;transform:none}
+}

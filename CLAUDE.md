@@ -52,6 +52,8 @@ rol/
 assets/css/rol.css             Estilos compartidos de las páginas de rol (temas t-ink, t-red, t-paper, t-especial)
 assets/js/rol.js               Ondas y programa "en vivo" (marca el bloque actual en hora de Argentina)
 assets/js/qrcode.js            qrcode-generator (MIT), se usa en credenciales y cartel
+assets/js/kit.js + css/kit.css Kit de descargas de invitados y prensa: genera PNG en canvas (fondos, placas, logos, zócalos),
+                               .ics, .zip y vista previa. Plantillas editables en el objeto T de kit.js.
 assets/docs/                   Guia_de_Prevencion.pdf (8 páginas) y Gacetilla_de_prensa.pdf
 vercel.json                    cleanUrls: las páginas se abren sin .html (/rol/prensa)
 ```

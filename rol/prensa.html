@@ -6,28 +6,106 @@
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#d62b1f">
 <title>Prensa · Factor Humano 2026</title>
-<meta name="description" content="Credencial de prensa · Factor Humano 2026, jueves 26 de noviembre, Centro Cultural de Lezama.">
+<meta name="description" content="Sala de prensa de Factor Humano 2026: gacetilla, logos, placas para redes, zócalos, textos listos y contacto. Jueves 26 de noviembre, Lezama.">
 <link rel="icon" href="../favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Inter+Tight:wght@800;900&family=JetBrains+Mono:wght@500&display=swap">
 <link rel="stylesheet" href="../assets/css/rol.css">
+<link rel="stylesheet" href="../assets/css/kit.css">
+<style>
+/* ---------- Consola "al aire" ---------- */
+.aire{margin-top:30px;border:3px solid var(--fg);background:var(--ink);color:var(--paper);animation:sube .9s 1.35s cubic-bezier(.2,.8,.2,1) both;position:relative;overflow:hidden}
+.aire::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(180deg,transparent 0 3px,rgba(255,255,255,.035) 3px 4px)}
+.aire-top{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border-bottom:2px solid rgba(243,238,232,.18)}
+.rec{display:inline-flex;align-items:center;gap:8px;color:var(--red2)}
+.rec i{width:10px;height:10px;border-radius:50%;background:var(--red2);box-shadow:0 0 0 0 rgba(255,74,54,.6);animation:rec 1.6s infinite}
+@keyframes rec{0%{box-shadow:0 0 0 0 rgba(255,74,54,.6)}70%{box-shadow:0 0 0 12px rgba(255,74,54,0)}100%{box-shadow:0 0 0 0 rgba(255,74,54,0)}}
+.reloj{font-family:var(--f-mono);font-size:.82rem;letter-spacing:.08em;font-variant-numeric:tabular-nums;color:var(--paper)}
+.teletipo{padding:16px 14px 18px;font-family:var(--f-mono);font-size:.82rem;line-height:1.6;min-height:7.4em;color:#e9e1da}
+.teletipo b{color:var(--red2);font-weight:500}
+.teletipo .cursor{display:inline-block;width:.6em;height:1.1em;background:var(--red2);vertical-align:-.2em;margin-left:2px;animation:parpadeo .9s steps(1) infinite}
+@keyframes parpadeo{50%{opacity:0}}
+.vu{display:flex;align-items:flex-end;gap:3px;height:26px;padding:0 14px 12px}
+.vu i{flex:1;background:var(--paper);opacity:.5;height:20%;transform-origin:bottom;animation:vu 1s ease-in-out infinite}
+.vu i:nth-child(n+12){background:var(--red2);opacity:1}
+@keyframes vu{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+
+/* ---------- Índice rápido ---------- */
+.indice{display:flex;gap:8px;overflow-x:auto;margin:26px calc(-1 * max(20px,env(safe-area-inset-right))) 0 0;padding:2px 20px 6px 0;scrollbar-width:none;animation:sube .9s 1.6s cubic-bezier(.2,.8,.2,1) both}
+.indice::-webkit-scrollbar{display:none}
+.indice a{flex:none;text-decoration:none;font-family:var(--f-mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;padding:9px 12px;border:2px solid var(--fg);transition:background .25s,color .25s,transform .25s}
+.indice a:hover,.indice a:focus-visible{background:var(--fg);color:var(--bg);transform:translateY(-2px)}
+
+/* ---------- Datos con contadores ---------- */
+.cifras{display:grid;grid-template-columns:repeat(3,1fr);margin-top:20px;border:3px solid var(--fg);background:var(--ink);color:var(--paper)}
+.cifras div{padding:16px 10px 14px}
+.cifras div+div{border-left:3px solid var(--fg)}
+.cifras b{display:block;font-family:var(--f-display);font-weight:900;font-size:clamp(2.4rem,12vw,3.4rem);letter-spacing:-.05em;line-height:.9;color:var(--red2);font-variant-numeric:tabular-nums}
+.cifras small{display:block;font-size:.78rem;line-height:1.3;color:#cfc5be;margin-top:8px}
+.sello{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:-3px;border:3px solid var(--fg);padding:14px 16px;background:repeating-linear-gradient(135deg,var(--card) 0 10px,transparent 10px 20px)}
+.sello strong{font-family:var(--f-display);font-weight:800;font-size:1.02rem;line-height:1.2}
+
+/* ---------- Identidad: paleta y tipografías ---------- */
+.paleta{display:grid;grid-template-columns:repeat(4,1fr);margin-top:20px;border:3px solid var(--fg)}
+.paleta button{all:unset;cursor:pointer;position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:130px;padding:10px 8px;background:var(--c);color:var(--t);transition:flex .4s,transform .3s}
+.paleta button+button{border-left:3px solid var(--fg)}
+.paleta button b{font-family:var(--f-display);font-weight:900;font-size:.95rem;letter-spacing:-.01em;line-height:1.1}
+.paleta button span{font-family:var(--f-mono);font-size:.56rem;letter-spacing:.08em;margin-top:4px}
+.paleta button::after{content:"Copiar";position:absolute;left:8px;top:8px;font-family:var(--f-mono);font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;opacity:0;transform:translateY(-4px);transition:opacity .25s,transform .25s}
+.paleta button:hover::after,.paleta button:focus-visible::after{opacity:.8;transform:none}
+.paleta button.ok::after{content:"✓ Copiado";opacity:1;transform:none}
+.paleta button:focus-visible{outline:3px solid #fff;outline-offset:-6px}
+.tipos{margin-top:12px;border:3px solid var(--fg)}
+.tipos div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 16px}
+.tipos div+div{border-top:2px solid var(--line)}
+.tipos .m{font-size:.6rem;color:var(--soft)}
+.tipos .t1{font-family:var(--f-display);font-weight:900;font-size:1.7rem;letter-spacing:-.04em;line-height:1}
+.tipos .t2{font-family:var(--f-body);font-size:1.1rem}
+.tipos .t3{font-family:var(--f-mono);font-size:.8rem;letter-spacing:.16em;text-transform:uppercase}
+
+/* ---------- Contacto ---------- */
+.contacto{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+.contacto .btn{min-height:84px;flex-direction:column;align-items:flex-start;justify-content:space-between}
+.contacto .btn:first-child{grid-column:1/-1}
+
+/* Hashtags */
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.tags button{all:unset;cursor:pointer;font-family:var(--f-display);font-weight:900;font-size:1.15rem;letter-spacing:-.02em;padding:8px 12px;background:var(--ink);color:#fff;transition:transform .25s,background .25s}
+.tags button:hover{transform:translateY(-2px) rotate(-1deg);background:#000}
+.tags button.ok{background:#fff;color:var(--ink)}
+.tags button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+
+@media (prefers-reduced-motion:reduce){
+  .aire,.indice,.rec i,.teletipo .cursor,.vu i{animation:none}
+}
+</style>
 </head>
 <body class="t-red">
 <div class="stripe" aria-hidden="true"></div>
 <div class="wrap">
   <header class="top mono">
     <a href="../index.html"><i></i>Factor Humano 2026</a>
-    <span>Credencial</span>
+    <span>Sala de prensa</span>
   </header>
 
   <main>
   <div class="hero">
     <span class="chip mono"><b></b>Credencial · Prensa</span>
     <div class="logo" aria-label="Factor Humano">Factor<br><span>Humano.</span></div>
-        <h1 class="role">Participás como <em>prensa</em> en Factor Humano 2026.</h1>
+    <h1 class="role">Participás como <em>prensa</em> en Factor Humano 2026.</h1>
     <p class="lead">Gracias por contar esta historia y ayudar a que llegue a más vecinos.</p>
     <div class="wave" data-seed="3" aria-hidden="true"></div>
+
+    <div class="aire" aria-label="Estado de la cobertura">
+      <div class="aire-top"><span class="rec mono"><i></i><span id="aire-estado">Sala de prensa</span></span><span class="reloj" id="reloj" aria-label="Hora de Argentina">--:--:--</span></div>
+      <p class="teletipo" id="teletipo" aria-live="off"></p>
+      <div class="vu" aria-hidden="true" id="vu"></div>
+    </div>
+
+    <nav class="indice" aria-label="Ir a">
+      <a href="#kit">Kit de medios</a><a href="#textos">Textos listos</a><a href="#datos">Datos</a><a href="#marca">Identidad</a><a href="#pautas">Pautas</a><a href="#prog">Programa</a><a href="#contacto">Contacto</a>
+    </nav>
 
     <div class="thanks">
       <p>Desde la organización del evento y el orador, <em>agradecemos tu presencia.</em></p>
@@ -39,17 +117,93 @@
     </div>
   </div>
 
-  <section aria-labelledby="h-kit">
-    <div class="eb mono">Kit de prensa</div>
+  <section aria-labelledby="h-kit" id="kit">
+    <div class="eb mono">Kit de medios</div>
     <h2 id="h-kit">Todo para <em>tu cobertura.</em></h2>
+    <p class="p">Logos, placas para redes, portada para tu nota y zócalos para la transmisión. Tocá cada pieza para verla, elegir el color, poner el nombre de tu medio y descargarla.</p>
+    <div class="kt-grid" id="kit-grilla"></div>
+    <button class="btn kt-todo" id="kit-zip" type="button">Descargar el kit completo <span class="mono">.zip</span><i class="kt-barra" aria-hidden="true"></i></button>
+    <p class="p" style="font-size:.85rem">El .zip incluye cada pieza en todos sus colores, la gacetilla, la guía, la ficha técnica y el evento para el calendario.</p>
+  </section>
+
+  <section aria-labelledby="h-textos" id="textos">
+    <div class="eb mono">Textos listos</div>
+    <h2 id="h-textos">Copiá y <em>pegá.</em></h2>
+    <p class="p">Datos verificados por la organización, para usar tal cual o como base.</p>
+
+    <div class="cp"><span class="mono">El evento · en una línea</span>
+      <p class="cp-t" id="tx-linea">Factor Humano 2026 es un evento de ciberseguridad en Lezama que busca concientizar sobre las amenazas digitales actuales y brindar herramientas concretas de prevención. Jueves 26 de noviembre, desde las 18:00 h, en Av. Manuel José Cobo 241.</p>
+      <button class="cp-b" type="button" data-copiar="tx-linea">Copiar</button></div>
+
+    <div class="cp"><span class="mono">Bio del orador · corta</span>
+      <p class="cp-t" id="tx-bio">Santino Dorado es estudiante de Seguridad Informática e Inteligencia Artificial y Robótica en la Universidad Siglo 21, vecino de Lezama, creador de ELISA y organizador de Factor Humano 2026.</p>
+      <button class="cp-b" type="button" data-copiar="tx-bio">Copiar</button></div>
+
+    <div class="cp"><span class="mono">ELISA · el origen</span>
+      <p class="cp-t" id="tx-elisa">ELISA (Experimento Lezama de Ingeniería Social Aplicada) se preguntó cuánto confiamos en algo que no sabemos quién puso. En septiembre de 2026 se colocaron códigos QR en 5 zonas públicas de Lezama durante 14 días, con aprobación municipal, en cumplimiento de la Ley 25.326 y con 13 documentos de protocolo legal y ético. Los resultados se presentan por primera vez en la conferencia del 26 de noviembre.</p>
+      <button class="cp-b" type="button" data-copiar="tx-elisa">Copiar</button></div>
+
+    <div class="cp"><span class="mono">Cita del orador</span>
+      <p class="cp-t" id="tx-cita">“No vengo a hablar como un experto que lo sabe todo. Vengo como alguien que se hizo una pregunta y salió a buscar la respuesta.” — Santino Dorado</p>
+      <button class="cp-b" type="button" data-copiar="tx-cita">Copiar</button></div>
+
+    <div class="cp"><span class="mono">La regla para el público · FRENÁ</span>
+      <p class="cp-t" id="tx-frena">F · Frená: si un mensaje te apura, esa es la señal para parar.
+R · Revisá: ¿quién te escribe? ¿Adónde te lleva ese enlace?
+E · Elegí otro canal: cortá y llamá vos al número de siempre.
+N · Nunca compartas códigos: ni con el banco, ni con un organismo, ni con un amigo.
+Á · Avisá: contale a alguien. Y si ya pasó, denunciá.</p>
+      <button class="cp-b" type="button" data-copiar="tx-frena">Copiar</button></div>
+
+    <div class="cp"><span class="mono">Ficha técnica completa</span>
+      <p class="cp-t" id="tx-ficha"></p>
+      <button class="cp-b" type="button" data-copiar="tx-ficha">Copiar</button></div>
+
+    <div class="cp"><span class="mono">Hashtags · tocá para copiar</span>
+      <div class="tags"><button type="button" data-tag>#FactorHumanoLezama</button><button type="button" data-tag>#YoFreno</button></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-datos" id="datos">
+    <div class="eb mono">En 30 segundos</div>
+    <h2 id="h-datos">Los datos <em>clave.</em></h2>
     <div class="facts">
+      <div><span class="mono">Cuándo</span><b>Jue 26.11</b><small>Desde las 18:00 h. Conferencia 18:30.</small></div>
+      <div><span class="mono">Dónde</span><b>Lezama</b><small>Av. Manuel José Cobo 241</small></div>
+    </div>
+    <div class="facts" style="margin-top:-3px">
       <div><span class="mono">Orador</span><b>Santino Dorado</b><small>Estudiante, Universidad Siglo 21. Creador de ELISA.</small></div>
       <div><span class="mono">En vivo</span><b>18:30 a 19:30</b><small>Transmisión de la conferencia y el anuncio</small></div>
     </div>
-    <div class="btns">
-      <a class="btn" href="../assets/docs/Gacetilla_de_prensa.pdf" download>Gacetilla de prensa <span class="mono">PDF</span></a>
-      <a class="btn ghost" href="tel:+5492241499954">Coordinar una entrevista <span class="mono">Llamar</span></a>
+    <div class="cifras" aria-label="ELISA en números">
+      <div><b data-n="5">5</b><small>zonas públicas de Lezama</small></div>
+      <div><b data-n="14">14</b><small>días de experimento</small></div>
+      <div><b data-n="13">13</b><small>documentos de protocolo legal y ético</small></div>
     </div>
+    <div class="sello"><strong>El resultado de ELISA se revela en la conferencia.</strong><span class="mono">26.11 · 18:30</span></div>
+    <div class="card"><p><strong>Con el acompañamiento</strong> de la Subsecretaría de Seguridad y Defensa Civil, Municipalidad de Lezama.</p></div>
+  </section>
+
+  <section aria-labelledby="h-marca" id="marca">
+    <div class="eb mono">Identidad visual</div>
+    <h2 id="h-marca">Para que tu pieza <em>combine.</em></h2>
+    <p class="p">Tocá un color para copiar su código.</p>
+    <div class="paleta">
+      <button type="button" style="--c:#f3eee8;--t:#141010" data-hex="#f3eee8"><b>Papel</b><span>#F3EEE8</span></button>
+      <button type="button" style="--c:#141010;--t:#f3eee8" data-hex="#141010"><b>Tinta</b><span>#141010</span></button>
+      <button type="button" style="--c:#d62b1f;--t:#ffffff" data-hex="#d62b1f"><b>Rojo</b><span>#D62B1F</span></button>
+      <button type="button" style="--c:#ff4a36;--t:#141010" data-hex="#ff4a36"><b>Rojo claro</b><span>#FF4A36</span></button>
+    </div>
+    <div class="tipos">
+      <div><span class="t1">Inter Tight</span><span class="mono m">Títulos · 800/900</span></div>
+      <div><span class="t2">Inter</span><span class="mono m">Texto</span></div>
+      <div><span class="t3">JetBrains Mono</span><span class="mono m">Etiquetas</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-pautas" id="pautas">
+    <div class="eb mono">Pautas de cobertura</div>
+    <h2 id="h-pautas">Tres cosas <em>importantes.</em></h2>
     <div class="rows">
       <div><span>01</span><p>Fotos con cuidado<small>Puede haber chicos y chicas en el público: evitá tomarlos de forma que se los pueda identificar.</small></p></div>
       <div><span>02</span><p>El anuncio, en el momento<small>Lo que se presenta a las 19:10 se conoce ahí: no hay adelanto.</small></p></div>
@@ -57,19 +211,15 @@
     </div>
   </section>
 
-  <section aria-labelledby="h-prog">
+  <section aria-labelledby="h-prog" id="prog">
     <div class="eb mono">Jueves 26 de noviembre</div>
     <h2 id="h-prog">El programa <em>de hoy.</em></h2>
     <p class="status mono" id="estado" role="status"></p>
-    <div class="facts">
-      <div><span class="mono">Cuándo</span><b>18:00 h</b><small>Recepción y muestra</small></div>
-      <div><span class="mono">Dónde</span><b>Centro Cultural</b><small>Av. Manuel José Cobo 241, Lezama</small></div>
-    </div>
     <ol class="prog">
-      <li data-desde="18:00" data-hasta="18:30"><time>18:00</time><div><strong>Recepción y muestra</strong><span>Recorré las cuatro estaciones</span></div></li>
+      <li data-desde="18:00" data-hasta="18:30"><time>18:00</time><div><strong>Recepción y muestra</strong><span>Buen momento para imágenes de las estaciones</span></div></li>
       <li data-desde="18:30" data-hasta="19:10"><time>18:30</time><div><strong>Conferencia</strong><span>“Los ataques de hoy empiezan engañando a una persona”</span></div></li>
       <li data-desde="19:10" data-hasta="19:30"><time>19:10</time><div><strong>Anuncio especial</strong><span>Algo para Lezama, se conoce en ese momento</span></div></li>
-      <li data-desde="19:30" data-hasta="20:30"><time>19:30</time><div><strong>Preguntas y networking</strong><span>Un rato para conversar</span></div></li>
+      <li data-desde="19:30" data-hasta="20:30"><time>19:30</time><div><strong>Preguntas y networking</strong><span>Momento para entrevistas</span></div></li>
     </ol>
   </section>
 
@@ -84,12 +234,13 @@
     </div>
   </section>
 
-  <section aria-labelledby="h-llevate">
-    <div class="eb mono">Para después</div>
-    <h2 id="h-llevate">Llevate <em>lo de hoy.</em></h2>
-    <div class="btns">
-      <a class="btn" href="../assets/docs/Guia_de_Prevencion.pdf" download>Guía de prevención <span class="mono">PDF</span></a>
-      <a class="btn ghost" href="../index.html">Sitio del evento <span class="mono">Ir</span></a>
+  <section aria-labelledby="h-contacto" id="contacto">
+    <div class="eb mono">Entrevistas y consultas</div>
+    <h2 id="h-contacto">Hablemos.</h2>
+    <div class="contacto">
+      <a class="btn" href="tel:+5492241499954">Coordinar una entrevista <span class="mono">2241 49-9954</span></a>
+      <a class="btn ghost" href="https://wa.me/5492241499954?text=Hola%2C%20soy%20de%20prensa%20y%20quiero%20coordinar%20una%20nota%20sobre%20Factor%20Humano%202026." rel="noopener">WhatsApp <span class="mono">Escribir</span></a>
+      <a class="btn ghost" href="mailto:confirmaciones.factorhumano2026@gmail.com?subject=Prensa%20%C2%B7%20Factor%20Humano%202026">Correo <span class="mono">Escribir</span></a>
     </div>
   </section>
 
@@ -101,5 +252,114 @@
   </footer>
 </div>
 <script src="../assets/js/rol.js" defer></script>
+<script src="../assets/js/kit.js"></script>
+<script>
+(function () {
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var K = window.FHKit;
+  var DIA = '2026-11-26';
+  function t(h) { return new Date(DIA + 'T' + h + ':00-03:00').getTime(); }
+
+  // ---------- Ficha técnica (texto y archivo) ----------
+  var FICHA = [
+    'FACTOR HUMANO 2026 · FICHA TÉCNICA',
+    '',
+    'Qué: evento de ciberseguridad para concientizar sobre las amenazas digitales actuales y brindar herramientas concretas de prevención.',
+    'Cuándo: jueves 26 de noviembre de 2026, desde las 18:00 h.',
+    'Dónde: Av. Manuel José Cobo 241, Lezama (Buenos Aires).',
+    'Modalidad: presencial y con transmisión en vivo de 18:30 a 19:30.',
+    '',
+    'Programa:',
+    '18:00 · Recepción y muestra (cuatro estaciones)',
+    '18:30 · Conferencia: “Los ataques de hoy empiezan engañando a una persona” (40 min)',
+    '19:10 · Anuncio especial para Lezama (20 min)',
+    '19:30 · Preguntas y networking',
+    '',
+    'Orador: Santino Dorado, estudiante de Seguridad Informática e Inteligencia Artificial y Robótica en la Universidad Siglo 21, vecino de Lezama y creador de ELISA.',
+    'Con el acompañamiento de: Subsecretaría de Seguridad y Defensa Civil, Municipalidad de Lezama.',
+    '',
+    'ELISA (Experimento Lezama de Ingeniería Social Aplicada): códigos QR en 5 zonas públicas de Lezama durante 14 días (septiembre de 2026), con aprobación municipal, en cumplimiento de la Ley 25.326 y 13 documentos de protocolo legal y ético. Los resultados se presentan en la conferencia.',
+    '',
+    'Lema: Lezama no se deja engañar.',
+    'Regla: FRENÁ (Frená, Revisá, Elegí otro canal, Nunca compartas códigos, Avisá).',
+    'Hashtags: #FactorHumanoLezama #YoFreno',
+    '',
+    'Contacto: 2241 49-9954 · confirmaciones.factorhumano2026@gmail.com'
+  ].join('\n');
+  document.getElementById('tx-ficha').textContent = FICHA;
+
+  // ---------- Kit de medios ----------
+  var estado = { medio: '' };
+  try { estado.medio = localStorage.getItem('fh_medio') || ''; } catch (e) {}
+  if (K) {
+    var T3 = ['rojo', 'tinta', 'papel'];
+    K.montar({
+      grilla: '#kit-grilla', zip: '#kit-zip', carpeta: 'Factor_Humano_2026_Kit_de_prensa', zipTodosLosColores: true,
+      estado: estado, textoCompartir: 'Factor Humano 2026 · Lezama #FactorHumanoLezama #YoFreno',
+      alCambiar: function (k, v) { try { localStorage.setItem('fh_medio', v); } catch (e) {} },
+      items: [
+        { href: '../assets/docs/Gacetilla_de_prensa.pdf', fmt: 'PDF', peso: 'Gacetilla', titulo: 'Gacetilla de prensa', desc: 'El comunicado oficial del evento.', largo: 'La gacetilla oficial de Factor Humano 2026, lista para tu medio.', archivo: 'Gacetilla_de_prensa_Factor_Humano_2026', ext: 'pdf', carpeta: 'Documentos' },
+        { tpl: 'logo', temas: ['tinta', 'papel', 'rojo'], fmt: 'Logo PNG', titulo: 'Logo', desc: 'Fondo transparente, alta resolución.', largo: 'El logo en PNG con fondo transparente. Tinta: letras claras para fondos oscuros. Papel: letras oscuras para fondos claros. Rojo: en blanco y negro para fondos de color.', archivo: 'FH2026_logo', ext: 'png', carpeta: 'Logos' },
+        { tpl: 'banner', temas: T3, fmt: 'Portada', titulo: 'Portada para tu nota', desc: 'Imagen 16:9 para web o video.', largo: 'Imagen de 1920 × 1080 con el título de la conferencia, fecha y lugar. Sirve como portada de la nota, miniatura o placa de video.', archivo: 'FH2026_portada', ext: 'png', carpeta: 'Redes', ancho: true },
+        { tpl: 'envivo', temas: T3, fmt: 'Post', titulo: 'Placa “En vivo”', desc: 'Para anunciar la transmisión.', largo: 'Post cuadrado para anunciar la transmisión en vivo de 18:30 a 19:30. Podés sumar el nombre de tu medio.', archivo: 'FH2026_post_en_vivo', ext: 'png', carpeta: 'Redes' },
+        { tpl: 'cobertura', temas: T3, fmt: 'Historia', titulo: 'Historia de cobertura', desc: 'Con el nombre de tu medio.', largo: 'Historia 9:16 para Instagram o WhatsApp con el título de la conferencia y el nombre de tu medio.', archivo: 'FH2026_historia_cobertura', ext: 'png', carpeta: 'Redes' },
+        { tpl: 'frenaPost', temas: ['tinta', 'rojo', 'papel'], fmt: 'Post', titulo: 'Infografía FRENÁ', desc: 'La regla, lista para publicar.', largo: 'La regla FRENÁ en formato 4:5 para que tu audiencia se lleve lo más útil de la charla.', archivo: 'FH2026_infografia_FRENA', ext: 'png', carpeta: 'Redes' },
+        { tpl: 'zocalo', temas: ['tinta', 'rojo'], fmt: 'Zócalo', titulo: 'Zócalo para video', desc: 'PNG transparente para la transmisión.', largo: 'Zócalo (lower third) en PNG transparente de 1920 × 1080 para superponer en video. Elegí si dice el nombre del orador o el del evento.', archivo: 'FH2026_zocalo', ext: 'png', carpeta: 'Video', ancho: true },
+        { href: '../assets/docs/Guia_de_Prevencion.pdf', fmt: 'PDF', peso: '8 páginas', titulo: 'Guía de prevención', desc: 'El material que se lleva el público.', largo: 'La guía que recibe el público: la regla FRENÁ, las cinco señales de un engaño, tu escudo en 10 minutos y qué hacer si ya te pasó. Podés citarla o compartirla.', archivo: 'Guia_de_Prevencion_Factor_Humano', ext: 'pdf', carpeta: 'Documentos' },
+        { texto: function () { return FICHA; }, fmt: 'Texto', peso: '.txt', titulo: 'Ficha técnica', desc: 'Todos los datos en un archivo.', largo: 'Fecha, lugar, programa, orador, ELISA, lema, hashtags y contacto, en texto plano.', archivo: 'Ficha_tecnica_Factor_Humano_2026', ext: 'txt', carpeta: 'Documentos' },
+        { generar: K.ics, fmt: 'Calendario', peso: '.ics', titulo: 'Agendar', desc: 'Jueves 26, 18:00 h, con aviso.', largo: 'El evento para tu calendario, con un aviso una hora antes.', archivo: 'Factor_Humano_2026', ext: 'ics', carpeta: 'Documentos' }
+      ],
+      extrasZip: [
+        { tpl: 'zocalo', tema: 'tinta', persona: 'evento', archivo: 'FH2026_zocalo', ext: 'png', carpeta: 'Video', temas: ['tinta', 'rojo'] }
+      ]
+    });
+    K.enlazarCopiar();
+    K.contadores('.cifras b[data-n]');
+    document.querySelectorAll('.paleta button').forEach(function (b) { b.addEventListener('click', function () { K.copiar(b.dataset.hex.toUpperCase(), b); }); });
+    document.querySelectorAll('[data-tag]').forEach(function (b) { b.addEventListener('click', function () { K.copiar(b.textContent, b); }); });
+  }
+
+  // ---------- Reloj de Argentina y estado de la cobertura ----------
+  var reloj = document.getElementById('reloj'), est = document.getElementById('aire-estado');
+  var fmt = new Intl.DateTimeFormat('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+  function hora() {
+    var a = Date.now();
+    reloj.textContent = fmt.format(a) + ' ART';
+    est.textContent = a >= t('18:30') && a < t('19:30') ? 'En vivo' : a >= t('18:00') && a < t('20:30') ? 'Evento en curso' : a < t('18:00') ? 'Previa' : 'Cobertura cerrada';
+  }
+  hora(); setInterval(hora, 1000);
+
+  // Vúmetro
+  var vu = document.getElementById('vu');
+  for (var i = 0; i < 16; i++) { var b = document.createElement('i'); b.style.animationDelay = (-Math.random()).toFixed(2) + 's'; b.style.animationDuration = (0.6 + Math.random() * 0.8).toFixed(2) + 's'; b.style.height = (30 + Math.random() * 70) + '%'; vu.appendChild(b); }
+
+  // ---------- Teletipo ----------
+  var LINEAS = [
+    ['LEZAMA', 'Jueves 26 de noviembre · 18:00 h · Av. Manuel José Cobo 241.'],
+    ['CONFERENCIA', '“Los ataques de hoy empiezan engañando a una persona.” 18:30 h.'],
+    ['ELISA', '5 zonas, 14 días, 13 documentos. El resultado se revela en la charla.'],
+    ['19:10', 'Anuncio especial para Lezama. Se conoce en ese momento.'],
+    ['EN VIVO', 'Transmisión de 18:30 a 19:30. #FactorHumanoLezama #YoFreno']
+  ];
+  var tel = document.getElementById('teletipo');
+  if (reduce) {
+    tel.innerHTML = '';
+    LINEAS.slice(0, 2).forEach(function (l) { var p = document.createElement('span'); p.innerHTML = '<b></b> '; p.firstChild.textContent = l[0] + ' —'; p.appendChild(document.createTextNode(l[1])); tel.appendChild(p); tel.appendChild(document.createElement('br')); });
+  } else {
+    var k = 0;
+    (function escribir() {
+      var l = LINEAS[k % LINEAS.length], txt = l[1], n = 0;
+      tel.innerHTML = '<b></b> <span></span><i class="cursor"></i>';
+      tel.firstChild.textContent = l[0] + ' —';
+      var sp = tel.querySelector('span');
+      (function letra() {
+        sp.textContent = txt.slice(0, ++n);
+        if (n < txt.length) setTimeout(letra, 22 + Math.random() * 40);
+        else setTimeout(function () { k++; escribir(); }, 2600);
+      })();
+    })();
+  }
+})();
+</script>
 </body>
 </html>
